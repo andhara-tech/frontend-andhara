@@ -1,11 +1,11 @@
-# Proyecto Nombre
+# frontend-andhara  
 
-![Estado del proyecto](https://img.shields.io/badge/status-activo-brightgreen)
-![Última versión](https://img.shields.io/github/v/release/Alejandro-RECO/frontend-andhara)
-
+![Project status](https://img.shields.io/badge/status-activo-brightgreen)
+![Last version](https://img.shields.io/github/v/release/Alejandro-RECO/frontend-andhara)
+ 
 ## 📌 Índice
 
-- [Descripción](#-descripción)
+- [Description](#-descripción)
 - [Características](#-características)
 - [Instalación](#-instalación)
 - [Uso](#-uso)
@@ -17,7 +17,7 @@
 - [Última Modificación](#-última-modificación)
 - [Contacto](#-contacto)
 
-## 📌 Descripción
+## 📌 Descripción:
 
 Breve descripción del proyecto, su propósito y el problema que resuelve.
 
