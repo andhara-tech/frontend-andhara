@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import AdminPage from "@/pages/admin";
-import MarketingPage from "./pages/marketing";
-import Page404 from "./pages/Page404";
+import DashboardPage from "./features/dashboard/DashboardPage.tsx";
+import MarketingPage from "./features/marketing/MarketingPage.tsx";
+import Page404 from "./features/notFound/NotFoundPage.tsx";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<MarketingPage/>} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="*" element={<Page404/>} />
       </Routes>
     </Router>
