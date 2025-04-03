@@ -68,7 +68,7 @@ class ApiClient {
             const updatedConfig = config as ApiRequestConfig;
 
             if(!updatedConfig.isPublic){
-               const token = localStorage.getAuthToken("authToken");
+               const token = localStorage.getItem("authToken");
                if (token) {
                   updatedConfig.headers.set("Authorization", `Bearer ${token}`);
                }
