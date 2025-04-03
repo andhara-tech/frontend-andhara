@@ -39,12 +39,11 @@ class ApiClient {
    private constructor(baseURL: string) {
       this.axiosInstance = axios.create({
          baseURL,
-         timeout: 30000,
+         timeout: 90000,
          headers: {
             "Content-Type": "application/json",
             Accept: "application/json"
          },
-         withCredentials: true
       });
 
       this.pendingRequests = new Map();
@@ -228,4 +227,4 @@ class ApiClient {
     }
 }
 
-export default ApiClient.getInstance(import.meta.env.VITE_API_URL);
+export default ApiClient.getInstance(import.meta.env.VITE_API_URL_PROD);

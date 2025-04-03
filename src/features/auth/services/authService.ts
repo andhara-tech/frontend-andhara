@@ -3,8 +3,6 @@ import apiClient from "@/app/apiClient";
 type LoginResponse = {
    token: string;
    user: {
-      id: string;
-      name: string;
       email: string;
       role: string;
    };
@@ -19,7 +17,7 @@ export const login = async (email: string, password: string) => {
 
       localStorage.setItem("authToken ", response.data.token);
 
-      return response.data.user;
+      return response;
    } catch (error) {
       console.error("Login failed:", error);
       throw new Error(

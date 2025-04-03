@@ -21,8 +21,8 @@ const AuthForm = () => {
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof formSchema>)=> {
-    try{
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
       const userData = await login(values.email, values.password);
       console.log("Login successful:", userData);
     } catch (error) {
@@ -31,44 +31,58 @@ const AuthForm = () => {
   }
 
   return (
-   <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-5">
-      <FormField 
-        control={form.control}
-        name="email"
-        render={({ field }) => (
-         <FormItem>
-          <FormLabel>Email</FormLabel>
-          <FormControl>
-            <Input placeholder='example@example.com' {...field}/>
-          </FormControl>
-          <FormDescription>
-            Enter your email address. We will send you a confirmation link.
-          </FormDescription>
-         </FormItem>
-        )}
-      />
-      <FormField 
-        control={form.control}
-        name="password"
-        render={({ field }) => (
-         <FormItem>
-          <FormLabel>Password</FormLabel>
-          <FormControl>
-            <Input type="password" placeholder='********' {...field}/>
-          </FormControl>
-          <FormDescription>
-            Enter your password. It must be at least 8 characters long.
-          </FormDescription>
-         </FormItem>
-        )}
-      />
-      <Button type="submit">Submit</Button>
-    </form>
-   </Form>
+    <section className='md:w-[30vw] flex flex-col justify-center items-center gap-y-5'>
+      <figure>
+        <img
+          loading="lazy"
+          decoding="async"
+          width={120}
+          height={120}
+          src="./img/logo.jpg"
+          alt="Auth Background"
+        />
+      </figure>
+
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="p-10 flex flex-col justify-center md:w-[30vw] gap-y-5">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Correo</FormLabel>
+                <FormControl>
+                  <Input placeholder='Correo' {...field} />
+                </FormControl>
+                <FormDescription>
+                  Ingrese su correo electrónico.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contraseña</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder='Contraseña' {...field} />
+                </FormControl>
+                <FormDescription>
+                  Ingrese su contraseña.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </section>
   );
 }
 
 export default AuthForm;
 
- 
