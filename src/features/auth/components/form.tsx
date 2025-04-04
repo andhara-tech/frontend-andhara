@@ -31,17 +31,7 @@ const AuthForm = () => {
   }
 
   return (
-    <section className='md:w-[30vw] flex flex-col justify-center items-center gap-y-5'>
-      <figure>
-        <img
-          loading="lazy"
-          decoding="async"
-          width={120}
-          height={120}
-          src="./img/logo.jpg"
-          alt="Auth Background"
-        />
-      </figure>
+
 
       <Form {...form}>
         <form
@@ -80,7 +70,6 @@ const AuthForm = () => {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-    </section>
   );
 }
 
