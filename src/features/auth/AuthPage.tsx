@@ -18,7 +18,7 @@ const AuthPage = () => {
           loading="lazy"
           width={150}
           height={150}
-          src="./img/logo.jpg"
+          src="./img/logo.svg"
           alt="Auth Background"
           className=""
         />
