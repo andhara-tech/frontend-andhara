@@ -1,12 +1,35 @@
+import AuthForm from "./components/form"
+
 const AuthPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Welcome to the Auth Page</h1>
-      <p className="mb-8">Please log in to continue.</p>
-      <button className="px-4 py-2 bg-blue-500 text-white rounded">Log In</button>
-    </div>
-  );
+    <section className="h-screen lg:flex">
+      <figure className="lg:w-[70vw] hidden lg:block relative">
+        <img
+          loading="lazy"
+          decoding="async"
+          src="./img/auth-cover-desktop.jpg"
+          alt="Auth Background"
+          className="w-full h-full object-cover"
+        />
+      </figure>
+      <section className='lg:w-[30vw] flex flex-col h-full justify-center items-center lg:shadow-[inset_10px_0px_6px_0px_rgba(0,_0,_0,_0.2)]'>
+      <figure className="flex flex-col items-center justify-center gap-y-5">
+        <img
+          loading="lazy"
+          width={150}
+          height={150}
+          src="./img/logo.jpg"
+          alt="Auth Background"
+          className=""
+        />
+        <figcaption>
+          <h2 className="font-bold uppercase text-3xl">Iniciar sesión</h2>
+        </figcaption>
+        </figure>
+        <AuthForm />
+      </section>
+    </section>
+  )
 }
 
-export default AuthPage;
-
+export default AuthPage
