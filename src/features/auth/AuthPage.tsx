@@ -2,8 +2,8 @@ import AuthForm from "./components/form"
 
 const AuthPage = () => {
   return (
-    <section className="h-screen md:flex">
-      <figure className="md:w-[70vw] hidden md:block relative">
+    <section className="h-screen lg:flex">
+      <figure className="lg:w-[70vw] hidden lg:block relative">
         <img
           loading="lazy"
           decoding="async"
@@ -12,11 +12,10 @@ const AuthPage = () => {
           className="w-full h-full object-cover"
         />
       </figure>
-      <section className='md:w-[30vw] flex flex-col justify-center items-center shadow-[13px_4px_8px_-3px_rgba(0,_0,_0,_0.35)]'>
+      <section className='lg:w-[30vw] flex flex-col h-full justify-center items-center lg:shadow-[inset_10px_0px_6px_0px_rgba(0,_0,_0,_0.2)]'>
       <figure className="flex flex-col items-center justify-center gap-y-5">
         <img
           loading="lazy"
-          decoding="async"
           width={150}
           height={150}
           src="./img/logo.jpg"
