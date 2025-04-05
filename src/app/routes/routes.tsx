@@ -1,15 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import DashboardPage from "../../features/dashboard/DashboardPage.tsx";
-import MarketingPage from "../../features/marketing/MarketingPage.tsx";
 import Page404 from "../../features/notFound/NotFoundPage.tsx";
 import AuthPage from "@/features/auth/AuthPage.tsx";
 
 import { ProtectedRoute } from "../../shared/protectedRoute.tsx"
 import MainLayout from '../layout/MainLayout.tsx';
+import ClientPage from '@/features/clients/ClientsPage.tsx';
+import ProductsPage from '@/features/products/ProductsPage.tsx';
 
 
-const router = createBrowserRouter ([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedRoute />,
@@ -17,15 +18,16 @@ const router = createBrowserRouter ([
       {
         element: <MainLayout />,
         children: [
-        { path: "/", element: <DashboardPage /> },
-        {path: "/marketing", element: <MarketingPage />},
-
+          { path: "/", element: <DashboardPage /> },
+          { path: "/dashboard", element: <DashboardPage /> },
+          { path: "/clientes", element: <ClientPage /> },
+          { path: "/productos", element: <ProductsPage /> },
         ]
       }
     ]
   },
-  {path: "/login", element: <AuthPage />},
-  {path: "*", element: <Page404 />},
+  { path: "/login", element: <AuthPage /> },
+  { path: "*", element: <Page404 /> },
 ])
 
 export default router
