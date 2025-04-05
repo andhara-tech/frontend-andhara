@@ -1,7 +1,10 @@
+import { Link, useNavigate } from "react-router-dom";
+
+import { useAuthStore } from "@/app/stores/authStore";
 import { House, LogOut, Store, Users } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu} from "./ui/sidebar";
-import { Link } from "react-router-dom";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu } from "./ui/sidebar";
 import NavMain from "./navMain";
+import { Button } from "./ui/button";
 
 const data = [
   {
@@ -10,17 +13,27 @@ const data = [
     url: "/dashboard"
   },
   {
-    title: "Clients",
+    title: "Clientes",
     icon: Users,
-    url: "/clients"
+    url: "/clientes"
   },
   {
-    title: "Products",
+    title: "Productos",
     icon: Store,
-    url: "/products"
+    url: "/productos"
   }
 ]
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const { logout, isAuthenticated } = useAuthStore()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    if (!isAuthenticated) {
+      navigate("/login")
+    }
+  }
+
   return (
     <Sidebar
       collapsible="offcanvas"
@@ -37,7 +50,13 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <NavMain items={data} />
       </SidebarContent>
       <SidebarFooter>
-        <LogOut className="text-primary" />
+        <Button 
+          variant="ghost" 
+          className="flex text-primary" 
+          onClick={handleLogout}>
+          Salir
+          <LogOut className="text-primary" />
+        </Button>
       </SidebarFooter>
     </Sidebar>
   )
