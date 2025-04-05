@@ -14,7 +14,7 @@ export const loginRequest = async (email: string, password: string) => {
          email,
          password
       });
-      localStorage.setItem("authToken ", response.data.token);
+      localStorage.setItem("authToken", response.data.token);
       console.log("Login successful in service:", response.data);
       return response;
    } catch (error) {

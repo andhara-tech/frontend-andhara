@@ -3,32 +3,20 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { formSchema } from '../schema/authSchema';
+import { useState } from 'react';
+import { useAuthStore } from '@/app/stores/authStore';
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { useState } from 'react';
-import { useAuthStore } from '@/app/stores/authStore';
 
 const AuthForm = () => {
   const { login, isLoading, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const formSchema = z.object({
-    email:
-      z.string()
-        .email({ message: 'El correo debe tener un formato válido' })
-        .refine((email => email.includes('@')), {
-          message: 'El correo debe tener un formato válido',
-        })
-        .refine((email) => email.endsWith('.com'), {
-          message: 'El correo debe tener un formato válido',
-        }
-        ),
-    password: z.string().min(4, 'La contraseña debe tener al menos 4 caracteres')
-      .max(20, 'La contraseña no puede tener más de 20 caracteres')
-  })
+  
 
   const form = useForm({
     resolver: zodResolver(formSchema),
