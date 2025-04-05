@@ -1,8 +1,7 @@
 import { House, LogOut, Store, Users } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu} from "./ui/sidebar";
 import { Link } from "react-router-dom";
 import NavMain from "./navMain";
-import { Button } from "./ui/button";
 
 const data = [
   {
