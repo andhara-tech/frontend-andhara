@@ -31,7 +31,6 @@ const NavMain = ({
             </SidebarMenu>
           </SidebarMenuItem>
         </SidebarMenu>
-
       </SidebarGroupContent>
     </SidebarGroup>
   )

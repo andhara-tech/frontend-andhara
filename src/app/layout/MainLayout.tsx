@@ -3,15 +3,17 @@ import SiteHeader from "@/components/siteHeader"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Outlet } from "react-router-dom"
 
-const MainLayout = () =>{
+const MainLayout = () => {
   return (
-  <SidebarProvider>
-    <AppSidebar variant="inset"/>
-    <SidebarInset>
-      <SiteHeader/>
-      <Outlet />
-    </SidebarInset>
-  </SidebarProvider>
+    <SidebarProvider>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <section className="p-5">
+          <Outlet />
+        </section>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
 
