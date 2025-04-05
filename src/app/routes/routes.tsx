@@ -6,6 +6,7 @@ import Page404 from "../../features/notFound/NotFoundPage.tsx";
 import AuthPage from "@/features/auth/AuthPage.tsx";
 
 import { ProtectedRoute } from "../../shared/protectedRoute.tsx"
+import MainLayout from '../layout/MainLayout.tsx';
 
 
 const router = createBrowserRouter ([
@@ -13,11 +14,17 @@ const router = createBrowserRouter ([
     path: "/",
     element: <ProtectedRoute />,
     children: [
-      { path: "/", element: <DashboardPage /> },
+      {
+        element: <MainLayout />,
+        children: [
+        { path: "/", element: <DashboardPage /> },
+        {path: "/marketing", element: <MarketingPage />},
+
+        ]
+      }
     ]
   },
   {path: "/login", element: <AuthPage />},
-  {path: "/marketing", element: <MarketingPage />},
   {path: "*", element: <Page404 />},
 ])
 
