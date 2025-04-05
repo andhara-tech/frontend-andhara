@@ -2,14 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Eye, EyeClosed } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { login } from '../services/authService';
+
 import { useState } from 'react';
+import { useAuthStore } from '@/app/stores/authStore';
 
 const AuthForm = () => {
+  const { login, isLoading, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const formSchema = z.object({
     email:
@@ -36,11 +40,18 @@ const AuthForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userData = await login(values.email, values.password);
-      console.log("Login successful:", userData);
+      await login(values.email, values.password);
+      redirectTo();
     } catch (error) {
       console.error("Login failed:", error);
     }
+  }
+
+  const redirectTo = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+    navigate('/');
   }
 
   const handleShowPasswor = () => {
@@ -61,10 +72,9 @@ const AuthForm = () => {
             <FormItem>
               <FormLabel>Correo</FormLabel>
               <FormControl >
-
-                <Input placeholder='Correo' {...field} />
-
-
+                <Input 
+                  disabled={isLoading}
+                  placeholder='Correo' {...field} />
               </FormControl>
               <FormDescription>
                 Ingrese su correo electrónico.
@@ -81,7 +91,10 @@ const AuthForm = () => {
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <div className='relative w-full'>
-                  <Input type={showPassword ? "text" : "password"} placeholder='Contraseña' {...field} />
+                  <Input 
+                    disabled={isLoading}
+                    type={showPassword ? "text" : "password"} 
+                    placeholder='Contraseña' {...field} />
                   {
                     showPassword ? (
                       <Eye onClick={handleShowPasswor} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 cursor-pointer" />
@@ -98,7 +111,13 @@ const AuthForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button 
+          disabled={isLoading}
+          type="submit">
+            {
+            isLoading ? 'Cargando...' : 'Iniciar sesión'
+            }
+          </Button>
       </form>
     </Form>
   );

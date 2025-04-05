@@ -1,28 +1,47 @@
+import { loginRequest } from '@/features/auth/services/authService';
 import {create} from 'zustand';
 
 interface AuthState {
-  tocken: string | null;
+  token: string | null;
   isAuthenticated: boolean;
-  login: (token: string) => void;
+  login: (email:string, password:string) => void;
   logout: () => void;
   initalize: () => void;
+  isLoading: boolean;
+  error: string | null;
+  user: {
+    email: string;
+    role: string;
+  } | null;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  tocken: null,
+  token: null,
   isAuthenticated: false,
-  login: (token: string) => {
-    localStorage.setItem('authToken', token);
-    set({tocken: token, isAuthenticated: true});
+  isLoading: false,
+  error: null,
+  user: null,
+  login: async (email:string, password:string) => {
+    set({isLoading: true, error: null});
+    try{
+      const response = await loginRequest(email, password);
+      set({
+        user: response.data.user,
+        token: response.data.token, 
+        isAuthenticated: true, 
+        isLoading: false});
+    }catch (error) {
+      set({error: 'Login failed. Please check your credentials and try again.', isLoading: false, isAuthenticated: false});
+    }
   },
   logout: () => {
     localStorage.removeItem('authToken');
-    set({tocken: null, isAuthenticated: false});
+    set({token: null, isAuthenticated: false});
   },
   initalize: () => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      set({tocken: token, isAuthenticated: true});
+      set({token: token, isAuthenticated: true});
     }
   },
 }));
