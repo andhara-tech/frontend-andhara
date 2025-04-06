@@ -191,7 +191,9 @@ const ProductForm = () => {
 
       </div>
         <Button 
-          type="submit" >
+          type="submit" 
+          disabled={!form.formState.isValid}
+        >
           Enviar
         </Button>
       </form>
