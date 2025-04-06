@@ -161,7 +161,9 @@ const CLientForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Enviar</Button>
+        <Button 
+          disabled={!form.formState.isValid}
+          type="submit">Enviar</Button>
       </form>
     </Form >
   )

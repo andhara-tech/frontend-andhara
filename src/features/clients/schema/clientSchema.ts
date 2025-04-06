@@ -1,4 +1,4 @@
-import { z } from 'zod';
+  import { z } from 'zod';
 export const types = ['CC', 'TI', 'CE', 'NIT', 'PASS'] as const;
 
 export const clientEschema = z.object({
