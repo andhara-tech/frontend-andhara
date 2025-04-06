@@ -1,7 +1,9 @@
+import { ClientDialog } from "./components/ClientDialog";
+
 const ClientPage = () => {
   return (
     <div>
-      <h1>Client Page</h1>
+      <ClientDialog />
     </div>
   );
 }
