@@ -1,6 +1,8 @@
-import { z } from 'zod';
+import { clientEschema, types } from '../schema/clientSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -11,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { clientEschema, types } from '../schema/clientSchema';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from "sonner"
 
 const CLientForm = () => {
   const form = useForm<z.infer<typeof clientEschema>>({
@@ -38,6 +40,10 @@ const CLientForm = () => {
       direccion_residencia: data.clientAddress
     }
     console.log(transformData);
+    toast.success(
+      `El cliente ${data.clientName} se agrego correctamente`, {
+      }
+    )
   }
 
   return (
@@ -49,7 +55,7 @@ const CLientForm = () => {
             name="clientTypeDocument"
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Documento</FormLabel>
+                <FormLabel>Tipo de docuemento</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}>
@@ -86,7 +92,7 @@ const CLientForm = () => {
             )}
           />
         </div>
-        <div className='flex flex-col lg:flex-row gap-x-4 items-center'>
+        <div className='flex flex-col lg:flex-row gap-4 items-center'>
           <FormField
             control={form.control}
             name="clientName"
