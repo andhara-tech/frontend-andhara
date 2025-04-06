@@ -1,10 +1,10 @@
-import { ClientDialog } from "./components/ClientDialog";
+import ClientDialog from "./components/ClientDialog";
 
 const ClientPage = () => {
   return (
-    <div>
+    <section>
       <ClientDialog />
-    </div>
+    </section>
   );
 }
 

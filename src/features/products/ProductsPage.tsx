@@ -1,10 +1,11 @@
+import ProductDialog from "./components/ProductDialog";
+
 const ProductsPage = () => {
   return (
-    <div>
-      <h1>Products</h1>
-      <p>List of products will be displayed here.</p>
-    </div>
-  );
+    <section>
+      <ProductDialog />
+    </section>
+  )
 }
 
 export default ProductsPage;
