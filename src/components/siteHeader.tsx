@@ -5,6 +5,7 @@ import { Separator } from "@radix-ui/react-separator"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "./ui/button"
 import { BellDot, Settings } from "lucide-react"
+import RegisterForm from "@/features/auth/components/RegisterForm"
 
 const SiteHeader = () => {
   return (
@@ -57,12 +59,12 @@ const SiteHeader = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="data-[state=open]:bg-muted" asChild>
-                <Button variant="ghost" className="w-full text-left">
-                  Agregar usuario
-                </Button>
-              </DropdownMenuItem>
-              </DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <RegisterForm />
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>

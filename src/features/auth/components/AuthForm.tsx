@@ -16,7 +16,7 @@ const AuthForm = () => {
   const { login, isLoading, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
+
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -47,8 +47,6 @@ const AuthForm = () => {
   }
 
   return (
-
-
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -60,7 +58,7 @@ const AuthForm = () => {
             <FormItem>
               <FormLabel>Correo</FormLabel>
               <FormControl >
-                <Input 
+                <Input
                   disabled={isLoading}
                   placeholder='Correo' {...field} />
               </FormControl>
@@ -79,9 +77,9 @@ const AuthForm = () => {
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <div className='relative w-full'>
-                  <Input 
+                  <Input
                     disabled={isLoading}
-                    type={showPassword ? "text" : "password"} 
+                    type={showPassword ? "text" : "password"}
                     placeholder='Contraseña' {...field} />
                   {
                     showPassword ? (
@@ -99,13 +97,13 @@ const AuthForm = () => {
             </FormItem>
           )}
         />
-        <Button 
+        <Button
           disabled={isLoading}
           type="submit">
-            {
+          {
             isLoading ? 'Cargando...' : 'Iniciar sesión'
-            }
-          </Button>
+          }
+        </Button>
       </form>
     </Form>
   );

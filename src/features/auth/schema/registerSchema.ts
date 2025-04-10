@@ -1,6 +1,8 @@
 import {z} from 'zod';
 
-export const formSchema = z.object({
+export const roles = ['admin', 'user'] as const;
+
+export const registerSchema = z.object({
   email:
     z.string()
       .min(1, 'El correo es requerido')
@@ -21,6 +23,12 @@ export const formSchema = z.object({
   confirmPassword: z.string().min(1, 'La contraseña es requerida')
     .min(4, 'La contraseña debe tener al menos 4 caracteres')
     .max(20, 'La contraseña no puede tener más de 20 caracteres')
+    .refine((value) => value !== '', {
+      message: 'La contraseña es requerida',
+    }),
+  role: z.enum(roles, {
+    errorMap: () => ({ message: 'El rol es requerido' }),
+  }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Las contraseñas no coinciden',
   path: ['confirmPassword'],
