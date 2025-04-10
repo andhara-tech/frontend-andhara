@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const roles = ['admin', 'user'] as const;
+export const roles = ['admin', 'usuario-bogota', 'usuario-cali'] as const;
 
 export const registerSchema = z.object({
   email:

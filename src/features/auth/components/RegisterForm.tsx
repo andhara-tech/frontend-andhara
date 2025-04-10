@@ -2,14 +2,19 @@ import { registerSchema, roles } from "../schema/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRegisterStore } from "@/app/stores/registerStore";
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
 
 const RegisterForm = () => {
+  const {register, error, isLoading} = useRegisterStore()
+  const [isOpen, setIsOpen] = useState(false)
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -21,11 +26,39 @@ const RegisterForm = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
-    console.log(values);
+    const finalValues = {
+      email: values.email,
+      password: values.password,
+      role: values.role,
+    }
+    try{
+      await register(finalValues.email, finalValues.password, finalValues.role)
+      form.reset()
+      toast.success(
+        `El usuario ${values.email} se registro correctamente`, {
+          duration: 3000,
+        }
+      )
+      if (error) {
+        toast.error(
+          error, {
+            duration: 3000,
+          }
+        )
+      }
+      setIsOpen(false)
+    }catch (error) {
+      console.error("Register failed:", error);
+      toast.error(
+        "Register failed. Please check your credentials and try again.", {
+          duration: 3000,
+        }
+      )
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" className="w-full lg:w-auto">
           Registar usuario
@@ -106,7 +139,9 @@ const RegisterForm = () => {
             <Button
               type="submit"
               disabled={form.formState.isSubmitting}
-            >Confirm</Button>
+            >
+              {isLoading ? 'Cargando...' : 'Registrar'}
+            </Button>
           </form>
         </Form>
       </DialogContent>

@@ -1,17 +1,24 @@
 import apiClient from "@/app/apiClient";
 
+type RegisterResponse = {
+  message: string;
+  user: {
+    email: string;
+    role: string;
+  };
+};
+
 export const registerRequest = async (
   email: string, 
   password: string,
   role: string
 ) => {
   try {
-    const response = await apiClient.post("/auth/create-user", {
+    const response = await apiClient.post<RegisterResponse>("/auth/create-user", {
       email,
       password,
       role,
     },);
-    console.log("Register successful in service:", response.data);
     return response;
   } catch (error) {
     console.error("Register failed:", error);
