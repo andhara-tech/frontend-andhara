@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "./ui/button"
-import { BellDot } from "lucide-react"
+import { BellDot, Settings } from "lucide-react"
 
 const SiteHeader = () => {
   return (
@@ -22,7 +22,7 @@ const SiteHeader = () => {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <div>
+        <div className="flex items-center gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0 data-[state=open]:bg-muted">
@@ -46,6 +46,23 @@ const SiteHeader = () => {
                 ))
               }
             </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="h-8 p-2">
+                <Settings />
+                Ajustes
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="data-[state=open]:bg-muted" asChild>
+                <Button variant="ghost" className="w-full text-left">
+                  Agregar usuario
+                </Button>
+              </DropdownMenuItem>
+              </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
