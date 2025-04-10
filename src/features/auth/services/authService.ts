@@ -15,7 +15,6 @@ export const loginRequest = async (email: string, password: string) => {
          password
       });
       localStorage.setItem("authToken", response.data.token);
-      console.log("Login successful in service:", response.data);
       return response;
    } catch (error) {
       console.error("Login failed:", error);
