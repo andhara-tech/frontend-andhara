@@ -11,7 +11,7 @@ import { CirclePlus } from "lucide-react"
 import CLientForm from "./ClientForm"
 
 
-export const ClientDialog = () => {
+const ClientDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,3 +30,5 @@ export const ClientDialog = () => {
     </Dialog>
   )
 }
+
+export default ClientDialog
