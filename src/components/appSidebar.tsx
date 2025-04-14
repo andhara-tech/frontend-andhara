@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/app/stores/authStore";
 import { House, LogOut, Store, Users } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu } from "./ui/sidebar";
-import NavMain from "./NavMain";
+import NavMain from "./navMain";
 import { Button } from "./ui/button";
 
 const data = [
