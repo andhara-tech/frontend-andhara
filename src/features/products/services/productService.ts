@@ -1,46 +1,43 @@
-import apiClient from "@/app/apiClient";
+import type { Product, LocationName } from "@/features/products/types/productTypes"
 
-export interface Product {
-  product_id: number;
-  supplier_id: number;
-  product_name: string;
-  product_description: string;
-  purchase_price: number;
-  product_discount: number;
-  sale_price: number;
-  profit_margin: number;
-  vat: number;
-}
+// Simular delay de red
 
-type ProductResponse = {
-  message: string;
-  product: Product;
-}
+// Simular base de datos
 
-export const createProductRequest = async (
-  supplier_id: number,
-  product_name: string,
-  product_description: string,
-  purchase_price: number,
-  product_discount: number,
-  sale_price: number,
-  vat: number
-) =>{
-  try {
-    const response = await apiClient.post<ProductResponse>("/product/create-product", {
-      supplier_id,
-      product_name,
-      product_description,
-      purchase_price,
-      product_discount,
-      sale_price,
-      vat,
-    })
-    return response;
-  }catch (error) {
-    console.error("Product creation failed:", error);
-    throw new Error(
-      "Product creation failed. Please check your credentials and try again."
-    );
-  }
+// Servicio para operaciones con productos
+export const ProductService = {
+  // Obtener todos los productos
+  getProducts: async (): Promise<Product[]> => {
+
+  },
+
+  // Obtener un producto por ID
+  getProduct: async (id: number): Promise<Product | null> => {
+
+  },
+
+  // Crear un nuevo producto
+  createProduct: async (product: Omit<Product, "product_id">): Promise<Product> => {
+
+  },
+
+  // Actualizar un producto existente
+  updateProduct: async (product: Product): Promise<Product> => {
+
+  },
+
+  // Eliminar un producto
+  deleteProduct: async (id: number): Promise<void> => {
+
+  },
+
+  // Actualizar stock de un producto en una ubicación específica
+  updateStock: async (productId: number, location: LocationName, quantity: number): Promise<Product> => {
+
+  },
+
+  // Obtener stock total de un producto (suma de todas las ubicaciones)
+  getTotalStock: async (productId: number): Promise<number> => {
+
+  },
 }
