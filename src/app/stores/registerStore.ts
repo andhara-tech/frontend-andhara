@@ -12,8 +12,8 @@ export const useRegisterStore = create<RegisterState>((set) => ({
   error: null,
   register: async (email: string, password: string, role:string) => {
     set({ isLoading: true, error: null });
+    await registerRequest(email, password, role);
     try {
-      await registerRequest(email, password, role);
       set({
         isLoading: false,
       });

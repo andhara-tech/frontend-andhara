@@ -1,7 +1,9 @@
-import { productsEschema, headquearters} from '../schema/productsShema';
+import { productsSchema } from '../schema/productsShema';
+import { supplierStatic } from '@/shared/static';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { LOCATIONS } from '@/features/products/types/productTypes';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,37 +17,59 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from "sonner"
+import { useProductStore } from '@/app/stores/productStore';
 
 const ProductForm = () => {
-  const form = useForm<z.infer<typeof productsEschema>>({
-    resolver: zodResolver(productsEschema),
+  const {error, createProduct, isLoading} = useProductStore()
+  const form = useForm<z.infer<typeof productsSchema>>({
+    resolver: zodResolver(productsSchema),
     defaultValues: {
-      productName: '',
-      productDescription: '',
-      productBuyPrice: 0,
-      productDiscount: 0,
-      productSellPrice: 0,
-      productProfitMargin: 0,
-      productIva: 0,
-      productStock: 0,
-      productHeadquarter: headquearters[0],
+      product_name: '',
+      product_description: '',
+      purchase_price: '',
+      product_discount: '',
+      sale_price: '',
+      vat: '',
+      id_supplier: '',
+      stock: LOCATIONS.map((loc) => ({ location: loc.id, quantity: 0 })),
     },
   })
 
-  const onSubmit = (data: z.infer<typeof productsEschema>) => {
-    const transformData = {
-      nombre_producto: data.productName,
-      descripcion_producto: data.productDescription,
-      precio_compra: data.productBuyPrice,
-      descuento_producto: data.productDiscount,
-      precio_venta: data.productSellPrice,
-      margen_ganancia: data.productProfitMargin,
-      iva: data.productIva,
-      stock: data.productStock
+  const onSubmit = async (data: z.infer<typeof productsSchema>) => {
+    const finalValues = {
+      id_supplier: data.id_supplier,
+      product_name: data.product_name,
+      product_description: data.product_description,
+      purchase_price: Number(data.purchase_price),
+      product_discount: Number(data.product_discount),
+      sale_price: Number(data.sale_price),
+      vat: Number(data.vat),
+      stock: data.stock.map(item => ({
+        id_branch: item.location,
+        quantity: item.quantity
+      }))
     }
-    console.log(transformData);
+
+    try {
+      await createProduct(finalValues)
+      if (error) {
+        toast.error(
+          error, {
+            duration: 3000,
+          }
+        )
+      }
+      form.reset()
+    } catch (error) {
+      console.error("Product creation failed:", error);
+      toast.error(
+        "Product creation failed. Please check your credentials and try again.", {
+          duration: 3000,
+        }
+      )
+    }
     toast.success(
-      `El producto ${data.productName} se agrego correctamente`, {
+      `El producto ${data.product_name} se agrego correctamente`, {
     }
     )
   }
@@ -56,7 +80,7 @@ const ProductForm = () => {
       <div className='flex flex-col lg:flex-row gap-4 items-center'>
         <FormField
           control={form.control}
-          name="productName"
+          name="product_name"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Nombre del producto</FormLabel>
@@ -69,7 +93,7 @@ const ProductForm = () => {
         />
         <FormField
           control={form.control}
-          name="productDescription"
+          name="product_description"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Descripción del producto</FormLabel>
@@ -84,7 +108,7 @@ const ProductForm = () => {
       <div className='flex flex-col lg:flex-row gap-4 items-center'>
         <FormField
           control={form.control}
-          name="productBuyPrice"
+          name="purchase_price"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Precio de compra</FormLabel>
@@ -97,7 +121,7 @@ const ProductForm = () => {
         />
         <FormField
           control={form.control}
-          name="productDiscount"
+          name="product_discount"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Descuento</FormLabel>
@@ -112,7 +136,7 @@ const ProductForm = () => {
       <div className='flex gap-4 items-end'>
         <FormField
           control={form.control}
-          name="productSellPrice"
+          name="sale_price"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Precio de venta</FormLabel>
@@ -125,20 +149,7 @@ const ProductForm = () => {
         />
         <FormField
           control={form.control}
-          name="productProfitMargin"
-          render={({ field }) => (
-            <FormItem className='w-full'>
-              <FormLabel>Margen de ganancia</FormLabel>
-              <FormControl>
-                <Input type='number' placeholder="Margen de ganancia" min="0" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="productIva"
+          name="vat"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>IVA</FormLabel>
@@ -153,33 +164,20 @@ const ProductForm = () => {
       <div className='flex flex-col lg:flex-row gap-4 items-center'>
         <FormField
           control={form.control}
-          name="productStock"
-          render={({ field }) => (
-            <FormItem className='w-full'>
-              <FormLabel>Stock</FormLabel>
-              <FormControl>
-                <Input type='number' placeholder="Stock" min="0" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="productHeadquarter"
+          name="id_supplier"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Sede</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={(val) => field.onChange(val)} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecciona una sede" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {headquearters.map((headquarter) => (
-                    <SelectItem key={headquarter} value={headquarter}>
-                      {headquarter}
+                  {supplierStatic.map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.supplier_name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -188,13 +186,12 @@ const ProductForm = () => {
             </FormItem>
           )}
         />
-
       </div>
         <Button 
           type="submit" 
-          disabled={!form.formState.isValid}
+          disabled={!form.formState.isValid || isLoading}
         >
-          Enviar
+          {isLoading ? "Cargando..." : "Crear producto"}
         </Button>
       </form>
     </Form>
