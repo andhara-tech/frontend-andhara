@@ -21,7 +21,7 @@ interface ProductState {
   fetchProducts: () => Promise<void>
   createProduct: (product: Omit<Product, "product_id">) => Promise<void>
   updateProduct: (product: Product) => Promise<void>
-  deleteProduct: (id: number) => Promise<void>
+  deleteProduct: (id: string) => Promise<void>
 
   // Acciones de UI
   setFilters: (filters: Partial<ProductTableFilters>) => void

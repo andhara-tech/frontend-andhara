@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react"
 interface DeleteAlertProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  productId: number | null
+  productId: string | null
 }
 
 export function DeleteAlert({ open, onOpenChange, productId }: DeleteAlertProps) {

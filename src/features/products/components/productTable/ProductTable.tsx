@@ -189,7 +189,7 @@ export default function ProductTable() {
       <DeleteAlert 
         open={deleteDialogOpen} 
         onOpenChange={setDeleteDialogOpen} 
-        productId={productIdToDelete ? Number(productIdToDelete) : null} 
+        productId={productIdToDelete ? productIdToDelete : null} 
       />
     </div>
   )

@@ -1,8 +1,9 @@
-import { productsEschema} from '../schema/productsShema';
+import { productsSchema } from '../schema/productsShema';
 import { supplierStatic } from '@/shared/static';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { LOCATIONS } from '@/features/products/types/productTypes';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,8 +21,8 @@ import { useProductStore } from '@/app/stores/productStore';
 
 const ProductForm = () => {
   const {error, createProduct, isLoading} = useProductStore()
-  const form = useForm<z.infer<typeof productsEschema>>({
-    resolver: zodResolver(productsEschema),
+  const form = useForm<z.infer<typeof productsSchema>>({
+    resolver: zodResolver(productsSchema),
     defaultValues: {
       product_name: '',
       product_description: '',
@@ -29,31 +30,28 @@ const ProductForm = () => {
       product_discount: '',
       sale_price: '',
       vat: '',
-      supplier_id: 0,
+      id_supplier: '',
+      stock: LOCATIONS.map((loc) => ({ location: loc.id, quantity: 0 })),
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof productsEschema>) => {
+  const onSubmit = async (data: z.infer<typeof productsSchema>) => {
     const finalValues = {
-      supplier_id: data.supplier_id,
+      id_supplier: data.id_supplier,
       product_name: data.product_name,
       product_description: data.product_description,
       purchase_price: Number(data.purchase_price),
       product_discount: Number(data.product_discount),
       sale_price: Number(data.sale_price),
       vat: Number(data.vat),
+      stock: data.stock.map(item => ({
+        id_branch: item.location,
+        quantity: item.quantity
+      }))
     }
 
     try {
-      await createProduct(
-        finalValues.supplier_id,
-        finalValues.product_name,
-        finalValues.product_description,
-        finalValues.purchase_price,
-        finalValues.product_discount,
-        finalValues.sale_price,
-        finalValues.vat
-      )
+      await createProduct(finalValues)
       if (error) {
         toast.error(
           error, {
@@ -166,11 +164,11 @@ const ProductForm = () => {
       <div className='flex flex-col lg:flex-row gap-4 items-center'>
         <FormField
           control={form.control}
-          name="supplier_id"
+          name="id_supplier"
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormLabel>Sede</FormLabel>
-              <Select onValueChange={(val) => field.onChange(Number(val))} defaultValue={field.value?.toString()}>
+              <Select onValueChange={(val) => field.onChange(val)} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecciona una sede" />
@@ -178,7 +176,7 @@ const ProductForm = () => {
                 </FormControl>
                 <SelectContent>
                   {supplierStatic.map((s) => (
-                    <SelectItem key={s.id} value={s.id.toString()}>
+                    <SelectItem key={s.id} value={s.id}>
                       {s.supplier_name}
                     </SelectItem>
                   ))}
