@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
    DropdownMenu,
@@ -53,7 +51,7 @@ export function ProductTableToolbar<TData>({
                                  ? "Producto"
                                  : column.id === "product_description"
                                  ? "Descripción"
-                                 : column.id === "supplier_id"
+                                 : column.id === "id_supplier"
                                  ? "Proveedor"
                                  : column.id === "purchase_price"
                                  ? "Precio Compra"

@@ -27,8 +27,8 @@ export function ProductFilters() {
         <div className="flex flex-wrap gap-2">
           {/* Filtro de proveedor */}
           <Select
-            value={filters.supplier_id?.toString() || ""}
-            onValueChange={(value) => setFilters({ supplier_id: value ? Number(value) : null })}
+            value={filters.id_supplier?.toString() || ""}
+            onValueChange={(value) => setFilters({ id_supplier: value ? value : null })}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Filtrar por proveedor" />
@@ -79,9 +79,9 @@ export function ProductFilters() {
           if (value === null) return null
 
           let label = ""
-          if (key === "supplier_id") {
+          if (key === "id_supplier") {
             const supplier = supplierStatic.find((s) => s.id === value)
-            label = `Proveedor: ${supplier ? supplier.supplier_name : value}`
+            label = `Proveedor: ${supplier ? supplier.id : value}`
           }
           if (key === "discount") label = `Descuento mín: ${value}%`
           if (key === "location") {

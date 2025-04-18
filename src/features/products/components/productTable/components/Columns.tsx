@@ -1,26 +1,21 @@
 "use client"
 
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Boxes } from "lucide-react"
+import { ArrowUpDown} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Product } from "@/features/products/types/productTypes"
 import { formatCurrency, formatPercent } from "@/lib/format"
 import { ProductActions } from "@/features/products/components/productTable/components/ProductActions"
-import { StockDisplay } from "@/features/products/components/productTable/components/stockDisplay"
+// import { StockDisplay } from "@/features/products/components/productTable/components/stockDisplay"
 import { supplierStatic } from "@/shared/static"
 
 interface ColumnOptions {
   onEdit: (product: Product) => void
-  onDelete: (productId: number) => void
+  onDelete: (productId: string) => void
   onManageStock: (product: Product) => void
 }
 
-export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): ColumnDef<Product>[] => [
-  {
-    accessorKey: "product_id",
-    header: "ID",
-    cell: ({ row }) => <div className="text-center">{row.getValue("product_id")}</div>,
-  },
+export const getColumns = ({ onEdit, onDelete }: ColumnOptions): ColumnDef<Product>[] => [
   {
     accessorKey: "product_name",
     header: ({ column }) => {
@@ -39,11 +34,11 @@ export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): 
     cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue("product_description")}</div>,
   },
   {
-    accessorKey: "supplier_id",
+    accessorKey: "id_supplier",
     header: "Proveedor",
     cell: ({ row }) => {
-      const supplierId = row.getValue("supplier_id") as number
-      const supplier = supplierStatic.find((s) => s.id === supplierId)
+      const supplierId = row.getValue("id_supplier") as string
+      const supplier = supplierStatic.find((s) => s.id === (supplierId))
       return <div>{supplier ? supplier.supplier_name : supplierId}</div>
     },
     filterFn: (row, id, value) => {
@@ -66,7 +61,7 @@ export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): 
     },
     cell: ({ row }) => {
       const amount = Number.parseFloat(row.getValue("purchase_price"))
-      return <div className="text-right">{formatCurrency(amount)}</div>
+      return <div className="text-left">{formatCurrency(amount)}</div>
     },
   },
   {
@@ -74,7 +69,7 @@ export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): 
     header: "Descuento",
     cell: ({ row }) => {
       const discount = Number.parseFloat(row.getValue("product_discount"))
-      return <div className="text-right">{formatPercent(discount)}</div>
+      return <div className="text-left">{formatPercent(discount)}</div>
     },
   },
   {
@@ -93,7 +88,7 @@ export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): 
     },
     cell: ({ row }) => {
       const amount = Number.parseFloat(row.getValue("sale_price"))
-      return <div className="text-right">{formatCurrency(amount)}</div>
+      return <div className="text-left">{formatCurrency(amount)}</div>
     },
   },
   {
@@ -101,40 +96,40 @@ export const getColumns = ({ onEdit, onDelete, onManageStock }: ColumnOptions): 
     header: "Margen",
     cell: ({ row }) => {
       const margin = Number.parseFloat(row.getValue("profit_margin"))
-      return <div className="text-right">{formatPercent(margin)}</div>
+      return <div className="text-left">{formatPercent(margin)}</div>
     },
   },
-  {
-    accessorKey: "stock",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="whitespace-nowrap"
-        >
-          Stock
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      return <StockDisplay product={row.original} compact />
-    },
-    sortingFn: (rowA, rowB) => {
-      const stockA = rowA.original.stock.reduce((sum, item) => sum + item.quantity, 0)
-      const stockB = rowB.original.stock.reduce((sum, item) => sum + item.quantity, 0)
-      return stockA - stockB
-    },
-  },
-  {
-    id: "stock-actions",
-    cell: ({ row }) => (
-      <Button variant="ghost" size="icon" onClick={() => onManageStock(row.original)}>
-        <Boxes className="h-4 w-4" />
-      </Button>
-    ),
-  },
+  // {
+  //   accessorKey: "stock",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         className="whitespace-nowrap"
+  //       >
+  //         Stock
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   // cell: ({ row }) => {
+  //   //   return <StockDisplay product={row.original} compact />
+  //   // },
+  //   sortingFn: (rowA, rowB) => {
+  //     const stockA = rowA.original.stock.reduce((sum, item) => sum + item.quantity, 0)
+  //     const stockB = rowB.original.stock.reduce((sum, item) => sum + item.quantity, 0)
+  //     return stockA - stockB
+  //   },
+  // },
+  // {
+  //   id: "stock-actions",
+  //   cell: ({ row }) => (
+  //     <Button variant="ghost" size="icon" onClick={() => onManageStock(row.original)}>
+  //       <Boxes className="h-4 w-4" />
+  //     </Button>
+  //   ),
+  // },
   {
     id: "actions",
     cell: ({ row }) => <ProductActions row={row} onEdit={onEdit} onDelete={onDelete} />,

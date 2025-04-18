@@ -23,7 +23,7 @@ import { Pagination } from "@/features/products/components/productTable/componen
 import { ProductFilters } from "@/features/products/components/productTable/components/productFilters"
 import { ProductTableToolbar } from "@/features/products/components/productTable/components/productTableToolbar"
 import { DeleteAlert } from "@/features/products/components/productTable/components/deleteAlert"
-import { StockDialog } from "@/features/products/components/productTable/components/stockDialog"
+// import { StockDialog } from "@/features/products/components/productTable/components/stockDialog"
 import { useProductStore } from "@/app/stores/productStore"
 
 export default function ProductTable() {
@@ -31,9 +31,9 @@ export default function ProductTable() {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [newProductDialogOpen, setNewProductDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [stockDialogOpen, setStockDialogOpen] = useState(false)
+  // const [stockDialogOpen, setStockDialogOpen] = useState(false)
   const [productToEdit, setProductToEdit] = useState<Product | null>(null)
-  const [productIdToDelete, setProductIdToDelete] = useState<number | null>(null)
+  const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null)
   const [productToManageStock, setProductToManageStock] = useState<Product | null>(null)
 
   // Estado global con Zustand
@@ -60,14 +60,14 @@ export default function ProductTable() {
     setNewProductDialogOpen(true)
   }, [])
 
-  const handleDeleteProduct = useCallback((productId: number) => {
+  const handleDeleteProduct = useCallback((productId: string) => {
     setProductIdToDelete(productId)
     setDeleteDialogOpen(true)
   }, [])
 
   const handleManageStock = useCallback((product: Product) => {
     setProductToManageStock(product)
-    setStockDialogOpen(true)
+    // setStockDialogOpen(true)
   }, [])
 
   // Definición de columnas con manejadores de acciones
@@ -184,10 +184,13 @@ export default function ProductTable() {
       <ProductDialog product={null} open={newProductDialogOpen} onOpenChange={setNewProductDialogOpen} />
 
       {/* Diálogo de gestión de stock */}
-      <StockDialog product={productToManageStock} open={stockDialogOpen} onOpenChange={setStockDialogOpen} />
-
+      {/* <StockDialog product={productToManageStock} open={stockDialogOpen} onOpenChange={setStockDialogOpen} /> */}
       {/* Diálogo de confirmación para eliminar */}
-      <DeleteAlert open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen} productId={productIdToDelete} />
+      <DeleteAlert 
+        open={deleteDialogOpen} 
+        onOpenChange={setDeleteDialogOpen} 
+        productId={productIdToDelete ? Number(productIdToDelete) : null} 
+      />
     </div>
   )
 }

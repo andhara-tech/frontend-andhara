@@ -11,7 +11,7 @@ const stockInfoSchema = z.object({
 })
 
 export const productsSchema = z.object({
-  product_id: z.number().optional(),
+  id_product: z.string().optional(),
 
   product_name: z
     .string()
@@ -47,12 +47,12 @@ export const productsSchema = z.object({
     message: "El IVA debe estar entre 1 y 100",
   }),
 
-  supplier_id: z
-    .number({
+  id_supplier: z
+    .string({
       required_error: "El proveedor es requerido",
       invalid_type_error: "El proveedor debe ser un número",
     })
-    .refine((supplier_id) => validIds.includes(supplier_id), {
+    .refine((id_supplier) => validIds.includes(id_supplier), {
       message: "El proveedor no es válido",
     }),
 

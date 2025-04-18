@@ -1,9 +1,7 @@
-"use client"
-
 import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import type { Product, StockInfo } from "@/features/products/types/productTypes"
+import type { Product } from "@/features/products/types/productTypes"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -37,11 +35,11 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
     defaultValues: {
       product_name: "",
       product_description: "",
-      purchase_price: "0",
-      product_discount: "0",
-      sale_price: "0",
-      vat: "4",
-      supplier_id: 101,
+      purchase_price: "",
+      product_discount: "",
+      sale_price: "",
+      vat: "",
+      id_supplier: "",
       stock: LOCATIONS.map((loc) => ({ location: loc.id, quantity: 0 })),
     },
   })
@@ -51,7 +49,7 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
     if (product) {
       // Preparar los valores de stock para cada ubicación
       const stockValues = LOCATIONS.map((location) => {
-        const stockItem = product.stock.find((item) => item.location === location.id)
+        const stockItem = product.stock.find((item) => item.id_branch === location.id)
         return {
           location: location.id,
           quantity: stockItem ? stockItem.quantity : 0,
@@ -59,15 +57,15 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
       })
 
       form.reset({
-        product_id: product.product_id,
+        id_product: product.id_product || "0",
         product_name: product.product_name,
         product_description: product.product_description,
         purchase_price: product.purchase_price.toString(),
         product_discount: product.product_discount.toString(),
-        sale_price: product.sale_price.toString(),
-        profit_margin: product.profit_margin,
-        vat: product.vat.toString(),
-        supplier_id: product.supplier_id,
+        sale_price: product.sale_price?.toString() || "0",
+        profit_margin: product.profit_margin || 0,
+        vat: product.vat?.toString() || "0",
+        id_supplier: product.id_supplier || "",
         stock: stockValues,
       })
     } else {
@@ -78,7 +76,7 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
         product_discount: "0",
         sale_price: "0",
         vat: "4",
-        supplier_id: 101,
+        id_supplier: "",
         stock: LOCATIONS.map((loc) => ({ location: loc.id, quantity: 0 })),
       })
     }
@@ -91,14 +89,16 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
       const purchasePrice = Number(data.purchase_price)
       const salePrice = Number(data.sale_price)
       const profitMargin = data.profit_margin || ((salePrice - purchasePrice) / salePrice) * 100
-
       // Preparar los datos de stock
-      const stock: StockInfo[] = data.stock || []
+      const stock = data.stock.map(item => ({
+        id_branch: item.location,
+        quantity: item.quantity
+      }))
 
       if (product) {
         // Actualizar producto existente
         await updateProduct({
-          product_id: product.product_id,
+          id_product: product.id_product,
           product_name: data.product_name,
           product_description: data.product_description,
           purchase_price: Number(data.purchase_price),
@@ -106,7 +106,7 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
           sale_price: Number(data.sale_price),
           profit_margin: Number(profitMargin.toFixed(2)),
           vat: Number(data.vat),
-          supplier_id: data.supplier_id,
+          id_supplier: data.id_supplier,
           stock,
         })
       } else {
@@ -119,7 +119,7 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
           sale_price: Number(data.sale_price),
           profit_margin: Number(profitMargin.toFixed(2)),
           vat: Number(data.vat),
-          supplier_id: data.supplier_id,
+          id_supplier: data.id_supplier,
           stock,
         })
       }
@@ -128,6 +128,7 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
     } catch (error) {
       console.error("Error al guardar el producto:", error)
     }
+    // console.log("Datos del formulario:", data)
   }
 
   return (
@@ -147,12 +148,12 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
             {product && (
               <FormField
                 control={form.control}
-                name="product_id"
+                name="id_product"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ID</FormLabel>
                     <FormControl>
-                      <Input {...field} disabled value={product.product_id} />
+                      <Input {...field} disabled value={product.id_product} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -191,12 +192,12 @@ export function ProductDialog({ product, open, onOpenChange }: ProductDialogProp
 
                 <FormField
                   control={form.control}
-                  name="supplier_id"
+                  name="id_supplier"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Proveedor</FormLabel>
                       <Select
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        onValueChange={(value) => field.onChange(value)}
                         defaultValue={field.value?.toString()}
                         value={field.value?.toString()}
                       >

@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { ProductService } from "@/features/products/services/productService" 
-import type { Product, ProductTableFilters, LocationName } from "@/features/products/types/productTypes"
+import type { Product, ProductTableFilters, LocationName, StockInfo } from "@/features/products/types/productTypes"
 
 interface ProductState {
   // Datos
@@ -22,7 +22,6 @@ interface ProductState {
   createProduct: (product: Omit<Product, "product_id">) => Promise<void>
   updateProduct: (product: Product) => Promise<void>
   deleteProduct: (id: number) => Promise<void>
-  updateStock: (productId: number, location: LocationName, quantity: number) => Promise<void>
 
   // Acciones de UI
   setFilters: (filters: Partial<ProductTableFilters>) => void
@@ -42,7 +41,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   isLoading: false,
   error: null,
   filters: {
-    supplier_id: null,
+    id_supplier: null,
     discount: null,
     location: null,
     minStock: null,
@@ -105,19 +104,6 @@ export const useProductStore = create<ProductState>((set, get) => ({
     }
   },
 
-  updateStock: async (productId, location, quantity) => {
-    set({ isLoading: true, error: null })
-    try {
-      await ProductService.updateStock(productId, location, quantity)
-      await get().fetchProducts()
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : "Error al actualizar stock",
-        isLoading: false,
-      })
-    }
-  },
-
   // Acciones de UI
   setFilters: (newFilters) => {
     set((state) => ({
@@ -130,7 +116,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   clearFilters: () => {
     set({
       filters: {
-        supplier_id: null,
+        id_supplier: null,
         discount: null,
         location: null,
         minStock: null,
@@ -160,7 +146,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
 
     const filtered = products.filter((product) => {
       // Aplicar filtro de proveedor
-      if (filters.supplier_id !== null && product.supplier_id !== filters.supplier_id) {
+      if (filters.id_supplier !== null && product.id_supplier !== filters.id_supplier) {
         return false
       }
 
@@ -171,7 +157,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
 
       // Aplicar filtro de ubicación y stock mínimo
       if (filters.location !== null) {
-        const locationStock = product.stock.find((stock: { location: string; quantity: number }) => stock.location === filters.location)
+        const locationStock = product.stock.find((stock: StockInfo) => stock.id_branch === filters.location)
         if (!locationStock) return false
 
         if (filters.minStock && locationStock.quantity < filters.minStock) {
@@ -183,10 +169,10 @@ export const useProductStore = create<ProductState>((set, get) => ({
       if (search) {
         const searchLower = search.toLowerCase()
         return (
-          product.product_name.toLowerCase().includes(searchLower) ||
-          product.product_description.toLowerCase().includes(searchLower) ||
-          product.product_id.toString().includes(searchLower) ||
-          product.supplier_id.toString().includes(searchLower)
+          product.product_name?.toLowerCase().includes(searchLower) ||
+          product.product_description?.toLowerCase().includes(searchLower) ||
+          product.id_product?.toString().includes(searchLower) ||
+          product.id_supplier?.toString().includes(searchLower)
         )
       }
 

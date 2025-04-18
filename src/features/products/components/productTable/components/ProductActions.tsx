@@ -9,7 +9,7 @@ import type { Product } from "@/features/products/types/productTypes"
 interface ProductActionsProps {
   row: Row<Product>
   onEdit: (product: Product) => void
-  onDelete: (productId: number) => void
+  onDelete: (productId: string) => void
 }
 
 export function ProductActions({ row, onEdit, onDelete }: ProductActionsProps) {
@@ -28,7 +28,7 @@ export function ProductActions({ row, onEdit, onDelete }: ProductActionsProps) {
           <Edit className="mr-2 h-4 w-4" />
           Editar
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onDelete(product.product_id)} className="text-red-600">
+        <DropdownMenuItem onClick={() => onDelete(product.id_product!)} className="text-red-600">
           <Trash className="mr-2 h-4 w-4" />
           Eliminar
         </DropdownMenuItem>

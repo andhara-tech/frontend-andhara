@@ -43,14 +43,14 @@ export const headquarterStatic: Headquarter[] = [
 ];
 
 export interface Supplier {
-  id: number;
+  id: string;
   supplier_name: string;
 }
 
 export const supplierStatic: Supplier[] = [
-  { id: 0, supplier_name: "Distribuidora Andina" },
-  { id: 1, supplier_name: "Importaciones Colombia" },
-  { id: 2, supplier_name: "Tecnología Avanzada S.A." },
-  { id: 3, supplier_name: "Suministros Industriales Ltda." },
-  { id: 4, supplier_name: "Alimentos del Valle" }
+  { id: "46f5570f-2e8e-485a-aff0-6be65e64fc4d", supplier_name: "Bioralfa" },
+  { id: "578687aa-134a-42a3-822f-52f7365b2fb7", supplier_name: "IPCA" },
+  { id: "8881a754-bcc1-4264-ab8e-c4ada2e5835a", supplier_name: "USA" },
+  { id: "b756839d-0dc4-4b8d-b68c-24b7c8e13151", supplier_name: "Pharmalab" },
+  { id: "b9808fb2-a041-46f4-9487-e9f8c6f293dc", supplier_name: "Forever" }
 ];
