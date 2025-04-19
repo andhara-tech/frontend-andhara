@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 import type { Product } from "@/features/products/types/productTypes"
-import { getColumns } from "@/features/products/components/productTable/components/Columns"
+import { getColumns } from "@/features/products/components/productTable/components/columns"
 import { ProductDialog } from "@/features/products/components/productTable/components/ProductDialogTable"
 import { Pagination } from "@/features/products/components/productTable/components/Pagination"
 import { ProductFilters } from "@/features/products/components/productTable/components/productFilters"

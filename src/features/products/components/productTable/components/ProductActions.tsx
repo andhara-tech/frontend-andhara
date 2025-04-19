@@ -1,16 +1,17 @@
 import type { Row } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Edit, MoreHorizontal, Trash } from "lucide-react"
+import { Edit, MoreHorizontal, Power, Trash } from "lucide-react"
 import type { Product } from "@/features/products/types/productTypes"
 
 interface ProductActionsProps {
   row: Row<Product>
   onEdit: (product: Product) => void
   onDelete: (productId: string) => void
+  onInactivate: (productId: string) => void
 }
 
-export function ProductActions({ row, onEdit, onDelete }: ProductActionsProps) {
+export function ProductActions({ row, onEdit, onDelete, onInactivate  }: ProductActionsProps) {
   const product = row.original
 
   return (
@@ -25,6 +26,10 @@ export function ProductActions({ row, onEdit, onDelete }: ProductActionsProps) {
         <DropdownMenuItem onClick={() => onEdit(product)}>
           <Edit className="mr-2 h-4 w-4" />
           Editar
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onInactivate(product.id_product!)} className="text-yellow-600">
+          <Power className="mr-2 h-4 w-4" />
+          {product.product_state ? "Desactivar" : "Activar"}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => onDelete(product.id_product!)} className="text-red-600">
           <Trash className="mr-2 h-4 w-4" />

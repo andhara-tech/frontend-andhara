@@ -52,7 +52,7 @@ export const ProductService = {
   },
 
   // Eliminar un producto
-  deleteProduct: async (id: string): Promise<void> => {
+  inactivateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/inactivate/${id}`)
     } catch (error) {

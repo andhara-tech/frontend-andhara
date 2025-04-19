@@ -23,6 +23,7 @@ export interface Product {
   sale_price: number
   profit_margin?: number
   vat?: number
+  product_state?: boolean
   stock: StockInfo[] // Stock por sede
 }
 
