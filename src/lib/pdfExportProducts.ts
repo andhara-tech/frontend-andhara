@@ -29,22 +29,25 @@ export const exportToPdf = (products: Product[], title = "Productos Farmacéutic
 
   // Preparar los datos
   const data = products.map((product) => ({
-    product_id: product.product_id,
+    product_id: product.id_product,
     product_name: product.product_name,
-    supplier_id: product.supplier_id,
+    supplier_id: product.id_supplier,
     purchase_price: formatCurrency(product.purchase_price),
-    product_discount: formatPercent(product.product_discount),
+    product_discount: formatPercent(product.product_discount ?? 0),
     sale_price: formatCurrency(product.sale_price),
-    profit_margin: formatPercent(product.profit_margin),
-    vat: formatPercent(product.vat),
+    profit_margin: formatPercent(product.profit_margin ?? 0),
+    vat: formatPercent(product.vat ?? 0),
   }))
 
   // Generar la tabla
   autoTable(doc, {
     startY: 40,
     head: [columns.map((column) => column.header)],
-    body: data.map((item) => columns.map((column) => item[column.dataKey as keyof typeof item])),
-    theme: "striped",
+    body: data.map((item) => columns.map((column) => {
+      const value = item[column.dataKey as keyof typeof item];
+      return value === undefined ? '' : value;
+    })),
+    theme: "striped", 
     headStyles: {
       fillColor: [66, 66, 66],
       textColor: [255, 255, 255],

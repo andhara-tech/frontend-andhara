@@ -1,6 +1,11 @@
 import apiClient from "@/app/apiClient"
 import type { Product } from "@/features/products/types/productTypes"
 
+export interface SortOption {
+  field: string
+  direction: "asc" | "desc"
+}
+
 export const ProductService = {
   // Obtener todos los productos
   getProducts: async (): Promise<Product[]> => {
@@ -47,7 +52,7 @@ export const ProductService = {
   },
 
   // Eliminar un producto
-  deleteProduct: async (id: number): Promise<void> => {
+  deleteProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/inactivate/${id}`)
     } catch (error) {
