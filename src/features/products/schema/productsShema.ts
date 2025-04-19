@@ -6,7 +6,7 @@ const validIds = supplierStatic.map((h) => h.id)
 
 // Esquema para la información de stock
 const stockInfoSchema = z.object({
-  location: z.enum(LOCATIONS.map((loc) => loc.id) as [LocationName, ...LocationName[]]),
+  id_branch: z.enum(LOCATIONS.map((loc) => loc.id) as [LocationName, ...LocationName[]]),
   quantity: z.coerce.number().min(0, "La cantidad no puede ser negativa"),
 })
 

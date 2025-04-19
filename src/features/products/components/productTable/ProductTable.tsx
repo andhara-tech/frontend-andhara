@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 import type { Product } from "@/features/products/types/productTypes"
-import { getColumns } from "@/features/products/components/productTable/components/Columns"
+import { getColumns } from "@/features/products/components/productTable/components/columns"
 import { ProductDialog } from "@/features/products/components/productTable/components/ProductDialogTable"
 import { Pagination } from "@/features/products/components/productTable/components/Pagination"
 import { ProductFilters } from "@/features/products/components/productTable/components/productFilters"
@@ -117,7 +117,7 @@ export default function ProductTable() {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Productos Farmacéuticos</CardTitle>
+          <CardTitle>Productos</CardTitle>
         </CardHeader>
         <CardContent>
           {error && (
@@ -183,9 +183,6 @@ export default function ProductTable() {
       {/* Diálogo de nuevo producto */}
       <ProductDialog product={null} open={newProductDialogOpen} onOpenChange={setNewProductDialogOpen} />
 
-      {/* Diálogo de gestión de stock */}
-      {/* <StockDialog product={productToManageStock} open={stockDialogOpen} onOpenChange={setStockDialogOpen} /> */}
-      {/* Diálogo de confirmación para eliminar */}
       <DeleteAlert 
         open={deleteDialogOpen} 
         onOpenChange={setDeleteDialogOpen} 

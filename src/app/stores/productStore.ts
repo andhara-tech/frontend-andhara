@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { ProductService } from "@/features/products/services/productService" 
-import type { Product, ProductTableFilters, LocationName, StockInfo } from "@/features/products/types/productTypes"
+import type { Product, ProductTableFilters, StockInfo } from "@/features/products/types/productTypes"
 
 interface ProductState {
   // Datos
@@ -21,10 +21,10 @@ interface ProductState {
   fetchProducts: () => Promise<void>
   createProduct: (product: Omit<Product, "product_id">) => Promise<void>
   updateProduct: (product: Product) => Promise<void>
-  deleteProduct: (id: string) => Promise<void>
+  inactivateProduct: (id: string) => Promise<void>
 
-  // Acciones de UI
-  setFilters: (filters: Partial<ProductTableFilters>) => void
+    // Acciones de UI
+    setFilters: (filters: Partial<ProductTableFilters>) => void
   clearFilters: () => void
   setSearch: (search: string) => void
   setPageIndex: (index: number) => void
@@ -91,10 +91,10 @@ export const useProductStore = create<ProductState>((set, get) => ({
     }
   },
 
-  deleteProduct: async (id) => {
+  inactivateProduct: async (id) => {
     set({ isLoading: true, error: null })
     try {
-      await ProductService.deleteProduct(id)
+      await ProductService.inactivateProduct(id)
       await get().fetchProducts()
     } catch (error) {
       set({
