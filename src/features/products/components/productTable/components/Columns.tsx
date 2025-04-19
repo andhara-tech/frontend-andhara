@@ -8,6 +8,7 @@ import { ProductActions } from "@/features/products/components/productTable/comp
 import { supplierStatic } from "@/shared/static";
 import { SortOption } from "@/features/products/services/productService";
 import { Badge } from "@/components/ui/badge";
+import { StockDropdown } from "./strockDropdwon";
 
 interface ColumnOptions {
    onEdit: (product: Product) => void;
@@ -18,27 +19,9 @@ interface ColumnOptions {
    isLoading: boolean;
 }
 
-const handleSort = (
-   field: string,
-   isLoading: boolean,
-   onSort: (field: string) => void
-) => {
-   if (isLoading) return;
-   onSort(field);
-};
-
-const getSortIcon = (field: string) => {
-   if (field === "product_state") return null;
-   return <ArrowUpDown className="ml-2 h-4 w-4" />;
-};
-
 export const getColumns = ({
    onEdit,
    onDelete,
-  //  onToggleState,
-   onSort,
-  //  sort,
-   isLoading,
 }: ColumnOptions): ColumnDef<Product>[] => [
    {
       accessorKey: "product_name",
@@ -135,15 +118,18 @@ export const getColumns = ({
    },
    {
       accessorKey: "product_state",
-      header: () => (
-         <Button
+      header: ({ column }) => {
+        return (
+          <Button
             variant="ghost"
-            onClick={() => handleSort("product_state", isLoading, onSort)}
-            disabled={isLoading}>
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="whitespace-nowrap"
+          >
             Estado
-            {getSortIcon("product_state")}
-         </Button>
-      ),
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
       cell: ({ row }) => {
          const state = row.getValue("product_state") as boolean;
          return (
@@ -162,6 +148,22 @@ export const getColumns = ({
             </div>
          );
       },
+   },
+   {
+    id: "stock",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="whitespace-nowrap"
+        >
+          Stock
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <StockDropdown product={row.original}/>,
    },
    {
       id: "actions",
