@@ -29,11 +29,13 @@ export function ProductActions({ row }: ProductActionsProps) {
           <Edit className="mr-2 h-4 w-4" />
           Editar
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => toggleProductState(product.id_product!)}>
+        <DropdownMenuItem 
+          disabled={product.product_state ? false : true}
+          onClick={() => toggleProductState(product.id_product!)}>
           <Power className="mr-2 h-4 w-4" />
           {product.product_state ? "Desactivar" : "Activar"}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => openDeleteDialog(product.id_product!)} className="text-red-600">
+        <DropdownMenuItem disabled onClick={() => openDeleteDialog(product.id_product!)} className="text-red-600">
           <Trash className="mr-2 h-4 w-4" />
           Eliminar
         </DropdownMenuItem>

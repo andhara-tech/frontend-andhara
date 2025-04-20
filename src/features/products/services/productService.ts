@@ -35,7 +35,7 @@ export const ProductService = {
   },
 
   // Obtener un producto por ID
-  getProduct: async (id: number): Promise<Product | null> => {
+  getProduct: async (id: string): Promise<Product | null> => {
     try {
       const response = await apiClient.get<Product>(`/product/by-id/${id}`)
       return response.data
@@ -98,7 +98,7 @@ export const ProductService = {
       }
 
       // Obtenemos el producto actualizado
-      const updatedProduct = await ProductService.getProduct(Number(id))
+      const updatedProduct = await ProductService.getProduct(id)
 
       if (!updatedProduct) {
         throw new Error(`Product with ID ${id} not found after toggle`)
