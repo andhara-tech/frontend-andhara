@@ -29,7 +29,7 @@ export function DeleteAlert() {
         <AlertDialogHeader>
           <AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción no se puede deshacer. Esto inactivará permanentemente el producto en la base de datos.
+            Esta acción no se puede deshacer. Esto inactivará permanentemente el producto.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
