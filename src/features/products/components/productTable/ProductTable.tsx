@@ -29,16 +29,11 @@ export default function ProductTable() {
     pageSize,
     sort,
     setSort,
-    selectedProduct,
-    editDialogOpen,
-    newProductDialogOpen,
-    deleteDialogOpen,
-    productIdToDelete,
   } = useProductStore()
 
   // Table state
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection] = useState({})
 
   // Load products when component mounts
   useEffect(() => {
@@ -82,7 +77,7 @@ export default function ProductTable() {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Productos Farmacéuticos</CardTitle>
+          <CardTitle className="text-2xl font-semibold uppercase">Productos</CardTitle>
         </CardHeader>
         <CardContent>
           {error && (

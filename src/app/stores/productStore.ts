@@ -81,7 +81,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   search: "",
   sort: undefined,
   pageIndex: 0,
-  pageSize: 10,
+  pageSize: 5,
 
   // Dialog states
   editDialogOpen: false,
