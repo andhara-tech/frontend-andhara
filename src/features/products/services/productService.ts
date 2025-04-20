@@ -1,18 +1,34 @@
 import apiClient from "@/app/apiClient"
 import type { Product } from "@/features/products/types/productTypes"
+import { supplierStatic } from "@/shared/static"
 
 export interface SortOption {
   field: string
   direction: "asc" | "desc"
 }
 
+// Service for product operations
 export const ProductService = {
+  // Get supplier name by ID
+  getSupplierName: (supplierId: string): string => {
+    const supplier = supplierStatic.find((s) => s.id === supplierId)
+    return supplier ? supplier.supplier_name : supplierId
+  },
+
+  // Get all suppliers as filter options
+  getSupplierFilterOptions: () => {
+    return supplierStatic.map((supplier) => ({
+      id: supplier.id,
+      supplier_name: supplier.supplier_name,
+    }))
+  },
+
   // Obtener todos los productos
   getProducts: async (): Promise<Product[]> => {
     try {
       const response = await apiClient.get<Product[]>("/product/products")
       return response.data
-    }catch (error) {
+    } catch (error) {
       console.error("Error fetching products:", error)
       throw new Error("Error fetching products")
     }
@@ -31,10 +47,10 @@ export const ProductService = {
 
   // Crear un nuevo producto
   createProduct: async (product: Omit<Product, "id_product">): Promise<Product> => {
-    try{
+    try {
       const response = await apiClient.post<Product>("/product/create-product", product)
       return response.data
-    }catch (error) {
+    } catch (error) {
       console.error("Error creating product:", error)
       throw new Error("Error creating product")
     }
@@ -51,13 +67,53 @@ export const ProductService = {
     }
   },
 
-  // Eliminar un producto
+  // Inactivar un producto
   inactivateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/inactivate/${id}`)
     } catch (error) {
-      console.error(`Error deleting product with ID ${id}:`, error)
-      throw new Error(`Error deleting product with ID ${id}`)
+      console.error(`Error inactivating product with ID ${id}:`, error)
+      throw new Error(`Error inactivating product with ID ${id}`)
     }
+  },
+
+  // Activar un producto
+  activateProduct: async (id: string): Promise<void> => {
+    try {
+      await apiClient.patch(`/product/activate/${id}`)
+    } catch (error) {
+      console.error(`Error activating product with ID ${id}:`, error)
+      throw new Error(`Error activating product with ID ${id}`)
+    }
+  },
+
+  // Toggle product state (active/inactive)
+  toggleProductState: async (id: string, currentState?: boolean): Promise<Product> => {
+    try {
+      // Dependiendo del estado actual, activamos o inactivamos
+      if (currentState) {
+        await ProductService.inactivateProduct(id)
+      } else {
+        await ProductService.activateProduct(id)
+      }
+
+      // Obtenemos el producto actualizado
+      const updatedProduct = await ProductService.getProduct(Number(id))
+
+      if (!updatedProduct) {
+        throw new Error(`Product with ID ${id} not found after toggle`)
+      }
+
+      return updatedProduct
+    } catch (error) {
+      console.error(`Error toggling state for product with ID ${id}:`, error)
+      throw error
+    }
+  },
+
+  // Filter products by supplier
+  filterProductsBySupplier: (products: Product[], supplierId: string | null): Product[] => {
+    if (!supplierId) return products
+    return products.filter((product) => product.id_supplier === supplierId)
   },
 }

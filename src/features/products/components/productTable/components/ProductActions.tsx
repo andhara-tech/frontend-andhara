@@ -3,16 +3,18 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, MoreHorizontal, Power, Trash } from "lucide-react"
 import type { Product } from "@/features/products/types/productTypes"
+import { useProductStore } from "@/app/stores/productStore"
 
 interface ProductActionsProps {
   row: Row<Product>
-  onEdit: (product: Product) => void
-  onDelete: (productId: string) => void
-  onInactivate: (productId: string) => void
 }
 
-export function ProductActions({ row, onEdit, onDelete, onInactivate  }: ProductActionsProps) {
+/**
+ * Componente para las acciones de un producto (editar, activar/desactivar, eliminar)
+ */
+export function ProductActions({ row }: ProductActionsProps) {
   const product = row.original
+  const { openEditDialog, openDeleteDialog, toggleProductState } = useProductStore()
 
   return (
     <DropdownMenu>
@@ -23,15 +25,15 @@ export function ProductActions({ row, onEdit, onDelete, onInactivate  }: Product
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => onEdit(product)}>
+        <DropdownMenuItem onClick={() => openEditDialog(product)}>
           <Edit className="mr-2 h-4 w-4" />
           Editar
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onInactivate(product.id_product!)} className="text-yellow-600">
+        <DropdownMenuItem onClick={() => toggleProductState(product.id_product!)}>
           <Power className="mr-2 h-4 w-4" />
           {product.product_state ? "Desactivar" : "Activar"}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onDelete(product.id_product!)} className="text-red-600">
+        <DropdownMenuItem onClick={() => openDeleteDialog(product.id_product!)} className="text-red-600">
           <Trash className="mr-2 h-4 w-4" />
           Eliminar
         </DropdownMenuItem>

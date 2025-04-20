@@ -10,7 +10,7 @@ export interface StockInfo {
 
 export interface Branch {
   id_branch: string
-  name: string
+  name: LocationName
 }
 
 export interface Product {
@@ -30,10 +30,9 @@ export interface Product {
 export interface ProductTableFilters {
   id_supplier: string | null
   discount: number | null
-  location?: LocationName | null
-  minStock?: number | null
+  minStock: number | null
+  product_state: boolean | null
 }
-
 // Constantes para las sedes
 export const LOCATIONS: { id: string; name: LocationName }[] = [
   { id: "885d040f-272c-43f4-b5e3-33cbc7692fd0", name: "Sede Valledupar" },
@@ -42,7 +41,7 @@ export const LOCATIONS: { id: string; name: LocationName }[] = [
 ]
 
 export const BRANCHES: Branch[] = [
-  { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", name: "Bogotá" },
-  { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", name: "Valledupar" },
-  { id_branch: "fffe60df-52d8-4717-949e-58ed108f998e", name: "Palmira" },
+  { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", name: "Sede Bogota" },
+  { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", name: "Sede Valledupar" },
+  { id_branch: "fffe60df-52d8-4717-949e-58ed108f998e", name: "Sede Palmira" },
 ]

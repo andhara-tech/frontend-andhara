@@ -11,36 +11,32 @@ import {
 import { useProductStore } from "@/app/stores/productStore"
 import { Loader2 } from "lucide-react"
 
-interface DeleteAlertProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  productId: string | null
-}
-
-export function DeleteAlert({ open, onOpenChange, productId }: DeleteAlertProps) {
-  const { deleteProduct, isLoading } = useProductStore()
+/**
+ * Diálogo de confirmación para inactivar un producto
+ */
+export function DeleteAlert() {
+  const { inactivateProduct, isLoading, deleteDialogOpen, closeDeleteDialog, productIdToDelete } = useProductStore()
 
   const handleDelete = async () => {
-    if (productId !== null) {
-      await deleteProduct(productId)
-      onOpenChange(false)
+    if (productIdToDelete !== null) {
+      await inactivateProduct(productIdToDelete)
     }
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog open={deleteDialogOpen} onOpenChange={closeDeleteDialog}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción no se puede deshacer. Esto eliminará permanentemente el producto de la base de datos.
+            Esta acción no se puede deshacer. Esto inactivará permanentemente el producto en la base de datos.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancelar</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Eliminar
+            Inactivar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

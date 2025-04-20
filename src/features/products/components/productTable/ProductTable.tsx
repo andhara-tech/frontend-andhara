@@ -1,102 +1,72 @@
-import { useEffect, useState, useMemo, useCallback } from "react"
-import {
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
+import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Loader2 } from "lucide-react"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-
-import type { Product } from "@/features/products/types/productTypes"
-import { getColumns } from "@/features/products/components/productTable/components/columns"
+import { getColumns } from "./components/columns"
 import { ProductDialog } from "@/features/products/components/productTable/components/ProductDialogTable"
 import { Pagination } from "@/features/products/components/productTable/components/Pagination"
 import { ProductFilters } from "@/features/products/components/productTable/components/productFilters"
 import { ProductTableToolbar } from "@/features/products/components/productTable/components/productTableToolbar"
 import { DeleteAlert } from "@/features/products/components/productTable/components/deleteAlert"
-// import { StockDialog } from "@/features/products/components/productTable/components/stockDialog"
 import { useProductStore } from "@/app/stores/productStore"
 
+/**
+ * Main component for the product table
+ */
 export default function ProductTable() {
-  // Estado local para diálogos
-  const [editDialogOpen, setEditDialogOpen] = useState(false)
-  const [newProductDialogOpen, setNewProductDialogOpen] = useState(false)
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  // const [stockDialogOpen, setStockDialogOpen] = useState(false)
-  const [productToEdit, setProductToEdit] = useState<Product | null>(null)
-  const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null)
-  const [productToManageStock, setProductToManageStock] = useState<Product | null>(null)
+  // Global state with Zustand
+  const {
+    fetchProducts,
+    displayedProducts,
+    isLoading,
+    error,
+    pageIndex,
+    pageSize,
+    sort,
+    setSort,
+    selectedProduct,
+    editDialogOpen,
+    newProductDialogOpen,
+    deleteDialogOpen,
+    productIdToDelete,
+  } = useProductStore()
 
-  // Estado global con Zustand
-  const { fetchProducts, filteredProducts, isLoading, error, pageIndex, pageSize, setPageIndex } = useProductStore()
-
-  // Estado para la tabla
-  const [sorting, setSorting] = useState<SortingState>([])
+  // Table state
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
-  // Cargar productos al montar el componente
+  // Load products when component mounts
   useEffect(() => {
     fetchProducts()
   }, [fetchProducts])
 
-  // Manejadores para acciones de productos
-  const handleEditProduct = useCallback((product: Product) => {
-    setProductToEdit(product)
-    setEditDialogOpen(true)
-  }, [])
+  // Handler for sorting
+  const handleSort = (field: string) => {
+    if (!sort || sort.field !== field) {
+      setSort({ field, direction: "asc" })
+    } else if (sort.direction === "asc") {
+      setSort({ field, direction: "desc" })
+    } else {
+      setSort(undefined)
+    }
+  }
 
-  const handleNewProduct = useCallback(() => {
-    setNewProductDialogOpen(true)
-  }, [])
+  // Column definition with action handlers
+  const columns = useMemo(() => getColumns({ onSort: handleSort, sort, isLoading }), [sort, isLoading, handleSort])
 
-  const handleDeleteProduct = useCallback((productId: string) => {
-    setProductIdToDelete(productId)
-    setDeleteDialogOpen(true)
-  }, [])
-
-  const handleManageStock = useCallback((product: Product) => {
-    setProductToManageStock(product)
-    // setStockDialogOpen(true)
-  }, [])
-
-  // Definición de columnas con manejadores de acciones
-  const columns = useMemo(
-    () =>
-      getColumns({
-        onEdit: handleEditProduct,
-        onDelete: handleDeleteProduct,
-        onManageStock: handleManageStock,
-      }),
-    [handleEditProduct, handleDeleteProduct, handleManageStock],
-  )
-
-  // Configuración de la tabla
+  // Table configuration
   const table = useReactTable({
-    data: filteredProducts,
+    data: displayedProducts,
     columns,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
       columnFilters,
-      columnVisibility,
       rowSelection,
       pagination: {
         pageIndex,
@@ -104,20 +74,15 @@ export default function ProductTable() {
       },
     },
     manualPagination: true,
-    pageCount: Math.ceil(filteredProducts.length / pageSize),
-    onPaginationChange: (updater) => {
-      if (typeof updater === "function") {
-        const newState = updater({ pageIndex, pageSize })
-        setPageIndex(newState.pageIndex)
-      }
-    },
+    manualSorting: true, // Indicate that sorting is manual
+    pageCount: -1, // We don't need this as we handle pagination in the store
   })
 
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Productos</CardTitle>
+          <CardTitle>Productos Farmacéuticos</CardTitle>
         </CardHeader>
         <CardContent>
           {error && (
@@ -127,67 +92,67 @@ export default function ProductTable() {
           )}
 
           <ProductFilters />
-          <ProductTableToolbar table={table} onNewProduct={handleNewProduct} />
+          <ProductTableToolbar table={table} />
 
-          {/* Tabla */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                      <div className="flex justify-center items-center">
-                        <Loader2 className="h-6 w-6 animate-spin mr-2" />
-                        Cargando productos...
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ) : table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+          {/* Table */}
+          <div className="rounded-md border overflow-hidden">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id} className="whitespace-nowrap">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
                       ))}
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                      No se encontraron resultados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {isLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
+                        <div className="flex justify-center items-center">
+                          <Loader2 className="h-6 w-4 animate-spin mr-2" />
+                          Cargando productos...
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={table.getVisibleLeafColumns().length} className="h-24 text-center">
+                        No se encontraron resultados.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
 
-          {/* Paginación */}
-          <Pagination totalItems={filteredProducts.length} />
+          {/* Pagination */}
+          <Pagination />
         </CardContent>
       </Card>
 
-      {/* Diálogo de edición */}
-      <ProductDialog product={productToEdit} open={editDialogOpen} onOpenChange={setEditDialogOpen} />
+      {/* Edit dialog */}
+      <ProductDialog />
 
-      {/* Diálogo de nuevo producto */}
-      <ProductDialog product={null} open={newProductDialogOpen} onOpenChange={setNewProductDialogOpen} />
-
-      <DeleteAlert 
-        open={deleteDialogOpen} 
-        onOpenChange={setDeleteDialogOpen} 
-        productId={productIdToDelete ? productIdToDelete : null} 
-      />
+      {/* Delete confirmation dialog */}
+      <DeleteAlert />
     </div>
   )
 }

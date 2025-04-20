@@ -15,6 +15,9 @@ interface StockDropdownProps {
   product: Product
 }
 
+/**
+ * Componente para mostrar el stock de un producto por sucursal
+ */
 export function StockDropdown({ product }: StockDropdownProps) {
   const [open, setOpen] = useState(false)
   const totalStock = product.stock.reduce((sum, item) => sum + item.quantity, 0)
@@ -45,7 +48,7 @@ export function StockDropdown({ product }: StockDropdownProps) {
               <div key={branch.id_branch} className="flex justify-between items-center py-1">
                 <span className="text-sm">{branch.name}</span>
                 <Badge
-                  variant={quantity > 50 ? "success" : quantity > 20 ? "secondary" : "destructive"}
+                  variant={"default"}
                   className="ml-auto"
                 >
                   {quantity}

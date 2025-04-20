@@ -1,22 +1,19 @@
-import { supplierStatic } from "@/shared/static"
-import { LOCATIONS, type LocationName } from "@/features/products/types/productTypes"
 import { z } from "zod"
-
-const validIds = supplierStatic.map((h) => h.id)
 
 // Esquema para la información de stock
 const stockInfoSchema = z.object({
-  id_branch: z.enum(LOCATIONS.map((loc) => loc.id) as [LocationName, ...LocationName[]]),
+  id_product: z.string().optional(), // Opcional porque se asignará automáticamente
+  id_branch: z.string(),
   quantity: z.coerce.number().min(0, "La cantidad no puede ser negativa"),
 })
 
 export const productsSchema = z.object({
-  id_product: z.string().optional(),
+  id_product: z.string().optional(), // Opcional para nuevos productos
 
   product_name: z
     .string()
     .min(1, "El nombre es requerido")
-    .max(20, "El nombre no puede tener más de 20 caracteres")
+    .max(100, "El nombre no puede tener más de 100 caracteres")
     .refine((val) => val.length >= 2, {
       message: "El nombre debe tener al menos 2 caracteres",
     }),
@@ -24,7 +21,7 @@ export const productsSchema = z.object({
   product_description: z
     .string()
     .min(1, "La descripción es requerida")
-    .max(100, "La descripción no puede tener más de 100 caracteres")
+    .max(500, "La descripción no puede tener más de 500 caracteres")
     .refine((val) => val.length >= 6, {
       message: "La descripción debe tener al menos 6 caracteres",
     }),
@@ -47,16 +44,14 @@ export const productsSchema = z.object({
     message: "El IVA debe estar entre 1 y 100",
   }),
 
-  id_supplier: z
-    .string({
-      required_error: "El proveedor es requerido",
-      invalid_type_error: "El proveedor debe ser un número",
-    })
-    .refine((id_supplier) => validIds.includes(id_supplier), {
-      message: "El proveedor no es válido",
-    }),
+  product_state: z.boolean().default(true).optional(),
 
-  // Array de información de stock para cada ubicación
+  id_supplier: z.string({
+    required_error: "El proveedor es requerido",
+    invalid_type_error: "El proveedor debe ser un string",
+  }),
+
+  // Array de información de stock para cada sucursal
   stock: z.array(stockInfoSchema),
 })
 

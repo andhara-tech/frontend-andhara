@@ -1,85 +1,51 @@
-import { Button } from "@/components/ui/button";
-import {
-   DropdownMenu,
-   DropdownMenuCheckboxItem,
-   DropdownMenuContent,
-   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import type { Table } from "@tanstack/react-table";
-import { FileDown, Plus } from "lucide-react";
-import { exportToPdf } from "@/lib/pdfExportProducts";
-import { useProductStore } from "@/app/stores/productStore";
+import { Button } from "@/components/ui/button"
+import type { Table } from "@tanstack/react-table"
+import { FileDown, Plus } from "lucide-react"
+import { exportToPdf } from "@/lib/pdfExportProducts"
+import { useProductStore } from "@/app/stores/productStore" 
+import { ColumnVisibilityDropdown } from "@/features/products/components/productTable/components/columnVisibilityDropdown"
+import { ColumnVisibilityModal } from "@/features/products/components/productTable/components/columnVisibilitymodal"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { Product } from "@/features/products/types/productTypes"
 
-interface ProductTableToolbarProps<TData> {
-   table: Table<TData>;
-   onNewProduct: () => void;
+interface ProductTableToolbarProps {
+  table: Table<Product>
 }
 
-export function ProductTableToolbar<TData>({
-   table,
-   onNewProduct,
-}: ProductTableToolbarProps<TData>) {
-   const { filteredProducts } = useProductStore();
+/**
+ * Toolbar for the product table
+ */
+export function ProductTableToolbar({ table }: ProductTableToolbarProps) {
+  const { filteredProducts, isLoading, openNewProductDialog } = useProductStore()
+  const isMobile = useMediaQuery("(max-width: 768px)")
 
-   const handleExportToPdf = () => {
-      exportToPdf(filteredProducts);
-   };
+  /**
+   * Handle PDF export
+   */
+  const handleExportToPdf = () => {
+    try {
+      // Export filtered products
+      exportToPdf(filteredProducts)
+    } catch (error) {
+      console.error("Error exporting to PDF:", error)
+    }
+  }
 
-   return (
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-4">
-         <div className="flex flex-1 items-center space-x-2">
-            <DropdownMenu>
-               <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="ml-auto">
-                     Columnas
-                  </Button>
-               </DropdownMenuTrigger>
-               <DropdownMenuContent align="end">
-                  {table
-                     .getAllColumns()
-                     .filter((column) => column.getCanHide())
-                     .map((column) => {
-                        return (
-                           <DropdownMenuCheckboxItem
-                              key={column.id}
-                              className="capitalize"
-                              checked={column.getIsVisible()}
-                              onCheckedChange={(value) =>
-                                 column.toggleVisibility(!!value)
-                              }>
-                              {column.id === "product_name"
-                                 ? "Producto"
-                                 : column.id === "product_description"
-                                 ? "Descripción"
-                                 : column.id === "id_supplier"
-                                 ? "Proveedor"
-                                 : column.id === "purchase_price"
-                                 ? "Precio Compra"
-                                 : column.id === "product_discount"
-                                 ? "Descuento"
-                                 : column.id === "sale_price"
-                                 ? "Precio Venta"
-                                 : column.id === "profit_margin"
-                                 ? "Margen"
-                                 : column.id === "vat"
-                                 ? "IVA"
-                                 : column.id}
-                           </DropdownMenuCheckboxItem>
-                        );
-                     })}
-               </DropdownMenuContent>
-            </DropdownMenu>
-         </div>
-         <div className="flex space-x-2">
-            <Button variant="outline" onClick={handleExportToPdf}>
-               <FileDown className="mr-2 h-4 w-4" />
-               Exportar PDF
-            </Button>
-            <Button onClick={onNewProduct}>
-               <Plus className="mr-2 h-4 w-4" />
-               Nuevo Producto
-            </Button>
-         </div>
+  return (
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-4">
+      <div className="flex flex-1 items-center space-x-2">
+        {isMobile ? <ColumnVisibilityModal table={table} /> : <ColumnVisibilityDropdown table={table} />}
       </div>
-   );
+      <div className="flex space-x-2">
+        <Button variant="outline" onClick={handleExportToPdf} disabled={isLoading}>
+          <FileDown className="mr-2 h-4 w-4" />
+          Exportar PDF
+        </Button>
+        <Button onClick={openNewProductDialog} disabled={isLoading}>
+          <Plus className="mr-2 h-4 w-4" />
+          Nuevo Producto
+        </Button>
+      </div>
+    </div>
+  )
 }
