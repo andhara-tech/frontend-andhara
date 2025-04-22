@@ -8,7 +8,6 @@ export interface SortOption {
 }
 
 export const ProductService = {
-  // Get supplier name by ID
   getSupplierName: (supplierId: string): string => {
     const supplier = supplierStatic.find((s) => s.id === supplierId)
     return supplier ? supplier.supplier_name : supplierId
@@ -81,7 +80,6 @@ export const ProductService = {
 
   toggleProductState: async (id: string, currentState?: boolean): Promise<Product> => {
     try {
-      // Dependiendo del estado actual, activamos o inactivamos
       if (currentState) {
         await ProductService.inactivateProduct(id)
       } else {
