@@ -1,4 +1,8 @@
 import { useRef, useState } from "react"
+import { PRODUCT_COLUMNS, useColumnVisibility } from "@/hooks/useColumnVisibility"
+import type { Table } from "@tanstack/react-table"
+import type { Product } from "@/features/products/types/productTypes"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,9 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Columns, Check, X, RotateCcw } from "lucide-react"
-import type { Table } from "@tanstack/react-table"
-import type { Product } from "@/features/products/types/productTypes"
-import { PRODUCT_COLUMNS, useColumnVisibility } from "@/hooks/useColumnVisibility"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -25,9 +26,6 @@ interface ColumnVisibilityDropdownProps {
   table: Table<Product>
 }
 
-/**
- * Dropdown component for managing column visibility
- */
 export function ColumnVisibilityDropdown({ table }: ColumnVisibilityDropdownProps) {
   const [open, setOpen] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -35,12 +33,10 @@ export function ColumnVisibilityDropdown({ table }: ColumnVisibilityDropdownProp
   const { columnVisibility, toggleColumnVisibility, resetColumnVisibility, showAllColumns, hideAllColumns } =
     useColumnVisibility(table)
 
-  // Count visible columns (excluding those that can't be hidden)
   const visibleColumnsCount = Object.entries(columnVisibility).filter(
     ([id, isVisible]) => isVisible && PRODUCT_COLUMNS.find((col) => col.id === id)?.canHide,
   ).length
 
-  // Count total hideable columns
   const hideableColumnsCount = PRODUCT_COLUMNS.filter((col) => col.canHide).length
 
   return (
@@ -75,7 +71,6 @@ export function ColumnVisibilityDropdown({ table }: ColumnVisibilityDropdownProp
           align="end"
           className="w-56"
           onCloseAutoFocus={(e) => {
-            // Prevent focus returning to trigger to avoid tooltip flashing
             e.preventDefault()
           }}
         >
@@ -89,7 +84,6 @@ export function ColumnVisibilityDropdown({ table }: ColumnVisibilityDropdownProp
 
           <DropdownMenuGroup>
             {PRODUCT_COLUMNS.map((column) => {
-              // Skip columns that can't be hidden
               if (!column.canHide) return null
 
               const isChecked = !!columnVisibility[column.id]

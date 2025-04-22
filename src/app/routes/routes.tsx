@@ -7,7 +7,7 @@ import AuthPage from "@/features/auth/AuthPage.tsx";
 import { ProtectedRoute } from "../../shared/protectedRoute.tsx"
 import MainLayout from '../layout/MainLayout.tsx';
 import ClientPage from '@/features/clients/ClientsPage.tsx';
-import ProductsPage from '@/features/products/ProductsPage.tsx';
+import ProductsPage from '@/features/products/productsPage.tsx';
 
 
 const router = createBrowserRouter([

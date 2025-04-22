@@ -1,14 +1,13 @@
 import { z } from "zod"
 
-// Esquema para la información de stock
 const stockInfoSchema = z.object({
-  id_product: z.string().optional(), // Opcional porque se asignará automáticamente
+  id_product: z.string().optional(),
   id_branch: z.string(),
   quantity: z.coerce.number().min(0, "La cantidad no puede ser negativa"),
 })
 
 export const productsSchema = z.object({
-  id_product: z.string().optional(), // Opcional para nuevos productos
+  id_product: z.string().optional(),
 
   product_name: z
     .string()
@@ -51,7 +50,6 @@ export const productsSchema = z.object({
     invalid_type_error: "El proveedor debe ser un string",
   }),
 
-  // Array de información de stock para cada sucursal
   stock: z.array(stockInfoSchema),
 })
 

@@ -1,21 +1,39 @@
 import apiClient from "@/app/apiClient"
-import type { Product } from "@/features/products/types/productTypes"
 import { supplierStatic } from "@/shared/static"
+import type { Product } from "@/features/products/types/productTypes"
 
+/**
+ * Represents sorting options for a list of products.
+ * 
+ * @property {string} field - Field name to sort by.
+ * @property {"asc" | "desc"} direction - Sorting direction, either ascending or descending.
+ */
 export interface SortOption {
   field: string
   direction: "asc" | "desc"
 }
 
-// Service for product operations
+/**
+ * Service that handles all logic related to product data,
+ * including CRUD operations, supplier utilities, and filtering.
+ */
 export const ProductService = {
-  // Get supplier name by ID
+  /**
+   * Returns the name of a supplier based on its ID.
+   * 
+   * @param {string} supplierId - The ID of the supplier.
+   * @returns {string} The name of the supplier, or the ID if not found.
+   */
   getSupplierName: (supplierId: string): string => {
     const supplier = supplierStatic.find((s) => s.id === supplierId)
     return supplier ? supplier.supplier_name : supplierId
   },
 
-  // Get all suppliers as filter options
+  /**
+   * Returns a list of supplier options for use in dropdowns or filters.
+   * 
+   * @returns {Array<{ id: string; supplier_name: string }>} List of supplier options.
+   */
   getSupplierFilterOptions: () => {
     return supplierStatic.map((supplier) => ({
       id: supplier.id,
@@ -23,7 +41,13 @@ export const ProductService = {
     }))
   },
 
-  // Obtener todos los productos
+  /**
+   * Fetches all products from the API.
+   * 
+   * @async
+   * @returns {Promise<Product[]>} A list of all products.
+   * @throws {Error} If the request fails.
+   */
   getProducts: async (): Promise<Product[]> => {
     try {
       const response = await apiClient.get<Product[]>("/product/products")
@@ -34,7 +58,14 @@ export const ProductService = {
     }
   },
 
-  // Obtener un producto por ID
+  /**
+   * Fetches a single product by its ID.
+   * 
+   * @async
+   * @param {string} id - The ID of the product.
+   * @returns {Promise<Product | null>} The product if found, otherwise null.
+   * @throws {Error} If the request fails.
+   */
   getProduct: async (id: string): Promise<Product | null> => {
     try {
       const response = await apiClient.get<Product>(`/product/by-id/${id}`)
@@ -45,7 +76,14 @@ export const ProductService = {
     }
   },
 
-  // Crear un nuevo producto
+  /**
+   * Creates a new product.
+   * 
+   * @async
+   * @param {Omit<Product, "id_product">} product - The product data without the ID.
+   * @returns {Promise<Product>} The created product.
+   * @throws {Error} If the request fails.
+   */
   createProduct: async (product: Omit<Product, "id_product">): Promise<Product> => {
     try {
       const response = await apiClient.post<Product>("/product/create-product", product)
@@ -56,7 +94,14 @@ export const ProductService = {
     }
   },
 
-  // Actualizar un producto existente
+  /**
+   * Updates an existing product.
+   * 
+   * @async
+   * @param {Product} product - The updated product data.
+   * @returns {Promise<Product>} The updated product.
+   * @throws {Error} If the request fails.
+   */
   updateProduct: async (product: Product): Promise<Product> => {
     try {
       const response = await apiClient.put<Product>(`/product/update-product/${product.id_product}`, product)
@@ -67,7 +112,13 @@ export const ProductService = {
     }
   },
 
-  // Inactivar un producto
+  /**
+   * Inactivates a product by its ID.
+   * 
+   * @async
+   * @param {string} id - The ID of the product.
+   * @throws {Error} If the request fails.
+   */
   inactivateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/inactivate/${id}`)
@@ -77,7 +128,13 @@ export const ProductService = {
     }
   },
 
-  // Activar un producto
+  /**
+   * Activates a product by its ID.
+   * 
+   * @async
+   * @param {string} id - The ID of the product.
+   * @throws {Error} If the request fails.
+   */
   activateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/activate/${id}`)
@@ -87,17 +144,24 @@ export const ProductService = {
     }
   },
 
-  // Toggle product state (active/inactive)
+  /**
+   * Toggles the active state of a product. If currently active, it will be inactivated,
+   * and vice versa.
+   * 
+   * @async
+   * @param {string} id - The ID of the product.
+   * @param {boolean} [currentState] - The current state of the product.
+   * @returns {Promise<Product>} The updated product after toggling.
+   * @throws {Error} If the operation fails.
+   */
   toggleProductState: async (id: string, currentState?: boolean): Promise<Product> => {
     try {
-      // Dependiendo del estado actual, activamos o inactivamos
       if (currentState) {
         await ProductService.inactivateProduct(id)
       } else {
         await ProductService.activateProduct(id)
       }
 
-      // Obtenemos el producto actualizado
       const updatedProduct = await ProductService.getProduct(id)
 
       if (!updatedProduct) {
@@ -111,7 +175,13 @@ export const ProductService = {
     }
   },
 
-  // Filter products by supplier
+  /**
+   * Filters a list of products based on the supplier ID.
+   * 
+   * @param {Product[]} products - List of products to filter.
+   * @param {string | null} supplierId - Supplier ID to filter by.
+   * @returns {Product[]} Filtered list of products.
+   */
   filterProductsBySupplier: (products: Product[], supplierId: string | null): Product[] => {
     if (!supplierId) return products
     return products.filter((product) => product.id_supplier === supplierId)

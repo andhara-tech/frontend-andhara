@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { BRANCHES, type Product } from "@/features/products/types/productTypes"
+
 import { Button } from "@/components/ui/button"
 import { Boxes } from "lucide-react"
 import {
@@ -9,15 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
-import { BRANCHES, type Product } from "@/features/products/types/productTypes"
 
 interface StockDropdownProps {
   product: Product
 }
 
-/**
- * Componente para mostrar el stock de un producto por sucursal
- */
 export function StockDropdown({ product }: StockDropdownProps) {
   const [open, setOpen] = useState(false)
   const totalStock = product.stock.reduce((sum, item) => sum + item.quantity, 0)
