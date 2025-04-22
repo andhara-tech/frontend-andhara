@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserTable from "./UserTable";
 
 const RegisterForm = () => {
-  const { register, getUsers, users, error, isLoading } = useRegisterStore()
+  const { register, getUsers, error, isLoading } = useRegisterStore()
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
