@@ -1,7 +1,7 @@
-  import { z } from 'zod';
-export const types = ['CC', 'TI', 'CE', 'NIT', 'PASS'] as const;
+import { z } from 'zod';
+import { types } from '../types/customerTypes';
 
-export const clientEschema = z.object({
+export const customerEschema = z.object({
   clientDocument:
     z.string()
       .min(1, 'El documento es requerido')

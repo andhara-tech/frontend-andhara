@@ -6,7 +6,7 @@ import AuthPage from "@/features/auth/AuthPage.tsx";
 
 import { ProtectedRoute } from "../../shared/protectedRoute.tsx"
 import MainLayout from '../layout/MainLayout.tsx';
-import ClientPage from '@/features/clients/ClientsPage.tsx';
+import ClientPage from '@/features/clients/customerPage.tsx';
 import ProductsPage from '@/features/products/productsPage.tsx';
 
 
