@@ -1,7 +1,5 @@
-// Definición de sedes
 export type LocationName = "Sede Valledupar" | "Sede Bogota" | "Sede Palmira"
 
-// Información de stock por sede
 export interface StockInfo {
   id_product?: string
   id_branch: string
@@ -24,7 +22,7 @@ export interface Product {
   profit_margin?: number
   vat?: number
   product_state?: boolean
-  stock: StockInfo[] // Stock por sede
+  stock: StockInfo[]
 }
 
 export interface ProductTableFilters {
@@ -33,7 +31,6 @@ export interface ProductTableFilters {
   minStock: number | null
   product_state: boolean | null
 }
-// Constantes para las sedes
 export const LOCATIONS: { id: string; name: LocationName }[] = [
   { id: "885d040f-272c-43f4-b5e3-33cbc7692fd0", name: "Sede Valledupar" },
   { id: "90a2fc99-1ada-4797-b6c0-b132c5430f90", name: "Sede Bogota" },

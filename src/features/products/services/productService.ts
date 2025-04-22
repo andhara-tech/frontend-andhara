@@ -1,13 +1,12 @@
 import apiClient from "@/app/apiClient"
-import type { Product } from "@/features/products/types/productTypes"
 import { supplierStatic } from "@/shared/static"
+import type { Product } from "@/features/products/types/productTypes"
 
 export interface SortOption {
   field: string
   direction: "asc" | "desc"
 }
 
-// Service for product operations
 export const ProductService = {
   // Get supplier name by ID
   getSupplierName: (supplierId: string): string => {
@@ -15,7 +14,6 @@ export const ProductService = {
     return supplier ? supplier.supplier_name : supplierId
   },
 
-  // Get all suppliers as filter options
   getSupplierFilterOptions: () => {
     return supplierStatic.map((supplier) => ({
       id: supplier.id,
@@ -23,7 +21,6 @@ export const ProductService = {
     }))
   },
 
-  // Obtener todos los productos
   getProducts: async (): Promise<Product[]> => {
     try {
       const response = await apiClient.get<Product[]>("/product/products")
@@ -34,7 +31,6 @@ export const ProductService = {
     }
   },
 
-  // Obtener un producto por ID
   getProduct: async (id: string): Promise<Product | null> => {
     try {
       const response = await apiClient.get<Product>(`/product/by-id/${id}`)
@@ -45,7 +41,6 @@ export const ProductService = {
     }
   },
 
-  // Crear un nuevo producto
   createProduct: async (product: Omit<Product, "id_product">): Promise<Product> => {
     try {
       const response = await apiClient.post<Product>("/product/create-product", product)
@@ -56,7 +51,6 @@ export const ProductService = {
     }
   },
 
-  // Actualizar un producto existente
   updateProduct: async (product: Product): Promise<Product> => {
     try {
       const response = await apiClient.put<Product>(`/product/update-product/${product.id_product}`, product)
@@ -67,7 +61,6 @@ export const ProductService = {
     }
   },
 
-  // Inactivar un producto
   inactivateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/inactivate/${id}`)
@@ -77,7 +70,6 @@ export const ProductService = {
     }
   },
 
-  // Activar un producto
   activateProduct: async (id: string): Promise<void> => {
     try {
       await apiClient.patch(`/product/activate/${id}`)
@@ -87,7 +79,6 @@ export const ProductService = {
     }
   },
 
-  // Toggle product state (active/inactive)
   toggleProductState: async (id: string, currentState?: boolean): Promise<Product> => {
     try {
       // Dependiendo del estado actual, activamos o inactivamos
@@ -97,7 +88,6 @@ export const ProductService = {
         await ProductService.activateProduct(id)
       }
 
-      // Obtenemos el producto actualizado
       const updatedProduct = await ProductService.getProduct(id)
 
       if (!updatedProduct) {
@@ -111,7 +101,6 @@ export const ProductService = {
     }
   },
 
-  // Filter products by supplier
   filterProductsBySupplier: (products: Product[], supplierId: string | null): Product[] => {
     if (!supplierId) return products
     return products.filter((product) => product.id_supplier === supplierId)

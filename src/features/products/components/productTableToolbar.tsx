@@ -1,30 +1,24 @@
+import { useProductStore } from "@/app/stores/productStore" 
+import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { Product } from "@/features/products/types/productTypes"
+
 import { Button } from "@/components/ui/button"
 import type { Table } from "@tanstack/react-table"
 import { FileDown, Plus } from "lucide-react"
 import { exportToPdf } from "@/lib/pdfExportProducts"
-import { useProductStore } from "@/app/stores/productStore" 
-import { ColumnVisibilityDropdown } from "@/features/products/components/productTable/components/columnVisibilityDropdown"
-import { ColumnVisibilityModal } from "@/features/products/components/productTable/components/columnVisibilitymodal"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
-import { Product } from "@/features/products/types/productTypes"
+import { ColumnVisibilityDropdown } from "@/features/products/components/columnVisibilityDropdown"
+import { ColumnVisibilityModal } from "@/features/products/components/columnVisibilitymodal"
 
 interface ProductTableToolbarProps {
   table: Table<Product>
 }
 
-/**
- * Toolbar for the product table
- */
 export function ProductTableToolbar({ table }: ProductTableToolbarProps) {
   const { filteredProducts, isLoading, openNewProductDialog } = useProductStore()
   const isMobile = useMediaQuery("(max-width: 768px)")
 
-  /**
-   * Handle PDF export
-   */
   const handleExportToPdf = () => {
     try {
-      // Export filtered products
       exportToPdf(filteredProducts)
     } catch (error) {
       console.error("Error exporting to PDF:", error)

@@ -1,9 +1,12 @@
-import { FormDescription } from "@/components/ui/form";
-
 import { useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { ProductService } from "@/features/products/services/productService";
 import type { StockInfo } from "@/features/products/types/productTypes";
+import { BRANCHES } from "@/features/products/types/productTypes";
+import { useProductStore } from "@/app/stores/productStore";
+
+import { FormDescription } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import {
    Dialog,
@@ -33,16 +36,10 @@ import {
    productsSchema,
    type ProductFormValues,
 } from "@/features/products/schema/productsShema";
-import { useProductStore } from "@/app/stores/productStore";
 import { Loader2 } from "lucide-react";
-import { BRANCHES } from "@/features/products/types/productTypes";
 import { Switch } from "@/components/ui/switch";
-import { ProductService } from "@/features/products/services/productService";
 import { Separator } from "@/components/ui/separator";
 
-/**
- * Dialog for creating or editing a product
- */
 export function ProductDialog() {
    const {
       createProduct,
@@ -55,11 +52,9 @@ export function ProductDialog() {
       closeNewProductDialog,
    } = useProductStore();
 
-   // Determine if we're editing or creating a new product
    const isEditing = !!selectedProduct;
    const isOpen = editDialogOpen || newProductDialogOpen;
 
-   // Handle dialog close
    const handleOpenChange = (open: boolean) => {
       if (!open) {
          if (editDialogOpen) closeEditDialog();
@@ -67,13 +62,11 @@ export function ProductDialog() {
       }
    };
 
-   // Get supplier options directly from ProductService
    const supplierOptions = useMemo(
       () => ProductService.getSupplierFilterOptions(),
       []
    );
 
-   // Define form with Zod validation
    const form = useForm<ProductFormValues>({
       resolver: zodResolver(productsSchema),
       defaultValues: {
@@ -93,10 +86,8 @@ export function ProductDialog() {
       },
    });
 
-   // Update form values when product changes
    useEffect(() => {
       if (selectedProduct) {
-         // Prepare stock values for each branch
          const stockValues = BRANCHES.map((branch) => {
             const stockItem = selectedProduct.stock.find(
                (item) => item.id_branch === branch.id_branch
@@ -141,25 +132,21 @@ export function ProductDialog() {
       }
    }, [selectedProduct, form, isOpen, supplierOptions]);
 
-   // Handle form submission
    const onSubmit = async (data: ProductFormValues) => {
       try {
-         // Calculate profit margin if not present
          const purchasePrice = Number(data.purchase_price);
          const salePrice = Number(data.sale_price);
          const profitMargin =
             data.profit_margin ||
             ((salePrice - purchasePrice) / salePrice) * 100;
 
-         // Prepare stock data
          const stock: StockInfo[] = data.stock.map((item) => ({
-            id_product: selectedProduct?.id_product || "", // Will be updated in the service
+            id_product: selectedProduct?.id_product || "",
             id_branch: item.id_branch,
             quantity: item.quantity,
          }));
 
          if (isEditing && selectedProduct) {
-            // Update existing product
             await updateProduct({
                id_product: selectedProduct.id_product,
                product_name: data.product_name,
@@ -174,7 +161,6 @@ export function ProductDialog() {
                stock,
             });
          } else {
-            // Create new product
             await createProduct({
                product_name: data.product_name,
                product_description: data.product_description,
@@ -228,7 +214,6 @@ export function ProductDialog() {
                         )}
                      />
                   )}
-
                   <div className="grid grid-cols-2 gap-2">
                      <FormField
                         control={form.control}
@@ -390,7 +375,9 @@ export function ProductDialog() {
                      )}
                   />
 
-                  <h3 className="font-medium text-sm text-center">Stock por Sucursal</h3>
+                  <h3 className="font-medium text-sm text-center">
+                     Stock por Sucursal
+                  </h3>
                   <Separator className="my-4" />
                   <div className="grid grid-cols-3 gap-2">
                      {BRANCHES.map((branch, index) => (
