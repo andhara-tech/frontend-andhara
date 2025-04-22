@@ -31,7 +31,7 @@ export function ProductTableToolbar({ table }: ProductTableToolbarProps) {
         {isMobile ? <ColumnVisibilityModal table={table} /> : <ColumnVisibilityDropdown table={table} />}
       </div>
       <div className="flex space-x-2">
-        <Button variant="outline" onClick={handleExportToPdf} disabled={isLoading}>
+        <Button variant="outline" onClick={handleExportToPdf} disabled={true}>
           <FileDown className="mr-2 h-4 w-4" />
           Exportar PDF
         </Button>
