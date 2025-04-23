@@ -41,3 +41,22 @@ export const BRANCHES: Branch[] = [
  * Represents the possible names of company branches.
  */
 export type LocationName = "Sede Valledupar" | "Sede Bogota" | "Sede Palmira"
+
+
+export const formaterDate = (fecha: string): string  =>{
+  const months = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+
+  const [age, month, day] = fecha.split("-");
+
+  const numeroMes = parseInt(month, 10);
+  if (numeroMes < 1 || numeroMes > 12) {
+    throw new Error("Mes inválido en la fecha");
+  }
+
+  const nombreMes = months[numeroMes - 1];
+
+  return `${parseInt(day)} / ${nombreMes} / ${age}`;
+}
