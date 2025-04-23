@@ -63,7 +63,7 @@ export const CustomerService = {
     }
   },
 
-  toggleCostumerState: async (document: string, currentState?: boolean): Promise<Customer> => {
+  toggleCustumerState: async (document: string, currentState?: boolean): Promise<Customer> => {
     try {
       if(currentState) {
         await CustomerService.inactivateCustomer(document)
