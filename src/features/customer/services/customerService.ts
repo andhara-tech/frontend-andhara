@@ -2,7 +2,7 @@ import apiClient from "@/app/apiClient";
 import { Customer } from "@/features/customer/types/customerTypes"; 
 
 
-export const ClientService = {
+export const CustomerService = {
   getCustomers: async (): Promise<Customer[]> => {
     try{
       const response = await apiClient.get<Customer[]>("/customer/customers")
@@ -66,12 +66,12 @@ export const ClientService = {
   toggleCostumerState: async (document: string, currentState?: boolean): Promise<Customer> => {
     try {
       if(currentState) {
-        await ClientService.inactivateCustomer(document)
+        await CustomerService.inactivateCustomer(document)
       }else {
-        await ClientService.activateCustomer(document)
+        await CustomerService.activateCustomer(document)
       }
 
-      const updatedCostumer = await ClientService.getCustomerByDocument(document)
+      const updatedCostumer = await CustomerService.getCustomerByDocument(document)
 
       if(!updatedCostumer) {
         throw new Error(`Customer with Documnet ${document} not found after toggle`)

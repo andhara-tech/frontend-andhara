@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ProductService } from "@/features/products/services/productService";
 import type { StockInfo } from "@/features/products/types/productTypes";
-import { BRANCHES } from "@/features/products/types/productTypes";
+import { BRANCHES } from "@/lib/utils"
 import { useProductStore } from "@/app/stores/productStore";
 
 import { FormDescription } from "@/components/ui/form";

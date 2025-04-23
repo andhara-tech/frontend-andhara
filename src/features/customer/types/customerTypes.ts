@@ -25,6 +25,21 @@ export type Customer = {
   };
 };
 
+export interface CustomerTableFilters {
+  document_type: string | null;
+  customer_document: string | null;
+  customer_name: string | null;
+  customer_email: string | null;
+  customer_phone: string | null;
+  customer_address: string | null;
+  id_branch: string | null;
+  customer_state: boolean | null;
+  minPurchase: number | null;
+  maxPurchase: number | null;
+  minDuration: number | null;
+  maxDuration: number | null;
+}
+
 export const typesDocument = [
   { id: 'CC', name: 'Cédula de Ciudadanía' },
   { id: 'TI', name: 'Tarjeta de Identidad' },
