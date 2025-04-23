@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 
-export function Pagination() {
+export const Pagination = () => {
   const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useProductStore()
 
   const currentPage = pageIndex + 1

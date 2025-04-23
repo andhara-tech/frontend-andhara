@@ -1,7 +1,9 @@
+import { CostumerTable } from "./customerTable";
+
 const CustomerPage = () => {
   return (
     <section>
-      <h1>Clientes</h1>
+      <CostumerTable />
     </section>
   );
 }

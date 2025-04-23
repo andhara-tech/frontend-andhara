@@ -326,7 +326,7 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
         c.branch.id_branch.toLowerCase().includes(branchFilter.toLowerCase())
       )
     }
-    
+
     if (search) {
       const searchFilter = search.trim().toLowerCase()
 
@@ -356,12 +356,13 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
     const { filteredCustomers, pageIndex, pageSize } = get()
     const start = pageIndex * pageSize
     const end = start + pageSize
+    const paginatedCustomer = filteredCustomers.slice(start, end)
 
     set({
-      displayedCustomers: filteredCustomers.slice(start, end),
+      displayedCustomers: paginatedCustomer,
     })
   },
-  applySorting: (customers) => {
+  applySorting: (customers: Customer[]):Customer[] => {
     const { sort } = get()
 
     if (!sort) return customers
