@@ -43,13 +43,14 @@ export const BRANCHES: Branch[] = [
 export type LocationName = "Sede Valledupar" | "Sede Bogota" | "Sede Palmira"
 
 
-export const formaterDate = (fecha: string): string  =>{
+export const formaterDate = (date: string): string  =>{
+  if(!date) return ""
   const months = [
     "enero", "febrero", "marzo", "abril", "mayo", "junio",
     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
   ];
 
-  const [age, month, day] = fecha.split("-");
+  const [age, month, day] = date.split("-");
 
   const numeroMes = parseInt(month, 10);
   if (numeroMes < 1 || numeroMes > 12) {

@@ -34,6 +34,8 @@ export interface Headquarter {
   headquarter_address: string;
 }
 
+export type DocumentType = 'CC' | 'TI' | 'CE' | 'PP' | 'OTRO';
+
 export const headquarterStatic: Headquarter[] = [
   { id: 0, city_id: 0, headquarter_name: "Sede Principal Bogotá", charge_name: "Carlos Méndez", headquarter_address: "Carrera 7 # 45-23" },
   { id: 1, city_id: 1, headquarter_name: "Sede Medellín Norte", charge_name: "Laura Giraldo", headquarter_address: "Calle 50 # 30-15" },

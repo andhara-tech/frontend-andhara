@@ -30,7 +30,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
 
   return [
     {
-      accessorKey: "branch.branch_name",
+      id: "branch_name",
+      accessorFn: (row) => row.branch.branch_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.branch_name")} disabled={isLoading}>
           Sucursal
@@ -39,12 +40,13 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => (
         <div>
-          {row.getValue("branch.branch_name")}
+          {row.original.branch.branch_name}
         </div>
       ),
     },
     {
-      accessorKey: "last_purchase.purchase_date",
+      id: "last_purchase.purchase_date",
+      accessorFn: (row) => row.last_purchase?.next_purchase_date,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
           Última compra
@@ -53,7 +55,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => (
         <div>
-          {formaterDate(row.getValue("last_purchase.purchase_date"))}
+          {formaterDate(row.original.last_purchase.purchase_date)}
         </div>
       ),
     },
@@ -156,7 +158,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
     },
     {
-      accessorKey: "branch.city_name",
+      id: "branch.city_name",
+      accessorFn: (row) => row.branch.city_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.city_name")} disabled={isLoading}>
           Ciudad
@@ -170,7 +173,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
     },
     {
-      accessorKey: "branch.department_name",
+      id: "branch.department_name",
+      accessorFn: (row) => row.branch.department_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.department_name")} disabled={isLoading}>
           Departamento
@@ -184,7 +188,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
     },
     {
-      accessorKey: "last_purchase.total_purchase",
+      id: "last_purchase.total_purchase",
+      accessorFn: (row) => row.last_purchase.total_purchase,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.total_purchase")} disabled={isLoading}>
           Total compra
@@ -198,7 +203,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
     },
     {
-      accessorKey: "last_purchase.next_purchase_date",
+      id: "last_purchase.next_purchase_date",
+      accessorFn: (row) => row.last_purchase.next_purchase_date,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.next_purchase_date")} disabled={isLoading}>
           Próxima compra

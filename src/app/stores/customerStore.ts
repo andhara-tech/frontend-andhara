@@ -1,7 +1,7 @@
+import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
 import { Customer, CustomerTableFilters } from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
-import { create } from "zustand";
 
 interface CustomerState {
   allCustomers: Customer[]
@@ -84,11 +84,11 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  filters: initialFilters,
+  filters: { ...initialFilters },
   search: "",
   sort: undefined,
   pageIndex: 0,
-  pageSize: 10,
+  pageSize: 5,
 
   editDialogOpen: false,
   newCustomerDialogOpen: false,
@@ -108,10 +108,10 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
       })
 
       get().applyFilters()
+
+      set({isLoading: false})
     } catch (error) {
       set({ error: "Error fetching customers" })
-    } finally {
-      set({ isLoading: false })
     }
   },
   createCustomer: async (customer) => {
@@ -182,22 +182,70 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
       set({ isLoading: false })
     }
   },
-  setFilters: (filters) => {
+  setFilters: (newFilter) => {
     set((state) => ({
-      filters: { ...state.filters, ...filters },
+      filters: { ...state.filters, ...newFilter },
+      pageIndex: 0
     }))
-
     get().applyFilters()
   },
   clearFilters: () => {
     set({
-      filters: initialFilters,
+      filters: {...initialFilters},
       search: "",
       sort: undefined,
       pageIndex: 0,
     })
     get().applyFilters()
   },
+
+  setSearch: (search) => {
+    set({ search, pageIndex: 0 })
+    get().applyFilters()
+  },
+
+  setSort: (sort) => {
+    set({ sort, pageIndex: 0 })
+    get().applyFilters()
+  },
+
+  setPageIndex: (pageIndex) => {
+    set({ pageIndex })
+    get().applyPagination()
+  },
+  setPageSize: (pageSize) => {
+    set({ pageSize, pageIndex: 0 })
+    get().applyPagination()
+  },
+  openEditDialog: (customer) => {
+    set({ 
+      selectedCustomer: customer, 
+      editDialogOpen: true 
+    })
+  },
+  openNewCustomerDialog: () => {
+    set({ newCustomerDialogOpen: true })
+  },
+  openDeleteDialog: (customerId) => {
+    set({ 
+      customerIdToDelete: customerId, 
+      deleteDialogOpen: true 
+    })
+  },
+  closeEditDialog: () => {
+    set({ 
+      selectedCustomer: null, 
+      editDialogOpen: false 
+    })
+  },
+  closeNewCustomerDialog: () => {
+    set({ newCustomerDialogOpen: false })
+  },
+
+  closeDeleteDialog: () => {
+    set({ customerIdToDelete: null, deleteDialogOpen: false })
+  },
+
   setCustomerDocument: (document) => {
     set((state) => ({
       filters: { ...state.filters, customer_document: document },
@@ -240,40 +288,6 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
     get().applyFilters()
   },
 
-  setSearch: (search) => {
-    set({ search, pageIndex: 0 })
-    get().applyFilters()
-  },
-  setSort: (sort) => {
-    set({ sort, pageIndex: 0 })
-    get().applyFilters()
-  },
-  setPageIndex: (index) => {
-    set({ pageIndex: index })
-    get().applyPagination()
-  },
-  setPageSize: (size) => {
-    set({ pageSize: size, pageIndex: 0 })
-    get().applyPagination()
-  },
-  openEditDialog: (customer) => {
-    set({ selectedCustomer: customer, editDialogOpen: true })
-  },
-  openNewCustomerDialog: () => {
-    set({ newCustomerDialogOpen: true })
-  },
-  openDeleteDialog: (customerId) => {
-    set({ customerIdToDelete: customerId, deleteDialogOpen: true })
-  },
-  closeEditDialog: () => {
-    set({ selectedCustomer: null, editDialogOpen: false })
-  },
-  closeNewCustomerDialog: () => {
-    set({ newCustomerDialogOpen: false })
-  },
-  closeDeleteDialog: () => {
-    set({ customerIdToDelete: null, deleteDialogOpen: false })
-  },
   applyFilters: () => {
     const { allCustomers, filters, search, pageSize, sort } = get()
 
@@ -351,7 +365,10 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
       total,
       pageCount,
     })
+
+    get().applyPagination()
   },
+
   applyPagination: () => {
     const { filteredCustomers, pageIndex, pageSize } = get()
     const start = pageIndex * pageSize
@@ -362,13 +379,13 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
       displayedCustomers: paginatedCustomer,
     })
   },
-  applySorting: (customers: Customer[]):Customer[] => {
+  applySorting: (customers: Customer[]): Customer[] => {
     const { sort } = get()
 
     if (!sort) return customers
 
     return [...customers].sort((a, b) => {
-      const aValue = a[sort.field as keyof Customer] 
+      const aValue = a[sort.field as keyof Customer]
       const bValue = b[sort.field as keyof Customer]
 
       if (aValue < bValue) return sort.direction === "asc" ? -1 : 1

@@ -6,9 +6,19 @@ import { useEffect, useMemo, useState } from "react"
 import { getColumns } from "./components/columns"
 import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Loader2 } from "lucide-react"
+import { Pagination } from "./components/pagination"
 
 export const CostumerTable = () => {
-  const { fetchCustomers ,error, sort, setSort, isLoading, displayedCustomers, pageIndex, pageSize } = useCostumerStore()
+  const { 
+    fetchCustomers, 
+    displayedCustomers, 
+    isLoading, 
+    error, 
+    pageIndex, 
+    pageSize ,
+    sort, 
+    setSort
+  } = useCostumerStore()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection] = useState({})
 
@@ -138,7 +148,7 @@ export const CostumerTable = () => {
               </Table>
             </div>
           </div>
-          {/* <Pagination /> */}
+          <Pagination />
         </CardContent>
       </Card>
       {/* <CustomerDialog /> */}

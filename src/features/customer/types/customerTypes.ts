@@ -1,6 +1,8 @@
-export type Customer = {
+import { DocumentType } from "@/shared/static";
+
+export interface Customer {
   customer_document: string;
-  document_type: 'CC' | 'TI' | 'CE' | string; // puedes especificar más tipos si los conoces
+  document_type: DocumentType;
   customer_first_name: string;
   customer_last_name: string;
   phone_number: string;
@@ -17,13 +19,13 @@ export type Customer = {
   };
   last_purchase: {
     id_purchase: string;
-    purchase_date: string; // Podrías usar Date si haces la conversión
+    purchase_date: string; // Considera usar Date si lo conviertes
     purchase_duration: number;
-    next_purchase_date: string; // Igual que arriba
+    next_purchase_date: string; // Considera usar Date si lo conviertes
     total_purchase: number;
-    products: any[]; // Puedes cambiar `any` por un tipo `Product` si sabes la estructura
+    products: any[]; // Considera definir un tipo Product si lo conoces
   };
-};
+}
 
 export interface CustomerTableFilters {
   document_type: string | null;
