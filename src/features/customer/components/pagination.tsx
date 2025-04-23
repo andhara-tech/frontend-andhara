@@ -24,7 +24,7 @@ export const Pagination = () => {
         {
           total > 0 ? (
             <>
-              Mostrando {fromItem} a {toItem} de {total} producto(s)
+              Mostrando {fromItem} a {toItem} de {total} cliente(s)
             </>
           ) : (
             "No hay productos"
