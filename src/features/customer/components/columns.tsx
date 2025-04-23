@@ -3,6 +3,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 import { Customer } from "../types/customerTypes"
 import { Button } from "@/components/ui/button"
+import { formatCurrency } from "@/lib/format"
+import { Badge } from "@/components/ui/badge"
 
 interface ColumnOptions {
   onSort: (field: string) => void
@@ -35,11 +37,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.branch_name")} disabled={isLoading}>
           Sucursal
-          {getSortIcon("branch.branch_name")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center max-w-[100px] truncate">
           {row.original.branch.branch_name}
         </div>
       ),
@@ -48,13 +49,13 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       id: "last_purchase.purchase_date",
       accessorFn: (row) => row.last_purchase?.next_purchase_date,
       header: () => (
-        <Button variant="ghost" onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
+        <Button variant="ghost"  onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
           Última compra
           {getSortIcon("last_purchase.purchase_date")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {formaterDate(row.original.last_purchase.purchase_date)}
         </div>
       ),
@@ -64,11 +65,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("customer_first_name")} disabled={isLoading}>
           Nombre
-          {getSortIcon("customer_first_name")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("customer_first_name")}
         </div>
       ),
@@ -78,11 +78,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("customer_last_name")} disabled={isLoading}>
           Apellido
-          {getSortIcon("customer_last_name")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("customer_last_name")}
         </div>
       ),
@@ -92,11 +91,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("document_type")} disabled={isLoading}>
           Tipo de documento
-          {getSortIcon("document_type")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("document_type")}
         </div>
       ),
@@ -106,11 +104,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("customer_document")} disabled={isLoading}>
           Documento
-          {getSortIcon("customer_document")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("customer_document")}
         </div>
       ),
@@ -120,11 +117,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("phone_number")} disabled={isLoading}>
           Teléfono
-          {getSortIcon("phone_number")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("phone_number")}
         </div>
       ),
@@ -134,11 +130,11 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("email")} disabled={isLoading}>
           Correo
-          {getSortIcon("email")}
+          {getSortIcon("home_address")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("email")}
         </div>
       ),
@@ -148,11 +144,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("home_address")} disabled={isLoading}>
           Dirección
-          {getSortIcon("home_address")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("home_address")}
         </div>
       ),
@@ -163,11 +158,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.city_name")} disabled={isLoading}>
           Ciudad
-          {getSortIcon("branch.city_name")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("branch.city_name")}
         </div>
       ),
@@ -178,11 +172,10 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.department_name")} disabled={isLoading}>
           Departamento
-          {getSortIcon("branch.department_name")}
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {row.getValue("branch.department_name")}
         </div>
       ),
@@ -197,8 +190,8 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
-          {row.getValue("last_purchase.total_purchase")}
+        <div className="text-center">
+          {formatCurrency(Number(row.getValue("last_purchase.total_purchase")))}
         </div>
       ),
     },
@@ -212,7 +205,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div>
+        <div className="text-center">
           {formaterDate(row.getValue("last_purchase.next_purchase_date"))}
         </div>
       ),
@@ -220,15 +213,14 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     {
       accessorKey: "customer_state",
       header: () => (
-        <Button variant="ghost" onClick={() => handleSort("customer_state")} disabled={isLoading}>
+        <div className="text-center">
           Estado
-          {getSortIcon("customer_state")}
-        </Button>
+        </div>
       ),
       cell: ({ row }) => (
-        <div>
+        <Badge className="text-center" variant={row.getValue("customer_state") ? "success" : "destructive"}>
           {row.getValue("customer_state") ? "Activo" : "Inactivo"}
-        </div>
+        </Badge>
       ),    
     },
     {
@@ -237,9 +229,6 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => console.log("Edit", row.original)}>
             Editar
-          </Button>
-          <Button variant="destructive" size="sm" onClick={() => console.log("Delete", row.original)}>
-            Eliminar
           </Button>
         </div>
       ),

@@ -60,7 +60,7 @@ export const CostumerTable = () => {
   })
 
   return (
-    <section className="space-y-4">
+    <section>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-semibold uppercase">

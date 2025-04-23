@@ -46,8 +46,8 @@ export type LocationName = "Sede Valledupar" | "Sede Bogota" | "Sede Palmira"
 export const formaterDate = (date: string): string  =>{
   if(!date) return ""
   const months = [
-    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
   ];
 
   const [age, month, day] = date.split("-");
@@ -57,7 +57,7 @@ export const formaterDate = (date: string): string  =>{
     throw new Error("Mes inválido en la fecha");
   }
 
-  const nombreMes = months[numeroMes - 1];
+  const nameMonth = months[numeroMes - 1];
 
-  return `${parseInt(day)} / ${nombreMes} / ${age}`;
+  return `${day}/${nameMonth}/${age}`;
 }
