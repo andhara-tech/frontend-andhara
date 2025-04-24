@@ -75,7 +75,7 @@ const RegisterForm = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Useruarios</DialogTitle>
+          <DialogTitle>Usuarios</DialogTitle>
         </DialogHeader>
         <Tabs defaultValue="regiter" className="max-w-[600px] w-full" orientation="vertical">
           <TabsList className="grid w-full grid-cols-2">

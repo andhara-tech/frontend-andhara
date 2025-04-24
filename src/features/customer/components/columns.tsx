@@ -46,7 +46,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
     },
     {
-      id: "last_purchase.purchase_date",
+      id: "purchase_date",
       accessorFn: (row) => row.last_purchase?.next_purchase_date,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
@@ -54,13 +54,19 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
           {getSortIcon("last_purchase.purchase_date")}
         </Button>
       ),
-      cell: ({ row }) => (
-        <div className="text-center">
-          {formaterDate(row.original.last_purchase.purchase_date)}
+      cell: ({ row }) => {
+        const date = row.original.last_purchase?.purchase_date
+        return (
+        <div className="text-center">{
+          date ?
+          formaterDate(row.original?.last_purchase.purchase_date) :
+          "No data"
+        }
         </div>
-      ),
+        )
+      },
     },
-    {
+    {  
       accessorKey: "customer_first_name",
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("customer_first_name")} disabled={isLoading}>
@@ -182,33 +188,44 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     },
     {
       id: "last_purchase.total_purchase",
-      accessorFn: (row) => row.last_purchase.total_purchase,
+      accessorFn: (row) => row.last_purchase?.total_purchase,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.total_purchase")} disabled={isLoading}>
           Total compra
           {getSortIcon("last_purchase.total_purchase")}
         </Button>
       ),
-      cell: ({ row }) => (
+      cell: ({ row }) => {
+        const total = row.original.last_purchase?.total_purchase
+        console.log(row)
+        return(
         <div className="text-center">
-          {formatCurrency(Number(row.getValue("last_purchase.total_purchase")))}
+          {total ? 
+          formatCurrency(Number(row.original.last_purchase.total_purchase)):
+          "No data"
+        }
         </div>
-      ),
+      )},
     },
     {
       id: "last_purchase.next_purchase_date",
-      accessorFn: (row) => row.last_purchase.next_purchase_date,
+      accessorFn: (row) => row.last_purchase?.next_purchase_date,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("last_purchase.next_purchase_date")} disabled={isLoading}>
           Próxima compra
           {getSortIcon("last_purchase.next_purchase_date")}
         </Button>
       ),
-      cell: ({ row }) => (
+      cell: ({ row }) => {
+        const next_date = row.original.last_purchase?.next_purchase_date
+        return(
         <div className="text-center">
-          {formaterDate(row.getValue("last_purchase.next_purchase_date"))}
+          {next_date ? 
+            formaterDate(row.original.last_purchase?.next_purchase_date) :
+            "No data"
+          }
         </div>
-      ),
+      )},
     },
     {
       accessorKey: "customer_state",

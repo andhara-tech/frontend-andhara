@@ -21,7 +21,7 @@ const UserTable = () => {
     return <div>Loading...</div>
   }
   return (
-    <Table className="h-full w-full overflow-hidden">
+    <Table className="container h-full w-full overflow-hidden">
       <TableCaption>Lista de usuarios</TableCaption>
       <TableHeader>
         <TableRow>

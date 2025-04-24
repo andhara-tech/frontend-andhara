@@ -9,6 +9,15 @@ export interface Branch {
   department_name: string;
 }
 
+export interface Last_purchase{
+  id_purchase: string;
+  purchase_date: string; // Considera usar Date si lo conviertes
+  purchase_duration: number;
+  next_purchase_date: string; // Considera usar Date si lo conviertes
+  total_purchase: number;
+  products: any[];
+}
+
 export interface Customer {
   customer_document: string;
   document_type: DocumentType;
@@ -19,14 +28,7 @@ export interface Customer {
   home_address: string;
   customer_state: boolean;
   branch: Branch;
-  last_purchase: {
-    id_purchase: string;
-    purchase_date: string; // Considera usar Date si lo conviertes
-    purchase_duration: number;
-    next_purchase_date: string; // Considera usar Date si lo conviertes
-    total_purchase: number;
-    products: any[]; // Considera definir un tipo Product si lo conoces
-  };
+  last_purchase: Last_purchase
 }
 
 export interface CustomerTableFilters {
