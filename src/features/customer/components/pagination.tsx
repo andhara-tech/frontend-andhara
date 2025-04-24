@@ -1,10 +1,10 @@
-import { useCostumerStore } from "@/app/stores/customerStore"
+import { useCustumerStore } from "@/app/stores/customerStore" 
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 
 export const Pagination = () => {
-  const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useCostumerStore()
+  const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useCustumerStore()
   const currentPage = pageIndex + 1
   const fromItem = pageIndex * pageSize + 1
   const toItem = Math.min((pageIndex + 1) * pageSize, total)

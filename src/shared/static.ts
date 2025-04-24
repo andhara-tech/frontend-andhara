@@ -1,3 +1,5 @@
+import { Branch } from "@/features/customer/types/customerTypes";
+
 export interface Department {
   id_departament: string;
   departamnet_name: string;
@@ -24,18 +26,11 @@ export const cityStatic: City[] = [
 
 
 export type DocumentType = 'CC' | 'TI' | 'CE' | 'PP' | 'OTRO';
-export interface Headquarter {
-  id_branch: string;
-  id_city: string;
-  branch_name: string;
-  manager_name: string;
-  branch_address: string;
-}
 
-export const headquarterStatic: Headquarter[] = [
-  { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", id_city: "29e859fd-90ca-4f21-9989-b7746368ae19", branch_name: "Sede Valledupar", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20" },
-  { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", id_city: "3fb4c103-be97-4743-8b33-2b4f8076da15", branch_name: "Sede Bogota", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20" },
-  { id_branch: "fffe60df-52d8-4717-949e-58ed108f998e", id_city: "aae64782-7591-43b8-a5c2-75707be424fb", branch_name: "Sede Palmira", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20" },
+export const branchesStatic: Branch[] = [
+  { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", branch_name: "Sede Valledupar", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Valledupar", department_name: "Cesar" },
+  { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", branch_name: "Sede Bogota", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Bogota D.C,", department_name: "Cundinamarca" },
+  { id_branch: "fffe60df-52d8-4717-949e-58ed108f998e", branch_name: "Sede Palmira", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Palmira", department_name: "Valle del Cauca" },
 ];
 
 export interface Supplier {

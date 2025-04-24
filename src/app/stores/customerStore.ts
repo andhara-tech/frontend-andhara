@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerTableFilters } from "@/features/customer/types/customerTypes";
+import { Customer, CustomerTableFilters, Branch } from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 
 interface CustomerState {
@@ -65,7 +65,7 @@ const initialFilters: CustomerTableFilters = {
   customer_email: null,
   customer_name: null,
   customer_phone: null,
-  id_branch: null,
+  branch: null,
   customer_state: null,
   minPurchase: null,
   maxPurchase: null,
@@ -73,7 +73,7 @@ const initialFilters: CustomerTableFilters = {
   maxDuration: null,
 }
 
-export const useCostumerStore = create<CustomerState>((set, get) => ({
+export const useCustumerStore = create<CustomerState>((set, get) => ({
   allCustomers: [],
   filteredCustomers: [],
   displayedCustomers: [],
@@ -333,13 +333,20 @@ export const useCostumerStore = create<CustomerState>((set, get) => ({
       )
     }
 
-    if (filters.id_branch) {
-      const branchFilter = filters.id_branch.trim().toLowerCase()
+    if (filters.branch?.id_branch) {
+      const branchFilter = filters.branch.id_branch.trim().toLowerCase()
 
       filtered = filtered.filter((c) =>
         c.branch.id_branch.toLowerCase().includes(branchFilter.toLowerCase())
       )
     }
+     if(filters.branch?.branch_name){
+       const brachFilter = filters.branch.branch_name.toLowerCase()
+
+      filtered = filtered.filter((c) =>
+        c.branch.branch_name.toLowerCase().includes(brachFilter.toLowerCase())  
+      )
+     }
 
     if (search) {
       const searchFilter = search.trim().toLowerCase()

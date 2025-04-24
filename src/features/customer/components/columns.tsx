@@ -40,7 +40,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="text-center max-w-[100px] truncate">
+        <div className="text-left max-w-[100px] truncate">
           {row.original.branch.branch_name}
         </div>
       ),
@@ -49,7 +49,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       id: "last_purchase.purchase_date",
       accessorFn: (row) => row.last_purchase?.next_purchase_date,
       header: () => (
-        <Button variant="ghost"  onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
+        <Button variant="ghost" onClick={() => handleSort("last_purchase.purchase_date")} disabled={isLoading}>
           Última compra
           {getSortIcon("last_purchase.purchase_date")}
         </Button>
@@ -218,10 +218,12 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </div>
       ),
       cell: ({ row }) => (
-        <Badge className="text-center" variant={row.getValue("customer_state") ? "success" : "destructive"}>
-          {row.getValue("customer_state") ? "Activo" : "Inactivo"}
-        </Badge>
-      ),    
+        <div className="flex items-center justify-center">
+          <Badge className="text-center" variant={row.getValue("customer_state") ? "success" : "destructive"}>
+            {row.getValue("customer_state") ? "Activo" : "Inactivo"}
+          </Badge>
+        </div>
+      ),
     },
     {
       id: "actions",
@@ -236,4 +238,3 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
   ]
 }
 
- 

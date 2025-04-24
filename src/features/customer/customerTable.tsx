@@ -1,4 +1,4 @@
-import { useCostumerStore } from "@/app/stores/customerStore"
+import { useCustumerStore } from "@/app/stores/customerStore"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -7,6 +7,7 @@ import { getColumns } from "./components/columns"
 import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Loader2 } from "lucide-react"
 import { Pagination } from "./components/pagination"
+import { CustomersFilters } from "./components/custumerFilters"
 
 export const CostumerTable = () => {
   const { 
@@ -18,7 +19,7 @@ export const CostumerTable = () => {
     pageSize ,
     sort, 
     setSort
-  } = useCostumerStore()
+  } = useCustumerStore()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection] = useState({})
 
@@ -75,7 +76,7 @@ export const CostumerTable = () => {
               </Alert>
             )
           }
-          {/* <CustomerFilter /> */}
+          <CustomersFilters />
           {/* <ProductTableToolbar /> */}
 
           <div className="rounded border overflow-hidden">
