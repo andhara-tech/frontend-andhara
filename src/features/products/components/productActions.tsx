@@ -10,7 +10,7 @@ interface ProductActionsProps {
   row: Row<Product>
 }
 
-export function ProductActions({ row }: ProductActionsProps) {
+export const ProductActions = ({ row }: ProductActionsProps) => {
   const product = row.original
   const { openEditDialog, openDeleteDialog, toggleProductState } = useProductStore()
 

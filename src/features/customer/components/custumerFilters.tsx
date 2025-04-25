@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { branchesStatic } from "@/shared/static"
 import { Search } from "lucide-react"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { typesDocument } from "../types/customerTypes"
 
 export const CustomersFilters = () => {
@@ -89,7 +89,7 @@ export const CustomersFilters = () => {
               <SelectItem value="all">Todos los documentos</SelectItem>
               {
                 typesDocument.map((d) => (
-                  <SelectItem key={d.id} value={d.id}>{d.id}</SelectItem>
+                  <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>
                 ))
               }
             </SelectContent>

@@ -5,6 +5,7 @@ import { Customer } from "../types/customerTypes"
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/format"
 import { Badge } from "@/components/ui/badge"
+import { CustomerActions } from "./customerActions"
 
 interface ColumnOptions {
   onSort: (field: string) => void
@@ -140,7 +141,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="text-center">
+        <div className="text-left">
           {row.getValue("email")}
         </div>
       ),
@@ -153,7 +154,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="text-center">
+        <div className="text-left">
           {row.getValue("home_address")}
         </div>
       ),
@@ -167,7 +168,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="text-center">
+        <div className="text-left">
           {row.getValue("branch.city_name")}
         </div>
       ),
@@ -181,7 +182,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         </Button>
       ),
       cell: ({ row }) => (
-        <div className="text-center">
+        <div className="text-left">
           {row.getValue("branch.department_name")}
         </div>
       ),
@@ -199,7 +200,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         const total = row.original.last_purchase?.total_purchase
         console.log(row)
         return(
-        <div className="text-center">
+        <div className="text-right">
           {total ? 
           formatCurrency(Number(row.original.last_purchase.total_purchase)):
           formatCurrency(Number("0"))
@@ -245,11 +246,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     {
       id: "actions",
       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => console.log("Edit", row.original)}>
-            Editar
-          </Button>
-        </div>
+        <CustomerActions row={row}/>
       ),
     }
   ]

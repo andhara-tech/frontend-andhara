@@ -1,5 +1,4 @@
 import { useProductStore } from "@/app/stores/productStore" 
-import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { Product } from "@/features/products/types/productTypes"
 
 import { Button } from "@/components/ui/button"
@@ -8,6 +7,7 @@ import { FileDown, Plus } from "lucide-react"
 import { exportToPdf } from "@/lib/pdfExportProducts"
 import { ColumnVisibilityDropdown } from "@/features/products/components/columnVisibilityDropdown"
 import { ColumnVisibilityModal } from "@/features/products/components/columnVisibilitymodal"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface ProductTableToolbarProps {
   table: Table<Product>
@@ -15,7 +15,7 @@ interface ProductTableToolbarProps {
 
 export function ProductTableToolbar({ table }: ProductTableToolbarProps) {
   const { filteredProducts, isLoading, openNewProductDialog } = useProductStore()
-  const isMobile = useMediaQuery("(max-width: 768px)")
+  const isMobile = useIsMobile()
 
   const handleExportToPdf = () => {
     try {
