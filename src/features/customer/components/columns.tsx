@@ -198,7 +198,6 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => {
         const total = row.original.last_purchase?.total_purchase
-        console.log(row)
         return(
         <div className="text-right">
           {total ? 
