@@ -60,7 +60,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         <div className="text-center">{
           date ?
           formaterDate(row.original?.last_purchase.purchase_date) :
-          "No data"
+          "No regitrado"
         }
         </div>
         )
@@ -202,7 +202,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         <div className="text-center">
           {total ? 
           formatCurrency(Number(row.original.last_purchase.total_purchase)):
-          "No data"
+          formatCurrency(Number("0"))
         }
         </div>
       )},
@@ -222,7 +222,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         <div className="text-center">
           {next_date ? 
             formaterDate(row.original.last_purchase?.next_purchase_date) :
-            "No data"
+            "No registrado"
           }
         </div>
       )},

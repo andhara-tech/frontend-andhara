@@ -1,10 +1,10 @@
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ProductService } from "@/features/products/services/productService"
-import { branchesStatic } from "@/shared/static" 
+import { branchesStatic } from "@/shared/static"
 import { Search } from "lucide-react"
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import { typesDocument } from "../types/customerTypes"
 
 export const CustomersFilters = () => {
   const { filters, search, setFilters, clearFilters, setSearch, isLoading } = useCustumerStore()
@@ -53,7 +53,7 @@ export const CustomersFilters = () => {
             disabled={isLoading}
           />
         </div>
-        <div className="felx flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           <Select
             value={filters.branch?.branch_name || "all"}
             onValueChange={(value) => {
@@ -61,6 +61,7 @@ export const CustomersFilters = () => {
                 setFilters({ branch: null })
               } else {
                 const selectedBranch = branchesStatic.find(branch => branch.branch_name === value);
+                console.log("Branch",filters, "branch", selectedBranch)
                 setFilters({ branch: selectedBranch ?? null })
               }
             }}
@@ -75,6 +76,22 @@ export const CustomersFilters = () => {
                   {branch.branch_name}
                 </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+          <Select
+            value={filters.document_type?.toString() || "all"}
+            onValueChange={(value) => setFilters({document_type: value === "all" ? null : value})}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Selecciona un documento" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos los documentos</SelectItem>
+              {
+                typesDocument.map((d) => (
+                  <SelectItem key={d.id} value={d.id}>{d.id}</SelectItem>
+                ))
+              }
             </SelectContent>
           </Select>
         </div>

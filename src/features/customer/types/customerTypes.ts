@@ -50,11 +50,8 @@ export const typesDocument = [
   { id: 'CC', name: 'Cédula de Ciudadanía' },
   { id: 'TI', name: 'Tarjeta de Identidad' },
   { id: 'CE', name: 'Cédula de Extranjería' },
-  { id: 'PA', name: 'Pasaporte' },
-  { id: 'RC', name: 'Registro Civil' },
+  { id: 'PASS', name: 'Pasaporte' },
   { id: 'NIT', name: 'Número de Identificación Tributaria' },
-  { id: 'OTRO', name: 'Otro' },
-  { id: 'N/A', name: 'No Aplica' },
 ]
 
 export const types = ['CC', 'TI', 'CE', 'NIT', 'PASS'] as const; //Duplicado

@@ -300,20 +300,12 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
         c.customer_document.toLowerCase().includes(docFilter.toLowerCase())
       )
     }
-    if (filters.customer_name) {
-      const nameFilter = filters.customer_name.trim().toLowerCase()
 
-      filtered = filtered.filter((c) =>
-        c.customer_first_name.toLowerCase().includes(nameFilter.toLowerCase()) ||
-        c.customer_last_name.toLowerCase().includes(nameFilter.toLowerCase())
-      )
-    }
+    if(filters.document_type){
+      const docType = filters.document_type.trim()
 
-    if (filters.customer_email) {
-      const emailFilter = filters.customer_email.trim().toLowerCase()
-
-      filtered = filtered.filter((c) =>
-        c.email.toLowerCase().includes(emailFilter.toLowerCase())
+      filtered = filtered.filter((d) =>
+        d.document_type.toLowerCase().includes(docType.toLowerCase())
       )
     }
 
