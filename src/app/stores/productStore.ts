@@ -1,6 +1,8 @@
 import { create } from "zustand"
-import { ProductService, type SortOption } from "@/features/products/services/productService"
+import { ProductService } from "@/features/products/services/productService"
+
 import type { Product, ProductTableFilters } from "@/features/products/types/productTypes"
+import { SortOption } from "@/lib/utils"
 
 interface ProductState {
   allProducts: Product[] 

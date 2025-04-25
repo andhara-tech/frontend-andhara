@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import type { SortOption } from "@/features/products/services/productService" 
+import type { SortOption } from "@/lib/utils" 
 import { formatCurrency, formatPercent } from "@/lib/format"
 
 import type { Product } from "@/features/products/types/productTypes"

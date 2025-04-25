@@ -1,12 +1,10 @@
-import { useProductStore } from "@/app/stores/productStore"
-
+import { useCustumerStore } from "@/app/stores/customerStore" 
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 
 export const Pagination = () => {
-  const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useProductStore()
-
+  const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useCustumerStore()
   const currentPage = pageIndex + 1
   const fromItem = pageIndex * pageSize + 1
   const toItem = Math.min((pageIndex + 1) * pageSize, total)
@@ -20,17 +18,17 @@ export const Pagination = () => {
     if (isLoading) return
     setPageSize(size)
   }
-
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 py-4">
+    <section className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 py-4">
       <div className="text-sm text-muted-foreground">
-        {total > 0 ? (
-          <>
-            Mostrando {fromItem} a {toItem} de {total} producto(s)
-          </>
-        ) : (
-          "No hay productos"
-        )}
+        {
+          total > 0 ? (
+            <>
+              Mostrando {fromItem} a {toItem} de {total} cliente(s)
+            </>
+          ) : (
+            "No hay productos"
+          )}
       </div>
       <div className="flex items-center space-x-2">
         <div className="flex items-center space-x-2">
@@ -98,6 +96,6 @@ export const Pagination = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

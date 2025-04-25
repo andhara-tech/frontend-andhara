@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom"
 const MainLayout = () => {
   return (
     <SidebarProvider>
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="sidebar" />
       <SidebarInset>
         <SiteHeader />
         <section className="p-5">

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search } from "lucide-react"
 
-export function ProductFilters() {
+export const ProductFilters = () => {
   const { filters, search, setFilters, clearFilters, setSearch, isLoading, getSupplierName } = useProductStore()
   const [localSearch, setLocalSearch] = useState(search)
 

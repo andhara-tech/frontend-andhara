@@ -78,7 +78,7 @@ export default function ProductTable() {
    });
 
    return (
-      <div className="space-y-4">
+      <section className="space-y-4">
          <Card>
             <CardHeader>
                <CardTitle className="text-2xl font-semibold uppercase">
@@ -95,7 +95,7 @@ export default function ProductTable() {
                <ProductFilters />
                <ProductTableToolbar table={table} />
 
-               <div className="rounded-md border overflow-hidden">
+               <div className="rounded border overflow-hidden">
                   <div className="overflow-x-auto">
                      <Table>
                         <TableHeader>
@@ -108,9 +108,9 @@ export default function ProductTable() {
                                        {header.isPlaceholder
                                           ? null
                                           : flexRender(
-                                               header.column.columnDef.header,
-                                               header.getContext()
-                                            )}
+                                             header.column.columnDef.header,
+                                             header.getContext()
+                                          )}
                                     </TableHead>
                                  ))}
                               </TableRow>
@@ -167,6 +167,6 @@ export default function ProductTable() {
          </Card>
          <ProductDialog />
          <DeleteAlert />
-      </div>
-   );
+      </section>
+   )
 }

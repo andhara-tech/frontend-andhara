@@ -1,6 +1,7 @@
 import {z} from 'zod';
+import { roles } from '../types/userTypes';
 
-export const roles = ['admin', 'usuario-bogota', 'usuario-cali'] as const;
+
 
 export const registerSchema = z.object({
   email:

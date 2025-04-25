@@ -3,17 +3,6 @@ import { supplierStatic } from "@/shared/static"
 import type { Product } from "@/features/products/types/productTypes"
 
 /**
- * Represents sorting options for a list of products.
- * 
- * @property {string} field - Field name to sort by.
- * @property {"asc" | "desc"} direction - Sorting direction, either ascending or descending.
- */
-export interface SortOption {
-  field: string
-  direction: "asc" | "desc"
-}
-
-/**
  * Service that handles all logic related to product data,
  * including CRUD operations, supplier utilities, and filtering.
  */
