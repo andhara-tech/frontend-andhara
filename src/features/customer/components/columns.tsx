@@ -1,11 +1,12 @@
 import { formaterDate, SortOption } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, ExternalLink } from "lucide-react"
 import { Customer } from "../types/customerTypes"
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/format"
 import { Badge } from "@/components/ui/badge"
 import { CustomerActions } from "./customerActions"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface ColumnOptions {
   onSort: (field: string) => void
@@ -58,16 +59,29 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       cell: ({ row }) => {
         const date = row.original.last_purchase?.purchase_date
         return (
-        <div className="text-center">{
-          date ?
-          formaterDate(row.original?.last_purchase.purchase_date) :
-          "No regitrado"
-        }
-        </div>
+          <TooltipProvider delayDuration={100} skipDelayDuration={300}>
+            <Tooltip >
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => console.log(row.original.customer_document)}
+                  className="cursor-pointer"
+                  variant="link">{
+                    date ?
+                      formaterDate(row.original?.last_purchase.purchase_date) :
+                      "No regitrado"
+                  }
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Ver todas</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       },
     },
-    {  
+    {
       accessorKey: "customer_first_name",
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("customer_first_name")} disabled={isLoading}>
@@ -198,14 +212,15 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => {
         const total = row.original.last_purchase?.total_purchase
-        return(
-        <div className="text-right">
-          {total ? 
-          formatCurrency(Number(row.original.last_purchase.total_purchase)):
-          formatCurrency(Number("0"))
-        }
-        </div>
-      )},
+        return (
+          <div className="text-right">
+            {total ?
+              formatCurrency(Number(row.original.last_purchase.total_purchase)) :
+              formatCurrency(Number("0"))
+            }
+          </div>
+        )
+      },
     },
     {
       id: "last_purchase.next_purchase_date",
@@ -218,14 +233,15 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => {
         const next_date = row.original.last_purchase?.next_purchase_date
-        return(
-        <div className="text-center">
-          {next_date ? 
-            formaterDate(row.original.last_purchase?.next_purchase_date) :
-            "No registrado"
-          }
-        </div>
-      )},
+        return (
+          <div className="text-center">
+            {next_date ?
+              formaterDate(row.original.last_purchase?.next_purchase_date) :
+              "No registrado"
+            }
+          </div>
+        )
+      },
     },
     {
       accessorKey: "customer_state",
@@ -245,7 +261,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     {
       id: "actions",
       cell: ({ row }) => (
-        <CustomerActions row={row}/>
+        <CustomerActions row={row} />
       ),
     }
   ]
