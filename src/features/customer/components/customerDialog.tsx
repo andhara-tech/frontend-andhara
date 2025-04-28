@@ -134,6 +134,7 @@ export const CustomerDialog = () => {
                           value={selectedCustomer.customer_document}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -177,6 +178,7 @@ export const CustomerDialog = () => {
                     <FormControl>
                       <Input {...field} placeholder="Ingrese el nombre" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -189,6 +191,7 @@ export const CustomerDialog = () => {
                     <FormControl>
                       <Input {...field} placeholder="Ingrese el apellido" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -203,6 +206,7 @@ export const CustomerDialog = () => {
                     <FormControl>
                       <Input {...field} placeholder="Ingrese el teléfono" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -215,6 +219,7 @@ export const CustomerDialog = () => {
                     <FormControl>
                       <Input {...field} placeholder="Ingrese el correo electrónico" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -227,6 +232,7 @@ export const CustomerDialog = () => {
                     <FormControl>
                       <Input {...field} placeholder="Ingrese la dirección" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -237,9 +243,25 @@ export const CustomerDialog = () => {
               render={({ field }) => (
                 <FormItem className="col-span-2">
                   <FormLabel>Sucursal</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Ingrese la sucursal" />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full" disabled={isLoading}>
+                        <SelectValue placeholder="Seleccione la sucursal" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {branchesStatic.map((branch) => (
+                        <SelectItem key={branch.id_branch} value={branch.id_branch}>
+                          {branch.branch_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -256,6 +278,7 @@ export const CustomerDialog = () => {
                       disabled={isLoading} // Deshabilitar el switch mientras se carga
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
