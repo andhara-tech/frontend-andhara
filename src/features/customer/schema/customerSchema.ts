@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { branchesStatic } from '@/shared/static'
-import { typesDocument } from '@/features/customer/types/customerTypes';
+import { typesDocument } from '@/shared/static'; 
 
 
 export const customerEschema = z.object({

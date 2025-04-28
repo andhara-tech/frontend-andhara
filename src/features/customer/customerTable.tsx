@@ -8,6 +8,7 @@ import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } f
 import { Loader2 } from "lucide-react"
 import { Pagination } from "./components/pagination"
 import { CustomersFilters } from "./components/custumerFilters"
+import { CustomerDialog } from "./components/customerDialog"
 
 export const CostumerTable = () => {
   const { 
@@ -152,7 +153,7 @@ export const CostumerTable = () => {
           <Pagination />
         </CardContent>
       </Card>
-      {/* <CustomerDialog /> */}
+      <CustomerDialog />
       {/* <DeleteAlert /> */}
     </section>
   )

@@ -2,14 +2,18 @@ import { useCustumerStore } from "@/app/stores/customerStore"
 import { useForm } from "react-hook-form"
 import { customerEschema, CustomerFormValue } from "@/features/customer/schema/customerSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { branchesStatic } from "@/shared/static"
+import { branchesStatic, typesDocument } from "@/shared/static"
 import { useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export const CustomerDialog = () =>{
+export const CustomerDialog = () => {
   const {
     createCustomer,
     updateCustomer,
@@ -17,24 +21,24 @@ export const CustomerDialog = () =>{
     selectedCustomer,
     editDialogOpen,
     newCustomerDialogOpen,
-    closeDeleteDialog,
+    closeEditDialog,
     closeNewCustomerDialog,
-    
+
   } = useCustumerStore()
 
   const isEditing = !!selectedCustomer
   const isOpen = editDialogOpen || newCustomerDialogOpen
 
-  const hadleOpenChange = (open: boolean) =>{
-    if(!open){
-      if(editDialogOpen) closeDeleteDialog()
-      if(newCustomerDialogOpen) closeNewCustomerDialog()
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      if (editDialogOpen) closeEditDialog()
+      if (newCustomerDialogOpen) closeNewCustomerDialog()
     }
   }
 
   const form = useForm<CustomerFormValue>({
     resolver: zodResolver(customerEschema),
-    defaultValues:{
+    defaultValues: {
       customer_document: "",
       document_type: "CC",
       customer_first_name: "",
@@ -48,7 +52,7 @@ export const CustomerDialog = () =>{
   })
 
   useEffect(() => {
-    if(selectedCustomer){
+    if (selectedCustomer) {
       form.reset({
         customer_document: selectedCustomer.customer_document,
         document_type: selectedCustomer.document_type,
@@ -58,17 +62,17 @@ export const CustomerDialog = () =>{
         email: selectedCustomer.email,
         home_address: selectedCustomer.home_address,
         customer_state: selectedCustomer.customer_state,
-        id_branch: typeof selectedCustomer.id_branch === "string" ? selectedCustomer.id_branch : selectedCustomer.id_branch?.id_branch ?? undefined
+        id_branch: typeof selectedCustomer.branch === "string" ? selectedCustomer.branch : selectedCustomer.branch?.id_branch ?? undefined
 
       })
-    }else{
+    } else {
       form.reset()
     }
   }, [selectedCustomer, form, isOpen])
 
   const onSubmit = async (data: CustomerFormValue) => {
-    try{
-      if(isEditing && selectedCustomer){
+    try {
+      if (isEditing && selectedCustomer) {
         await updateCustomer({
           customer_document: selectedCustomer.customer_document,
           document_type: selectedCustomer.document_type,
@@ -80,7 +84,7 @@ export const CustomerDialog = () =>{
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
-      }else {
+      } else {
         await createCustomer({
           customer_document: data.customer_document,
           document_type: data.document_type,
@@ -93,13 +97,13 @@ export const CustomerDialog = () =>{
           id_branch: data.id_branch,
         })
       }
-    }catch (error) {
+    } catch (error) {
       console.error("Error updating customer:", error)
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={hadleOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-center">
@@ -114,24 +118,155 @@ export const CustomerDialog = () =>{
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4"
           >
-            {isEditing && selectedCustomer && (
+            <div className="grid sm:grid-cols-2 gap-4">
+              {isEditing && selectedCustomer && (
+                <FormField
+                  control={form.control}
+                  name="customer_document"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Documento</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isEditing || isLoading}
+                          placeholder="Ingrese el documento"
+                          value={selectedCustomer.customer_document}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
-                name="customer_document"
+                name="document_type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Documento</FormLabel>
+                    <FormLabel>Tipo de documento</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value} // Asegúrate de que el valor del select esté controlado por el formulario
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full" disabled={isLoading}>
+                          <SelectValue placeholder="Seleccione el tipo de documento" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {typesDocument.map((branch) => (
+                          <SelectItem key={branch.id} value={branch.id}>
+                            {branch.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="customer_first_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled
-                        value={selectedCustomer.customer_document}
-                      />
+                      <Input {...field} placeholder="Ingrese el nombre" />
                     </FormControl>
                   </FormItem>
                 )}
               />
-            )}
+              <FormField
+                control={form.control}
+                name="customer_last_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Apellido</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ingrese el apellido" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="phone_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Teléfono</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ingrese el teléfono" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Correo electrónico</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ingrese el correo electrónico" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="home_address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Dirección</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ingrese la dirección" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="id_branch"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>Sucursal</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Ingrese la sucursal" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="customer_state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Estado</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      disabled={isLoading} // Deshabilitar el switch mientras se carga
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Guardar cambios
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

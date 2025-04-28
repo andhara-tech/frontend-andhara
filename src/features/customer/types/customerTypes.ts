@@ -31,6 +31,19 @@ export interface Customer {
   last_purchase: Last_purchase
 }
 
+export interface CustomerRequest{
+  customer_document: string;
+  document_type: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  phone_number: string;
+  email: string;
+  home_address: string;
+  customer_state: boolean;
+  id_branch: string | null;
+}
+
+
 export interface CustomerTableFilters {
   document_type: string | null;
   customer_document: string | null;
@@ -45,13 +58,5 @@ export interface CustomerTableFilters {
   minDuration: number | null;
   maxDuration: number | null;
 }
-
-export const typesDocument = [
-  { id: 'CC', name: 'Cédula de Ciudadanía' },
-  { id: 'TI', name: 'Tarjeta de Identidad' },
-  { id: 'CE', name: 'Cédula de Extranjería' },
-  { id: 'PASS', name: 'Pasaporte' },
-  { id: 'NIT', name: 'Número de Identificación Tributaria' },
-]
 
 export const types = ['CC', 'TI', 'CE', 'NIT', 'PASS'] as const; //Duplicado

@@ -45,3 +45,11 @@ export const supplierStatic: Supplier[] = [
   { id: "b756839d-0dc4-4b8d-b68c-24b7c8e13151", supplier_name: "Pharmalab" },
   { id: "b9808fb2-a041-46f4-9487-e9f8c6f293dc", supplier_name: "Forever" }
 ];
+
+export const typesDocument = [
+  { id: 'CC', name: 'Cédula de Ciudadanía' },
+  { id: 'TI', name: 'Tarjeta de Identidad' },
+  { id: 'CE', name: 'Cédula de Extranjería' },
+  { id: 'PASS', name: 'Pasaporte' },
+  { id: 'NIT', name: 'Número de Identificación Tributaria' },
+]

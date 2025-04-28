@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerTableFilters} from "@/features/customer/types/customerTypes";
+import { Customer, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 
 interface CustomerState {
@@ -27,8 +27,8 @@ interface CustomerState {
   customerIdToDelete: string | null
 
   fetchCustomers: () => Promise<void>
-  createCustomer: (customer: Customer) => Promise<void>
-  updateCustomer: (customer: Customer) => Promise<void>
+  createCustomer: (customer: CustomerRequest) => Promise<void>
+  updateCustomer: (customer: CustomerRequest) => Promise<void>
   inactivateCustomer: (document: string) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
 
@@ -218,6 +218,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     get().applyPagination()
   },
   openEditDialog: (customer) => {
+    console.log(customer)
     set({ 
       selectedCustomer: customer, 
       editDialogOpen: true 
