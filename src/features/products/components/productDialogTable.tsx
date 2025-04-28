@@ -40,7 +40,7 @@ import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
-export function ProductDialog() {
+export const ProductDialog = () => {
    const {
       createProduct,
       updateProduct,

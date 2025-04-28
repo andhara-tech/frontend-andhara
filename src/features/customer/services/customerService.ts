@@ -33,9 +33,9 @@ export const CustomerService = {
     }
   },
 
-  updateCustomer: async (document: string, clientData: Customer): Promise<Customer> => {
+  updateCustomer: async (clientData: Customer): Promise<Customer> => {
     try {
-      const response = await apiClient.put<Customer>(`/customer/update-customer/${document}`, clientData)
+      const response = await apiClient.put<Customer>(`/customer/update-customer/${clientData.customer_document}`, clientData)
       return response.data
     } catch (error) {
       console.error(`Error updating client with ID ${document}:`, error)
@@ -82,5 +82,5 @@ export const CustomerService = {
       console.error(`Error toggling state for client with ID ${document}:`, error)
       throw new Error(`Error toggling state for client with ID ${document}`)
     }
-  }
+  },
 }

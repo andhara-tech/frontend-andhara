@@ -23,7 +23,8 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => openEditDialog(customer)}>
+        <DropdownMenuItem 
+        onClick={() => openEditDialog(customer)}>
           <Edit className="mr-2 h-4 w-4" />
           Editar
         </DropdownMenuItem>

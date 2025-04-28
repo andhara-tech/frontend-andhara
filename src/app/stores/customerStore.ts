@@ -134,7 +134,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   updateCustomer: async (customer) => {
     set({ isLoading: true, error: null })
     try {
-      const updatedCustomer = await CustomerService.updateCustomer(customer.customer_document, customer)
+      const updatedCustomer = await CustomerService.updateCustomer(customer)
 
       set((state) => ({
         allCustomers: state.allCustomers.map((c) => (c.customer_document === customer.customer_document ? updatedCustomer : c)),

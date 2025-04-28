@@ -26,7 +26,7 @@ export const cityStatic: City[] = [
 
 
 export type DocumentType = 'CC' | 'TI' | 'CE' | 'PP' | 'OTRO';
-
+  
 export const branchesStatic: Branch[] = [
   { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", branch_name: "Sede Valledupar", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Valledupar", department_name: "Cesar" },
   { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", branch_name: "Sede Bogota", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Bogota D.C,", department_name: "Cundinamarca" },
