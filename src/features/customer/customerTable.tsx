@@ -10,6 +10,7 @@ import { Pagination } from "./components/pagination"
 import { CustomersFilters } from "./components/custumerFilters"
 import { CustomerDialog } from "./components/customerDialog"
 import { ProductTableToolbar } from "./components/customerTableToolbar"
+import { CustomerSheet } from "./components/customerSheet"
 
 export const CostumerTable = () => {
   const { 
@@ -155,6 +156,8 @@ export const CostumerTable = () => {
         </CardContent>
       </Card>
       <CustomerDialog />
+      <CustomerSheet />
+      
       {/* <DeleteAlert /> */}
     </section>
   )

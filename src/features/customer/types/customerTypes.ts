@@ -60,7 +60,7 @@ export interface CustomerByDocument{
   email: string;
   home_address: string;
   customer_state: boolean;
-  total_historical_purchases: number;
+  total_historical_purchases: number | null;
   branch: Branch;
   purchases: Purchase[];
 }

@@ -5,8 +5,7 @@ import { Customer } from "../types/customerTypes"
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/format"
 import { Badge } from "@/components/ui/badge"
-import { CustomerActions } from "./customerActions"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { CustomerActions, CustomerDataAction } from "./customerActions"
 
 interface ColumnOptions {
   onSort: (field: string) => void
@@ -35,7 +34,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
   return [
     {
       id: "branch_name",
-      accessorFn: (row) => row.branch.branch_name,
+      accessorFn: (row) => row.branch?.branch_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.branch_name")} disabled={isLoading}>
           Sucursal
@@ -43,7 +42,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => (
         <div className="text-left max-w-[100px] truncate">
-          {row.original.branch.branch_name}
+          {row.original.branch?.branch_name}
         </div>
       ),
     },
@@ -56,30 +55,9 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
           {getSortIcon("last_purchase.purchase_date")}
         </Button>
       ),
-      cell: ({ row }) => {
-        const date = row.original.last_purchase?.purchase_date
-        return (
-          <TooltipProvider delayDuration={100} skipDelayDuration={300}>
-            <Tooltip >
-              <TooltipTrigger asChild>
-                <Button
-                  onClick={() => console.log(row.original.customer_document)}
-                  className="cursor-pointer"
-                  variant="link">{
-                    date ?
-                      formaterDate(row.original?.last_purchase.purchase_date) :
-                      "No regitrado"
-                  }
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Ver todas</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )
-      },
+      cell: ({ row }) => (
+        <CustomerDataAction row={row} />
+      )
     },
     {
       accessorKey: "customer_first_name",
@@ -175,7 +153,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     },
     {
       id: "branch.city_name",
-      accessorFn: (row) => row.branch.city_name,
+      accessorFn: (row) => row.branch?.city_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.city_name")} disabled={isLoading}>
           Ciudad
@@ -189,7 +167,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     },
     {
       id: "branch.department_name",
-      accessorFn: (row) => row.branch.department_name,
+      accessorFn: (row) => row.branch?.department_name,
       header: () => (
         <Button variant="ghost" onClick={() => handleSort("branch.department_name")} disabled={isLoading}>
           Departamento
@@ -215,7 +193,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         return (
           <div className="text-right">
             {total ?
-              formatCurrency(Number(row.original.last_purchase.total_purchase)) :
+              formatCurrency(Number(row.original.last_purchase?.total_purchase || "")) :
               formatCurrency(Number("0"))
             }
           </div>
@@ -236,7 +214,7 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
         return (
           <div className="text-center">
             {next_date ?
-              formaterDate(row.original.last_purchase?.next_purchase_date) :
+              formaterDate(row.original.last_purchase?.next_purchase_date || "") :
               "No registrado"
             }
           </div>

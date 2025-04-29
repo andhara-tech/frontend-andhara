@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
+import { Customer, CustomerByDocument, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 
 interface CustomerState {
   allCustomers: Customer[]
   filteredCustomers: Customer[]
   displayedCustomers: Customer[]
+  customerData: CustomerByDocument | null
 
   total: number
   pageCount: number
@@ -25,12 +26,15 @@ interface CustomerState {
   deleteDialogOpen: boolean
   selectedCustomer: Customer | null
   customerIdToDelete: string | null
+  sheetCustomer: Customer | null
+  sheetOpen: boolean
+  
 
   fetchCustomers: () => Promise<void>
   createCustomer: (customer: CustomerRequest) => Promise<void>
   updateCustomer: (customer: CustomerRequest) => Promise<void>
-  inactivateCustomer: (document: string) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
+  fetchCustomerByDocument: (document: string) => Promise<void>
 
   setFilters: (filters: Partial<CustomerTableFilters>) => void
   clearFilters: () => void
@@ -49,9 +53,12 @@ interface CustomerState {
   openEditDialog: (customer: Customer) => void
   openNewCustomerDialog: () => void
   openDeleteDialog: (customerId: string) => void
+  openSheet: (customer: Customer) => void
   closeEditDialog: () => void
   closeNewCustomerDialog: () => void
   closeDeleteDialog: () => void
+  closeSheet: () => void
+
 
   applyFilters: () => void
   applyPagination: () => void
@@ -77,6 +84,9 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   allCustomers: [],
   filteredCustomers: [],
   displayedCustomers: [],
+  customerData: null,
+  sheetOpen: false,
+  sheetCustomer: null,
 
   total: 0,
   pageCount: 0,
@@ -108,10 +118,21 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       })
 
       get().applyFilters()
-
       set({isLoading: false})
     } catch (error) {
       set({ error: "Error fetching customers" })
+    }
+  },
+  fetchCustomerByDocument: async(document) => {
+    set({ isLoading: true, error: null })
+    try{
+      const response = await CustomerService.getCustomerByDocument(document)
+      set({
+        customerData: response,
+        isLoading: false,
+      })
+    }catch (error){
+      set({error: "Error fetching customers"})
     }
   },
   createCustomer: async (customer) => {
@@ -152,33 +173,14 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       set({ isLoading: false })
     }
   },
-  inactivateCustomer: async (document) => {
-    set({ isLoading: true, error: null })
-    try {
-      const updatedCustomer = await CustomerService.inactivateCustomer(document)
-
-      set((state) => ({
-        allCustomers: state.allCustomers.map((c) => (c.customer_document === document ? updatedCustomer : c)),
-        isLoading: false,
-      }))
-
-      get().applyFilters()
-    } catch (error) {
-      set({ error: "Error inactivating customer" })
-    } finally {
-      set({ isLoading: false })
-    }
-  },
   toggleCustomerState: async (document) => {
     set({ isLoading: true, error: null })
     try {
-      const updatedCustomer = await CustomerService.activateCustomer(document)
-
+      const updatedCustomer = await CustomerService.toggleCustomer(document)
       set((state) => ({
         allCustomers: state.allCustomers.map((c) => (c.customer_document === document ? updatedCustomer : c)),
         isLoading: false,
       }))
-
       get().applyFilters()
     } catch (error) {
       set({ error: "Error toggling customer state" })
@@ -186,6 +188,23 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       set({ isLoading: false })
     }
   },
+
+  openSheet: (customer: Customer) => {
+    set({
+      sheetCustomer: customer,
+      sheetOpen: true
+    })
+    get().fetchCustomerByDocument(customer.customer_document)
+  },
+
+  closeSheet: () => {
+    set({
+      sheetOpen: false,
+      sheetCustomer: null,
+      customerData: null
+    })
+  },
+  
   setFilters: (newFilter) => {
     set((state) => ({
       filters: { ...state.filters, ...newFilter },

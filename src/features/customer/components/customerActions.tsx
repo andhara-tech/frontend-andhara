@@ -4,7 +4,8 @@ import { useCustumerStore } from "@/app/stores/customerStore";
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Edit, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
+import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
+import { formaterDate } from "@/lib/utils";
 
 interface CustomerActionsProps {
   row: Row<Customer>
@@ -33,7 +34,7 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
           Agregar venta
         </DropdownMenuItem>
         <DropdownMenuItem 
-          disabled={customer.customer_state ? false : true}
+          disabled
           onClick={() => toggleCustomerState(customer.customer_document!)}>
           <Power className="mr-2 h-4 w-4" />
           {customer.customer_state ? "Desactivar" : "Activar"}
@@ -44,5 +45,24 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+export const CustomerDataAction = ({row}: CustomerActionsProps) => {
+  const customer = row.original
+  const { openSheet} = useCustumerStore()
+
+
+  return (
+    <Button
+    variant="link"
+    className="cursor-pointer"
+    onClick={() => openSheet(customer)}
+  >
+    {customer.last_purchase?.purchase_date
+      ? formaterDate(customer.last_purchase?.purchase_date)
+      : "No registrado"}
+    <ExternalLink className="h-4 w-4 ml-1" />
+  </Button>
   )
 }
