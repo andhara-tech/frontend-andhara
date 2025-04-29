@@ -26,7 +26,7 @@ export const cityStatic: City[] = [
 
 
 export type DocumentType = 'CC' | 'TI' | 'CE' | 'PP' | 'OTRO';
-
+  
 export const branchesStatic: Branch[] = [
   { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", branch_name: "Sede Valledupar", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Valledupar", department_name: "Cesar" },
   { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", branch_name: "Sede Bogota", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Bogota D.C,", department_name: "Cundinamarca" },
@@ -45,3 +45,11 @@ export const supplierStatic: Supplier[] = [
   { id: "b756839d-0dc4-4b8d-b68c-24b7c8e13151", supplier_name: "Pharmalab" },
   { id: "b9808fb2-a041-46f4-9487-e9f8c6f293dc", supplier_name: "Forever" }
 ];
+
+export const typesDocument = [
+  { id: 'CC', name: 'Cédula de Ciudadanía' },
+  { id: 'TI', name: 'Tarjeta de Identidad' },
+  { id: 'CE', name: 'Cédula de Extranjería' },
+  { id: 'PASS', name: 'Pasaporte' },
+  { id: 'NIT', name: 'Número de Identificación Tributaria' },
+]

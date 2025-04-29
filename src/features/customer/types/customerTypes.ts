@@ -9,13 +9,21 @@ export interface Branch {
   department_name: string;
 }
 
-export interface Last_purchase{
+interface Product {
+  id_product: string;
+  product_name: string;
+  unit_quantity: number;
+  subtotal_without_vat: number;
+  total_price_with_vat: number;
+}
+
+export interface Purchase{
   id_purchase: string;
-  purchase_date: string; // Considera usar Date si lo conviertes
+  purchase_date: string; 
   purchase_duration: number;
-  next_purchase_date: string; // Considera usar Date si lo conviertes
+  next_purchase_date: string;
   total_purchase: number;
-  products: any[];
+  products: Product[];
 }
 
 export interface Customer {
@@ -28,8 +36,35 @@ export interface Customer {
   home_address: string;
   customer_state: boolean;
   branch: Branch;
-  last_purchase: Last_purchase
+  last_purchase: Purchase | null
 }
+
+export interface CustomerRequest{
+  customer_document: string;
+  document_type: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  phone_number: string;
+  email: string;
+  home_address: string;
+  customer_state: boolean;
+  id_branch: string | null;
+}
+
+export interface CustomerByDocument{
+  customer_document: string;
+  document_type: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  phone_number: string;
+  email: string;
+  home_address: string;
+  customer_state: boolean;
+  total_historical_purchases: number;
+  branch: Branch;
+  purchases: Purchase[];
+}
+
 
 export interface CustomerTableFilters {
   document_type: string | null;
@@ -45,13 +80,3 @@ export interface CustomerTableFilters {
   minDuration: number | null;
   maxDuration: number | null;
 }
-
-export const typesDocument = [
-  { id: 'CC', name: 'Cédula de Ciudadanía' },
-  { id: 'TI', name: 'Tarjeta de Identidad' },
-  { id: 'CE', name: 'Cédula de Extranjería' },
-  { id: 'PASS', name: 'Pasaporte' },
-  { id: 'NIT', name: 'Número de Identificación Tributaria' },
-]
-
-export const types = ['CC', 'TI', 'CE', 'NIT', 'PASS'] as const; //Duplicado

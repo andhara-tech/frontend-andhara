@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerTableFilters} from "@/features/customer/types/customerTypes";
+import { Customer, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 
 interface CustomerState {
@@ -27,8 +27,8 @@ interface CustomerState {
   customerIdToDelete: string | null
 
   fetchCustomers: () => Promise<void>
-  createCustomer: (customer: Customer) => Promise<void>
-  updateCustomer: (customer: Customer) => Promise<void>
+  createCustomer: (customer: CustomerRequest) => Promise<void>
+  updateCustomer: (customer: CustomerRequest) => Promise<void>
   inactivateCustomer: (document: string) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
 
@@ -125,6 +125,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
+
+      get().closeNewCustomerDialog()
     } catch (error) {
       set({ error: "Error creating customer" })
     } finally {
@@ -134,7 +136,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   updateCustomer: async (customer) => {
     set({ isLoading: true, error: null })
     try {
-      const updatedCustomer = await CustomerService.updateCustomer(customer.customer_document, customer)
+      const updatedCustomer = await CustomerService.updateCustomer(customer)
 
       set((state) => ({
         allCustomers: state.allCustomers.map((c) => (c.customer_document === customer.customer_document ? updatedCustomer : c)),
@@ -142,6 +144,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
+      get().closeEditDialog()
+      
     } catch (error) {
       set({ error: "Error updating customer" })
     } finally {
@@ -218,6 +222,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     get().applyPagination()
   },
   openEditDialog: (customer) => {
+    console.log(customer)
     set({ 
       selectedCustomer: customer, 
       editDialogOpen: true 
@@ -387,6 +392,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       const aValue = a[sort.field as keyof Customer]
       const bValue = b[sort.field as keyof Customer]
 
+      if (aValue == null || bValue == null) return 0
       if (aValue < bValue) return sort.direction === "asc" ? -1 : 1
       if (aValue > bValue) return sort.direction === "asc" ? 1 : -1
       return 0

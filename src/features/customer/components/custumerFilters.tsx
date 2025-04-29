@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { branchesStatic } from "@/shared/static"
 import { Search } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
-import { typesDocument } from "../types/customerTypes"
+import { typesDocument } from "@/shared/static"
 
 export const CustomersFilters = () => {
   const { filters, search, setFilters, clearFilters, setSearch, isLoading } = useCustumerStore()

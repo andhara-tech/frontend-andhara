@@ -1,5 +1,5 @@
 import apiClient from "@/app/apiClient";
-import { Customer } from "@/features/customer/types/customerTypes"; 
+import { Customer, CustomerRequest } from "@/features/customer/types/customerTypes"; 
 
 
 export const CustomerService = {
@@ -23,7 +23,7 @@ export const CustomerService = {
     }
   },
 
-  createCostumer: async (client: Customer): Promise<Customer> => {
+  createCostumer: async (client: CustomerRequest): Promise<Customer> => {
     try {
       const response = await apiClient.post<Customer>("/customer/create-customer", client)
       return response.data
@@ -33,13 +33,13 @@ export const CustomerService = {
     }
   },
 
-  updateCustomer: async (document: string, clientData: Customer): Promise<Customer> => {
+  updateCustomer: async (clientData: CustomerRequest): Promise<Customer> => {
     try {
-      const response = await apiClient.put<Customer>(`/customer/update-customer/${document}`, clientData)
+      const response = await apiClient.patch<Customer>(`/customer/update-customer/${clientData.customer_document}`, clientData)
       return response.data
     } catch (error) {
-      console.error(`Error updating client with ID ${document}:`, error)
-      throw new Error(`Error updating client with ID ${document}`)
+      console.error(`Error updating client with ID ${clientData.customer_document}:`, error)
+      throw new Error(`Error updating client with ID ${clientData.customer_document}`)
     }
   },
 
@@ -82,5 +82,5 @@ export const CustomerService = {
       console.error(`Error toggling state for client with ID ${document}:`, error)
       throw new Error(`Error toggling state for client with ID ${document}`)
     }
-  }
+  },
 }
