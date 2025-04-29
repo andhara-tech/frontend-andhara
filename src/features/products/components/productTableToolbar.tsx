@@ -13,7 +13,7 @@ interface ProductTableToolbarProps {
   table: Table<Product>
 }
 
-export function ProductTableToolbar({ table }: ProductTableToolbarProps) {
+export const ProductTableToolbar =({ table }: ProductTableToolbarProps) =>{
   const { filteredProducts, isLoading, openNewProductDialog } = useProductStore()
   const isMobile = useIsMobile()
 

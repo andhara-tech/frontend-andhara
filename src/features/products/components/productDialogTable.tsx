@@ -243,7 +243,7 @@ export const ProductDialog = () => {
                         )}
                      />
 
-                     <FormField
+                          <FormField
                         control={form.control}
                         name="id_supplier"
                         render={({ field }) => (

@@ -6,7 +6,7 @@ import { branchesStatic, typesDocument } from "@/shared/static"
 import { useEffect } from "react"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
@@ -31,8 +31,12 @@ export const CustomerDialog = () => {
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      if (editDialogOpen) closeEditDialog()
-      if (newCustomerDialogOpen) closeNewCustomerDialog()
+      if (editDialogOpen) {
+        closeEditDialog()
+      }
+      if (newCustomerDialogOpen) {
+        closeNewCustomerDialog()
+      }
     }
   }
 
@@ -66,7 +70,17 @@ export const CustomerDialog = () => {
 
       })
     } else {
-      form.reset()
+      form.reset({
+        customer_document: "",
+        document_type: "",
+        customer_first_name: "",
+        customer_last_name: "",
+        phone_number: "",
+        email: "",
+        home_address: "",
+        customer_state: true,
+        id_branch: ""
+      })
     }
   }, [selectedCustomer, form, isOpen])
 
@@ -119,26 +133,24 @@ export const CustomerDialog = () => {
             className="space-y-4"
           >
             <div className="grid sm:grid-cols-2 gap-4">
-              {isEditing && selectedCustomer && (
-                <FormField
-                  control={form.control}
-                  name="customer_document"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Documento</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          disabled={isEditing || isLoading}
-                          placeholder="Ingrese el documento"
-                          value={selectedCustomer.customer_document}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+              <FormField
+                control={form.control}
+                name="customer_document"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Documento</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isEditing || isLoading}
+                        placeholder="Ingrese el documento"
+                        value={field.value}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="document_type"
@@ -148,7 +160,8 @@ export const CustomerDialog = () => {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      value={field.value} // Asegúrate de que el valor del select esté controlado por el formulario
+                      value={field.value}
+                      disabled={isEditing || isLoading}
                     >
                       <FormControl>
                         <SelectTrigger className="w-full" disabled={isLoading}>
@@ -269,8 +282,15 @@ export const CustomerDialog = () => {
               control={form.control}
               name="customer_state"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Estado</FormLabel>
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                  <div className="space-y-0.5">
+                    <FormLabel>Estado</FormLabel>
+                    <FormDescription>
+                      {field.value
+                        ? "El cliente está activo"
+                        : "El cliente está inactivo"}
+                    </FormDescription>
+                  </div>
                   <FormControl>
                     <Switch
                       checked={field.value}

@@ -125,6 +125,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
+
+      get().closeNewCustomerDialog()
     } catch (error) {
       set({ error: "Error creating customer" })
     } finally {
@@ -142,6 +144,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
+      get().closeEditDialog()
+      
     } catch (error) {
       set({ error: "Error updating customer" })
     } finally {
@@ -388,6 +392,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       const aValue = a[sort.field as keyof Customer]
       const bValue = b[sort.field as keyof Customer]
 
+      if (aValue == null || bValue == null) return 0
       if (aValue < bValue) return sort.direction === "asc" ? -1 : 1
       if (aValue > bValue) return sort.direction === "asc" ? 1 : -1
       return 0
