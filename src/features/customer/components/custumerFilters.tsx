@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { typesDocument } from "@/shared/static"
 
 export const CustomersFilters = () => {
-  const { filters, search, setFilters, clearFilters, setSearch, isLoading } = useCustumerStore()
+  const { filters, search, setFilters, setSearch, isLoading } = useCustumerStore()
   const [localSearch, setLocalSearch] = useState(search)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)

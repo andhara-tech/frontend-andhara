@@ -1,6 +1,6 @@
 import { formaterDate, SortOption } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, ExternalLink } from "lucide-react"
+import { ArrowUpDown} from "lucide-react"
 import { Customer } from "../types/customerTypes"
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/format"
