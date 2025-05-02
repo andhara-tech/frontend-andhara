@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { type Product } from "@/features/products/types/productTypes"
-import { BRANCHES } from "@/lib/utils"
+import { BRANCHES } from "@/shared/static"
 
 import { Button } from "@/components/ui/button"
 import { Boxes } from "lucide-react"

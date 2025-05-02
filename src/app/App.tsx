@@ -13,7 +13,7 @@ const App = () => {
       <Toaster
         richColors 
         expand={false}
-        position="top-center"
+        position="bottom-right"
       />
     </>
   );
