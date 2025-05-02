@@ -26,12 +26,14 @@ export const authService = {
       }
    },
 
-   refreshTokenRequest: async (_token: string) => {
-      const response = await apiClient.post<LoginResponse>("/auth/refreshtoken", {
-         _token
-      })
-      return response
+   logout: async () => {
+      try {
+         const response = await apiClient.post("/auth/logout")
+         localStorage.removeItem('authToken');
+         return response.status
+      } catch (error) {
+         console.error("Logout failed:", error);
+      }
    }
-
 }
 
