@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
 
 export const CustomerDialog = () => {
   const {
@@ -98,6 +99,7 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
+        toast.success("Cliente actualizado correctamente")
       } else {
         await createCustomer({
           customer_document: data.customer_document,
@@ -110,9 +112,11 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
+        toast.success("Cliente creado correctamente")
       }
     } catch (error) {
       console.error("Error updating customer:", error)
+      toast.error("Error al crear o actualizar el cliente")
     }
   }
 

@@ -146,7 +146,6 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
-
       get().closeNewCustomerDialog()
     } catch (error) {
       set({ error: "Error creating customer" })
