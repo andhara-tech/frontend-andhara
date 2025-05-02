@@ -34,7 +34,6 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
           Agregar venta
         </DropdownMenuItem>
         <DropdownMenuItem 
-          disabled
           onClick={() => toggleCustomerState(customer.customer_document!)}>
           <Power className="mr-2 h-4 w-4" />
           {customer.customer_state ? "Desactivar" : "Activar"}

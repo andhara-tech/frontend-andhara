@@ -43,10 +43,10 @@ export const CustomerService = {
     }
   },
 
-  toggleCustomer: async (document: string): Promise<Customer> => {
+  toggleCustomer: async (document: string): Promise<number> => {
     try {
-      const response = await apiClient.patch<Customer>(`/customer/toggle-customer/${document}`)
-      return response.data
+      const response = await apiClient.patch(`/customer/toggle-customer/${document}`)
+      return response.status
     } catch (error) {
       console.error(`Error inactivating client with ID ${document}:`, error)
       throw new Error(`Error inactivating client with ID ${document}`)
