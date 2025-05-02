@@ -19,7 +19,6 @@ interface AuthState {
   expiryTime: number | null;
   lastActive: number;
   setLastActive: () => void;
-  refreshToken: (token: string) => Promise<void>; 
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -77,26 +76,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set({ token: null, isAuthenticated: false, expiryTime: null, lastActive: Date.now() });//Resetea el lastActive
       }
     }
-  },
-  refreshToken: async (currentToken: string) => { // Implementación de la función refreshToken
-    try {
-      const response = await authService.refreshTokenRequest(currentToken); // Usa el servicio authService
-      const newToken = response.data.token;
-      const decodedToken: { exp: number } = jwtDecode(newToken);
-      const newExpiryTime = decodedToken.exp * 1000;
-      localStorage.setItem('authToken', newToken);
-      set({ token: newToken, expiryTime: newExpiryTime, lastActive: Date.now() }); // Actualiza el estado con el nuevo token y tiempo
-    } catch (error: any) {
-      console.error("Error refreshing token:", error);
-      get().logout(); // Usa get() para acceder a la función logout del store
-    }
-  },
+  }
 }));
 
 // Hook para verificar la expiración y renovar el token
 export const useAuthCheck = () => {
-  const { token, expiryTime, isAuthenticated, logout, refreshToken, lastActive } = useAuthStore(); // Obtiene refreshToken del store
-  const inactivityTimeout = 5 * 60 * 1000;
+  const { token, expiryTime, isAuthenticated, logout, lastActive } = useAuthStore(); // Obtiene refreshToken del store
+  const inactivityTimeout = 60 * 60 * 1000;
   const refreshThreshold = 60 * 1000;
 
   useEffect(() => {
@@ -116,7 +102,6 @@ export const useAuthCheck = () => {
 
       if (timeUntilExpiry <= refreshThreshold) {
         try {
-          await refreshToken(token); // Llama a la función refreshToken del store
         } catch (refreshError) {
           console.error("Error refreshing token:", refreshError);
           logout();
@@ -125,7 +110,7 @@ export const useAuthCheck = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [isAuthenticated, token, expiryTime, logout, refreshToken, lastActive]); // Dependencia de refreshToken
+  }, [isAuthenticated, token, expiryTime, logout, lastActive]); // Dependencia de refreshToken
 
   return null;
 };
