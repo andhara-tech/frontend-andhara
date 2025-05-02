@@ -55,9 +55,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
     }
   },
-  logout: () => {
+  logout: async () => {
+    const response = await authService.logout()
     localStorage.removeItem('authToken');
-    set({ token: null, isAuthenticated: false, expiryTime: null, lastActive: Date.now() }); //Resetea el lastActive
+    if(response === 204){
+      set({ token: null, isAuthenticated: false, expiryTime: null, lastActive: Date.now() }); //Resetea el lastActive
+    }
   },
   initalize: () => {
     const token = localStorage.getItem('authToken');
