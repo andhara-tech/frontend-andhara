@@ -5,9 +5,11 @@ import { branchesStatic } from "@/shared/static"
 import { Search } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
 import { typesDocument } from "@/shared/static"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 export const CustomersFilters = () => {
-  const { filters, search, setFilters, setSearch, isLoading } = useCustumerStore()
+  const { filters, search, setFilters, setSearch, isLoading, clearFilters } = useCustumerStore()
   const [localSearch, setLocalSearch] = useState(search)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -95,6 +97,34 @@ export const CustomersFilters = () => {
             </SelectContent>
           </Select>
         </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {Object.entries(filters).map(([key, value]) =>{
+          if(value === null) return null
+          let label = ""
+          if(key === "branch"){label = `Sede: ${value.branch_name}`}
+          if(key === "document_type"){label = `Tipo de documento: ${typesDocument.find(d => d.id === value)?.name}`}
+
+          return(
+            <Badge key={key} variant="secondary" className="flex items-center gap-1">
+              {label}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-4 w-4 p-0 ml-1"
+                onClick={() => setFilters({ [key]: null })}
+                disabled={isLoading}
+              >
+                ×
+              </Button>
+            </Badge>
+          )
+        })}
+        {(Object.values(filters).some((v) => v !== null) || search) && (
+          <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearFilters} disabled={isLoading}>
+            Limpiar filtros
+          </Button>
+        )}
       </div>
     </div>
   )
