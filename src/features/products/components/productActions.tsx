@@ -1,18 +1,16 @@
+import { useProductStore } from "@/app/stores/productStore"
 import type { Row } from "@tanstack/react-table"
+import type { Product } from "@/features/products/types/productTypes"
+
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, MoreHorizontal, Power, Trash } from "lucide-react"
-import type { Product } from "@/features/products/types/productTypes"
-import { useProductStore } from "@/app/stores/productStore"
 
 interface ProductActionsProps {
   row: Row<Product>
 }
 
-/**
- * Componente para las acciones de un producto (editar, activar/desactivar, eliminar)
- */
-export function ProductActions({ row }: ProductActionsProps) {
+export const ProductActions = ({ row }: ProductActionsProps) => {
   const product = row.original
   const { openEditDialog, openDeleteDialog, toggleProductState } = useProductStore()
 

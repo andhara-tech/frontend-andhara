@@ -1,10 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 
 const DashboardPage = () => { 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to the dashboard!</p>
+      <Button
+        onClick={() => toast.success("Button clicked!")}
+      >Click me</Button>
     </div>
   );
 }

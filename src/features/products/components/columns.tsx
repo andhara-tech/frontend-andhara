@@ -1,13 +1,14 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, CheckCircle, XCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import type { Product } from "@/features/products/types/productTypes"
+import type { SortOption } from "@/lib/utils" 
 import { formatCurrency, formatPercent } from "@/lib/format"
-import { ProductActions } from "@/features/products/components/productTable/components/ProductActions"
+
+import type { Product } from "@/features/products/types/productTypes"
+import { Button } from "@/components/ui/button"
+import { ProductActions } from "@/features/products/components/productActions"
 import { Badge } from "@/components/ui/badge"
-import { StockDropdown } from "@/features/products/components/productTable/components/stockDropdwon"
-import type { SortOption } from "@/features/products/services/productService" 
+import { StockDropdown } from "@/features/products/components/stockDropdwon"
 import { ProductService } from "@/features/products/services/productService"
+import { ArrowUpDown, CheckCircle, XCircle } from "lucide-react"
 
 interface ColumnOptions {
   onSort: (field: string) => void
@@ -15,21 +16,12 @@ interface ColumnOptions {
   isLoading: boolean
 }
 
-/**
- * Genera las columnas para la tabla de productos
- */
 export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDef<Product>[] => {
-  /**
-   * Maneja el evento de ordenamiento de una columna
-   */
   const handleSort = (field: string) => {
     if (isLoading) return
     onSort(field)
   }
 
-  /**
-   * Genera el icono de ordenamiento para una columna
-   */
   const getSortIcon = (field: string) => {
     if (!sort || sort.field !== field) {
       return <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -62,6 +54,16 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => <div>{row.getValue("product_name")}</div>,
     },
+        {
+      id: "stock",
+      header: () => (
+        <Button variant="ghost" onClick={() => handleSort("stock")} disabled={isLoading}>
+          Stock
+          {getSortIcon("stock")}
+        </Button>
+      ),
+      cell: ({ row }) => <StockDropdown product={row.original} />,
+    },
     {
       accessorKey: "product_description",
       header: "Descripción",
@@ -77,7 +79,6 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
       ),
       cell: ({ row }) => {
         const supplierId = row.getValue("id_supplier") as string
-        // Use ProductService directly to get supplier name
         return <div>{ProductService.getSupplierName(supplierId)}</div>
       },
       filterFn: (row, id, value) => {
@@ -172,16 +173,6 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
           </div>
         )
       },
-    },
-    {
-      id: "stock",
-      header: () => (
-        <Button variant="ghost" onClick={() => handleSort("stock")} disabled={isLoading}>
-          Stock
-          {getSortIcon("stock")}
-        </Button>
-      ),
-      cell: ({ row }) => <StockDropdown product={row.original} />,
     },
     {
       id: "actions",

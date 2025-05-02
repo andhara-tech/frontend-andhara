@@ -1,3 +1,5 @@
+import { useProductStore } from "@/app/stores/productStore"
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,12 +10,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { useProductStore } from "@/app/stores/productStore"
 import { Loader2 } from "lucide-react"
 
-/**
- * Diálogo de confirmación para inactivar un producto
- */
 export function DeleteAlert() {
   const { inactivateProduct, isLoading, deleteDialogOpen, closeDeleteDialog, productIdToDelete } = useProductStore()
 

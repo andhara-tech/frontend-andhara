@@ -1,4 +1,4 @@
-import ProductTable from "@/features/products/components/productTable/ProductTable";
+import ProductTable from "@/features/products/productTable";
 
 const ProductsPage = () => {
    return <ProductTable />;

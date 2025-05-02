@@ -1,29 +1,21 @@
+import { useProductStore } from "@/app/stores/productStore"
+
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
-import { useProductStore } from "@/app/stores/productStore"
 
-/**
- * Pagination component for the product table
- */
-export function Pagination() {
+export const Pagination = () => {
   const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useProductStore()
 
   const currentPage = pageIndex + 1
   const fromItem = pageIndex * pageSize + 1
   const toItem = Math.min((pageIndex + 1) * pageSize, total)
 
-  /**
-   * Handle page change
-   */
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pageCount || isLoading) return
     setPageIndex(page - 1)
   }
 
-  /**
-   * Handle page size change
-   */
   const handlePageSizeChange = (size: number) => {
     if (isLoading) return
     setPageSize(size)

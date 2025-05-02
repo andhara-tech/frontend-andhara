@@ -1,8 +1,8 @@
-export const formatCurrency = (value: number) => {
+export const formatCurrency = (value: number | null) => {
    return new Intl.NumberFormat("es-CO", {
       style: "currency",
       currency: "COP",
-   }).format(value);
+   }).format(value ?? 0);
 };
 
 // Función para formatear porcentajes
