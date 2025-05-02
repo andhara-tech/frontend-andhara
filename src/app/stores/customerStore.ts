@@ -146,7 +146,6 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       }))
 
       get().applyFilters()
-
       get().closeNewCustomerDialog()
     } catch (error) {
       set({ error: "Error creating customer" })
@@ -176,14 +175,16 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   toggleCustomerState: async (document) => {
     set({ isLoading: true, error: null })
     try {
-      const updatedCustomer = await CustomerService.toggleCustomer(document)
+      await CustomerService.toggleCustomer(document)
       set((state) => ({
-        allCustomers: state.allCustomers.map((c) => (c.customer_document === document ? updatedCustomer : c)),
-        isLoading: false,
+        allCustomers: state.allCustomers.map((c) =>
+          c.customer_document === document ? { ...c, customer_state: !c.customer_state } : c
+        ),
+        isLoading: false
       }))
       get().applyFilters()
     } catch (error) {
-      set({ error: "Error toggling customer state" })
+      set({ error: "Error toggling customer state", isLoading: false })
     } finally {
       set({ isLoading: false })
     }

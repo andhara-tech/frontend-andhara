@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
 import { formaterDate } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface CustomerActionsProps {
   row: Row<Customer>
@@ -14,6 +15,16 @@ interface CustomerActionsProps {
 export const CustomerActions = ({row}: CustomerActionsProps) => {
   const customer = row.original
   const {openEditDialog, openDeleteDialog, toggleCustomerState } = useCustumerStore()
+
+  const handleToggleCustomerState = async (document: string) => {
+    try {
+      await toggleCustomerState(document)
+      toast.success(`Cliente ${customer.customer_state ? "desactivado" : "activado"} correctamente`)
+    }catch (error) {
+      console.error("Error toggling customer state:", error)
+      toast.error("Error al cambiar el estado del cliente")
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -34,8 +45,7 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
           Agregar venta
         </DropdownMenuItem>
         <DropdownMenuItem 
-          disabled
-          onClick={() => toggleCustomerState(customer.customer_document!)}>
+          onClick={() => handleToggleCustomerState(customer.customer_document!)}>
           <Power className="mr-2 h-4 w-4" />
           {customer.customer_state ? "Desactivar" : "Activar"}
         </DropdownMenuItem>
