@@ -9,3 +9,4 @@ export const formatCurrency = (value: number | null) => {
 export const formatPercent = (value: number) => {
    return `${value.toFixed(2)}%`;
 };
+

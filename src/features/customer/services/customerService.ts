@@ -1,13 +1,19 @@
 import apiClient from "@/app/apiClient";
-import { Customer, CustomerByDocument, CustomerRequest } from "@/features/customer/types/customerTypes"; 
+import { Customer, CustomerByDocument, CustomerRequest } from "@/features/customer/types/customerTypes";
+import { AxiosHeaders } from "axios";
+
 
 
 export const CustomerService = {
-  getCustomers: async (): Promise<Customer[]> => {
-    try{
-      const response = await apiClient.get<Customer[]>("/customer/customers")
+  getCustomers: async ({ search = "", skip = 0, limit = 100 } = {}): Promise<Customer[]> => {
+    try {
+      const response = await apiClient.get<Customer[]>("/customer/customers", {
+        params: {search,skip, limit},
+        headers: new AxiosHeaders(),
+      }
+      )
       return response.data
-    }catch (error) {
+    } catch (error) {
       console.error("Error fetching clients:", error)
       throw new Error("Error fetching clients")
     }
@@ -53,3 +59,4 @@ export const CustomerService = {
     }
   },
 }
+

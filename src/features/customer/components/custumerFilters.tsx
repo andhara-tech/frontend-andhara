@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 export const CustomersFilters = () => {
-  const { filters, search, setFilters, setSearch, isLoading, clearFilters } = useCustumerStore()
+  const { filters, search, setFilters, setSearch, isLoading, clearFilters, fetchCustomers } = useCustumerStore()
   const [localSearch, setLocalSearch] = useState(search)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -31,6 +31,7 @@ export const CustomersFilters = () => {
 
     debounceTimerRef.current = setTimeout(() => {
       setSearch(value)
+      fetchCustomers()
     }, 300)
   }
 
@@ -52,7 +53,6 @@ export const CustomersFilters = () => {
             value={localSearch}
             onChange={handleSearchChange}
             className="pl-8"
-            disabled={isLoading}
           />
         </div>
         <div className="flex flex-wrap gap-2">

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
 import { Customer, CustomerByDocument, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
+import debounce from "lodash.debounce";
 
 interface CustomerState {
   allCustomers: Customer[]
@@ -30,7 +31,7 @@ interface CustomerState {
   sheetOpen: boolean
   
 
-  fetchCustomers: () => Promise<void>
+  fetchCustomers: (params?: {search?: string, skip?: number, limit?:number}) => Promise<void>
   createCustomer: (customer: CustomerRequest) => Promise<void>
   updateCustomer: (customer: CustomerRequest) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
@@ -49,6 +50,7 @@ interface CustomerState {
   setPhoneFilter: (phone: string) => void
   setAddressFilter: (address: string) => void
   setBranchFilter: (branch: string) => void
+  setSearchWithDebounce: (search: string) => void
 
   openEditDialog: (customer: Customer) => void
   openNewCustomerDialog: () => void
@@ -109,7 +111,12 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   fetchCustomers: async () => {
     set({ isLoading: true, error: null })
     try {
-      const customers = await CustomerService.getCustomers()
+      const { search } = get()
+      const customers = await CustomerService.getCustomers({
+        search,
+        skip: get().pageIndex * get().pageSize,
+        limit: get().pageSize,
+      })
 
       set({
         allCustomers: customers,
@@ -226,6 +233,11 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   setSearch: (search) => {
     set({ search, pageIndex: 0 })
     get().applyFilters()
+  },
+
+  setSearchWithDebounce: (search) => {
+    set({search})
+    debouncedSearch(search, set, get)
   },
 
   setSort: (sort) => {
@@ -419,3 +431,15 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     })
   }
 }))
+
+
+const debouncedSearch = debounce(async (search: string, set: any, get : any) =>{
+  set({isLoading: true})
+
+  try{
+    const result = await get().fetchCustomers({search})
+    set({filteredCustomers: result, isLoading: false})
+  }catch (error){
+    set({error: "Error fetching customers"})
+  }
+} ) 
