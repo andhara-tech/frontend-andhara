@@ -65,6 +65,11 @@ export interface CustomerByDocument{
   purchases: Purchase[];
 }
 
+export interface CustomerPurchase {
+  historical_purchases: number;
+  purchases: Purchase[];
+}
+
 
 export interface CustomerTableFilters {
   document_type: string | null;

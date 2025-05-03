@@ -44,7 +44,7 @@ export const CustomersFilters = () => {
   }, [])
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 py-4">
         <div className="relative w-full md:w-72">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -126,7 +126,7 @@ export const CustomersFilters = () => {
           </Button>
         )}
       </div>
-    </div>
+    </section>
   )
 }
 

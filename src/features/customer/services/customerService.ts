@@ -1,5 +1,5 @@
 import apiClient from "@/app/apiClient";
-import { Customer, CustomerByDocument, CustomerRequest } from "@/features/customer/types/customerTypes";
+import { Customer, CustomerPurchase, CustomerRequest } from "@/features/customer/types/customerTypes";
 import { AxiosHeaders } from "axios";
 
 
@@ -18,10 +18,13 @@ export const CustomerService = {
       throw new Error("Error fetching clients")
     }
   },
-
-  getCustomerByDocument: async (document: string): Promise<CustomerByDocument> => {
+  
+  getCustomerPurchase: async (document: string | null ): Promise<CustomerPurchase> => {
     try {
-      const response = await apiClient.get<CustomerByDocument>(`/customer/by-document/${document}`)
+      const response = await apiClient.get<CustomerPurchase>(`/customer/purchases`, {
+        params: { document },
+        headers: new AxiosHeaders(),
+      })
       return response.data
     } catch (error) {
       console.error(`Error fetching client with ID ${document}:`, error)

@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 
 
 export const CustomerSheet = () => {
-  const { sheetOpen, customerData, closeSheet, isLoading } = useCustumerStore()
+  const { sheetOpen, customerPurchase, selectedCustomer, closeSheet, isLoading } = useCustumerStore()
 
   const isOpen = sheetOpen
 
@@ -26,17 +26,17 @@ export const CustomerSheet = () => {
         )}
         <SheetHeader className="text-center">
           <SheetTitle className="text-2xl font-bold">
-            {customerData?.customer_first_name} {customerData?.customer_last_name}
+            {selectedCustomer?.customer_first_name} {selectedCustomer?.customer_last_name}
           </SheetTitle>
           <SheetDescription >
             Compras realizadas
           </SheetDescription>
         </SheetHeader>
         <div className="w-full rounded shadow bg-primary text-center text-white">
-          <span className="font-bold text-3xl">{formatCurrency(customerData?.total_historical_purchases ?? 0)}</span>
+          <span className="font-bold text-3xl">{formatCurrency(customerPurchase?.historical_purchases ?? 0)}</span>
           <p>Total compras realizadas</p>
         </div>
-        {customerData?.purchases.map((p) => (
+        {customerPurchase?.purchases.map((p) => (
           <div className="rounded text-sm shadow w-full p-4" key={p.id_purchase}>
             <h2 className="font-medium text-2xl text-center">Compra</h2>
             <div className="flex justify-between items-center">
