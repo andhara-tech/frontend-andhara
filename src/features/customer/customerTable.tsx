@@ -11,16 +11,17 @@ import { CustomersFilters } from "./components/custumerFilters"
 import { CustomerDialog } from "./components/customerDialog"
 import { ProductTableToolbar } from "./components/customerTableToolbar"
 import { CustomerSheet } from "./components/customerSheet"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const CostumerTable = () => {
-  const { 
-    fetchCustomers, 
-    displayedCustomers, 
-    isLoading, 
-    error, 
-    pageIndex, 
-    pageSize ,
-    sort, 
+  const {
+    fetchCustomers,
+    displayedCustomers,
+    isLoading,
+    error,
+    pageIndex,
+    pageSize,
+    sort,
     setSort
   } = useCustumerStore()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -93,13 +94,16 @@ export const CostumerTable = () => {
                           <TableHead
                             key={header.id}
                             className="whitespace-nowrap">
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )
-                            }
+                            {isLoading ? (
+                              <Skeleton className="h-6 w-full max-w-[120px]" />
+                            ) : (
+                              header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )
+                            )}
                           </TableHead>
                         ))}
                       </TableRow>
@@ -114,10 +118,7 @@ export const CostumerTable = () => {
                             table.getVisibleLeafColumns().length
                           }
                           className="h-24 text-center">
-                          <div className="flex justify-center items-center">
-                            <Loader2 className="h-6 w-4 animate-spin mr-2" />
-                            Cargando productos ...
-                          </div>
+                          <Skeleton className="h-10 w-full" />
                         </TableCell>
                       </TableRow>
                     ) : table.getRowModel().rows?.length ? (
@@ -157,7 +158,7 @@ export const CostumerTable = () => {
       </Card>
       <CustomerDialog />
       <CustomerSheet />
-      
+
       {/* <DeleteAlert /> */}
     </section>
   )
