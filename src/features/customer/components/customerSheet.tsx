@@ -1,14 +1,18 @@
 import { useCustumerStore } from "@/app/stores/customerStore";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/format";
 import { formaterDate } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { PurchaseSkeleton } from "../skeleton/productSkeleton";
 
 
 export const CustomerSheet = () => {
-  const { sheetOpen, customerData, closeSheet, isLoading } = useCustumerStore()
+  const { sheetOpen, customerPurchase, closeSheet, isLoading } = useCustumerStore()
 
   const isOpen = sheetOpen
 
@@ -17,58 +21,89 @@ export const CustomerSheet = () => {
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="overflow-y-scroll p-4">
-        {isLoading && (
-          <div className="flex items-center justify-center h-full w-full">
-            <Loader2 className="h-6 w-6 animate-spin" />
-          </div>
-        )}
-        <SheetHeader className="text-center">
-          <SheetTitle className="text-2xl font-bold">
-            {customerData?.customer_first_name} {customerData?.customer_last_name}
-          </SheetTitle>
-          <SheetDescription >
-            Compras realizadas
-          </SheetDescription>
-        </SheetHeader>
-        <div className="w-full rounded shadow bg-primary text-center text-white">
-          <span className="font-bold text-3xl">{formatCurrency(customerData?.total_historical_purchases ?? 0)}</span>
-          <p>Total compras realizadas</p>
-        </div>
-        {customerData?.purchases.map((p) => (
-          <div className="rounded text-sm shadow w-full p-4" key={p.id_purchase}>
-            <h2 className="font-medium text-2xl text-center">Compra</h2>
-            <div className="flex justify-between items-center">
-              <span className="px-3 shadow rounded-2xl">{formaterDate(p.purchase_date)}</span>
-              <span className="px-3 shadow bg-primary text-white rounded-2xl">{formaterDate(p.next_purchase_date)}</span>
-            </div>
-            <Separator className="my-2"/>
-            <div className="flex items-center justify-between">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Nombre</TableHead>
-                    <TableHead>Cantidad</TableHead>
-                    <TableHead>Subtotal (IVA)</TableHead>
-                    <TableHead className="text-right">Total</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {p.products.map((pro) => (
-                    <TableRow key={pro.id_product}>
-                      <TableCell className="font-medium">{pro.product_name}</TableCell>
-                        <TableCell>{pro.unit_quantity}</TableCell>
-                        <TableCell>{formatCurrency(pro.subtotal_without_vat)}</TableCell>
-                        <TableCell>{formatCurrency(pro.total_price_with_vat)}</TableCell>
-                    </TableRow>
+    <div className="container mx-auto">
+      <div className="flex justify-center">
+        <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+          <SheetContent className="w-full sm:max-w-md md:max-w-lg p-5">
+            <SheetHeader>
+              <SheetTitle className="text-3xl">Compras realizadas</SheetTitle>
+              {isLoading ? (
+                <Skeleton className="h-5 w-48" />
+              ) : (
+                <SheetDescription className="font-medium text-primary">Historial de compras: {formatCurrency(customerPurchase?.historical_purchases ?? 0)}</SheetDescription>
+              )}
+            </SheetHeader>
+            <Separator />
+            <ScrollArea className="h-[calc(100vh-180px)]">
+              {isLoading ? (
+                <div className="space-y-6">
+                  <PurchaseSkeleton />
+                  <PurchaseSkeleton />
+                  <PurchaseSkeleton />
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {customerPurchase?.purchases.map((purchase) => (
+                    <Card key={purchase.id_purchase} className="border-l-4 border-l-primary">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-center">
+                          <CardTitle className="text-lg">Compra del {formaterDate(purchase.purchase_date)}</CardTitle>
+                          <Badge variant="secondary" className="font-semibold">
+                            {formatCurrency(purchase.total_purchase)}
+                          </Badge>
+                        </div>
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>Duración: {purchase.purchase_duration} días</span>
+                          <span className="font-medium">Próxima compra: {formaterDate(purchase.next_purchase_date)}</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <h4 className="font-medium mb-2">Productos:</h4>
+                        <div className="space-y-3">
+                          {purchase.products.map((product) => (
+                            <div key={product.id_product} className="bg-muted p-3 rounded-md">
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium">{product.product_name}</span>
+                                <Badge variant="secondary">
+                                  {product.unit_quantity} {product.unit_quantity > 1 ? "unidades" : "unidad"}
+                                </Badge>
+                              </div>
+                              <Separator className="my-2" />
+                              <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground">Subtotal (sin IVA):</span>
+                                  <p>{formatCurrency(product.subtotal_without_vat)}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Total (con IVA):</span>
+                                  <p className="font-semibold">{formatCurrency(product.total_price_with_vat)}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))}
-                </TableBody>
-              </Table>
+                </div>
+              )}
+            </ScrollArea>
+            <div className="mt-6 flex justify-between items-center">
+              <div>
+                <p className="text-muted-foreground">Total de compras</p>
+                {isLoading ? (
+                  <Skeleton className="h-8 w-24 mt-1" />
+                ) : (
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(customerPurchase?.historical_purchases ?? 0)}
+                  </p>
+                )}
+              </div>
+              <Button onClick={() => handleOpenChange(false)}>Cerrar</Button>
             </div>
-          </div>
-        ))}
-      </SheetContent>
-    </Sheet>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </div>
   )
 }

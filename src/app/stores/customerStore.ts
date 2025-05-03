@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerByDocument, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
+import { Customer, CustomerByDocument, CustomerPurchase, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 import debounce from "lodash.debounce";
 
@@ -8,7 +8,6 @@ interface CustomerState {
   allCustomers: Customer[]
   filteredCustomers: Customer[]
   displayedCustomers: Customer[]
-  customerData: CustomerByDocument | null
 
   total: number
   pageCount: number
@@ -29,13 +28,14 @@ interface CustomerState {
   customerIdToDelete: string | null
   sheetCustomer: Customer | null
   sheetOpen: boolean
+  customerPurchase: CustomerPurchase | null
   
 
   fetchCustomers: (params?: {search?: string, skip?: number, limit?:number}) => Promise<void>
   createCustomer: (customer: CustomerRequest) => Promise<void>
   updateCustomer: (customer: CustomerRequest) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
-  fetchCustomerByDocument: (document: string) => Promise<void>
+  fetchCustomerPurchase: (document: string) => Promise<void>
 
   setFilters: (filters: Partial<CustomerTableFilters>) => void
   clearFilters: () => void
@@ -86,9 +86,9 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   allCustomers: [],
   filteredCustomers: [],
   displayedCustomers: [],
-  customerData: null,
   sheetOpen: false,
   sheetCustomer: null,
+  customerPurchase: null,
 
   total: 0,
   pageCount: 0,
@@ -130,13 +130,13 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       set({ error: "Error fetching customers" })
     }
   },
-  fetchCustomerByDocument: async(document) => {
+  fetchCustomerPurchase: async(document) => {
     set({ isLoading: true, error: null })
     try{
-      const response = await CustomerService.getCustomerByDocument(document)
+      const response = await CustomerService.getCustomerPurchase(document)
       set({
-        customerData: response,
         isLoading: false,
+        customerPurchase: response,
       })
     }catch (error){
       set({error: "Error fetching customers"})
@@ -202,14 +202,14 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       sheetCustomer: customer,
       sheetOpen: true
     })
-    get().fetchCustomerByDocument(customer.customer_document)
+    get().fetchCustomerPurchase(customer.customer_document)
   },
 
   closeSheet: () => {
     set({
       sheetOpen: false,
       sheetCustomer: null,
-      customerData: null
+      customerPurchase: null
     })
   },
   
