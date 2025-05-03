@@ -24,8 +24,8 @@ export interface SortOption {
 export const formaterDate = (date: string): string  =>{
   if(!date) return ""
   const months = [
-    "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
+    "ene", "feb", "mar", "abr", "may", "jun",
+    "jul", "ago", "sep", "oct", "nov", "dic"
   ];
 
   const [age, month, day] = date.split("-");
@@ -37,5 +37,5 @@ export const formaterDate = (date: string): string  =>{
 
   const nameMonth = months[numeroMes - 1];
 
-  return `${day}/${nameMonth}/${age}`;
+  return `${day} ${nameMonth} ${age}`;
 }

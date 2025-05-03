@@ -35,7 +35,7 @@ interface CustomerState {
   createCustomer: (customer: CustomerRequest) => Promise<void>
   updateCustomer: (customer: CustomerRequest) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
-  fetchCustomerPurchase: (params?: {document?: string}) => Promise<void>
+  fetchCustomerPurchase: (document: string) => Promise<void>
 
   setFilters: (filters: Partial<CustomerTableFilters>) => void
   clearFilters: () => void
