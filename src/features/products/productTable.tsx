@@ -25,7 +25,7 @@ import { ProductFilters } from "@/features/products/components/productFilters";
 import { ProductTableToolbar } from "@/features/products/components/productTableToolbar";
 import { DeleteAlert } from "@/features/products/components/deleteAlert";
 
-export default function ProductTable() {
+export const ProductTable = () => {
    const {
       fetchProducts,
       displayedProducts,

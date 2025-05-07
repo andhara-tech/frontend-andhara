@@ -29,7 +29,7 @@ export const ProductTableToolbar = () => {
         </Button> */}
         <Button onClick={openNewCustomerDialog} disabled={isLoading}>
           <Plus className="mr-2 h-4 w-4" />
-          Nuevo Producto
+          Nuevo cliente
         </Button>
       </div>
     </div>
