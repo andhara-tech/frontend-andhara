@@ -75,3 +75,27 @@ export const BRANCHES: BranchInter[] = [
   { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", name: "Sede Valledupar" },
   { id_branch: "fffe60df-52d8-4717-949e-58ed108f998e", name: "Sede Palmira" },
 ]
+
+
+export const DELIVERY_TYPES = [
+  { name: "Recogida en Sede" },
+  { name: "Domicilio Bogotá" },
+  { name: "Servientrega" },
+  { name: "Rappi" },
+  { name: "Otro" } 
+]
+
+export const PAYMENT_TYPES = [
+  { name: "Efectivo" },
+  { name: "Transferencia" },
+  { name: "Tarjeta de Crédito" },
+  { name: "Tarjeta de Débito" },
+  { name: "Cheque" },
+  { name: "Otro" } 
+]
+
+export const PAYMENT_STATUS = [
+  { name: "Pago Pendiente" },
+  { name: "Pago Completado" },
+  { name: "En Proceso" },
+]

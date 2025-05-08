@@ -1,13 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
 
 
 const DashboardPage = () => { 
   return (
     <div>
-      <Button
-        onClick={() => toast.success("Button clicked!")}
-      >Click me</Button>
+      <NewPurchaseModal/>
     </div>
   );
 }

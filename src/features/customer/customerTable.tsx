@@ -5,7 +5,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useEffect, useMemo, useState } from "react"
 import { getColumns } from "./components/columns"
 import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { Loader2 } from "lucide-react"
 import { Pagination } from "./components/pagination"
 import { CustomersFilters } from "./components/custumerFilters"
 import { CustomerDialog } from "./components/customerDialog"

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerByDocument, CustomerPurchase, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
+import { Customer, CustomerPurchase, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
 import { SortOption } from "@/lib/utils";
 import debounce from "lodash.debounce";
 
@@ -51,6 +51,7 @@ interface CustomerState {
   setAddressFilter: (address: string) => void
   setBranchFilter: (branch: string) => void
   setSearchWithDebounce: (search: string) => void
+  setSelectedCustomer: (customer: Customer | null) => void
 
   openEditDialog: (customer: Customer) => void
   openNewCustomerDialog: () => void
@@ -195,6 +196,10 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     } finally {
       set({ isLoading: false })
     }
+  },
+
+  setSelectedCustomer: (customer) => {
+    set({ selectedCustomer: customer })
   },
 
   openSheet: (customer: Customer) => {
@@ -442,4 +447,4 @@ const debouncedSearch = debounce(async (search: string, set: any, get : any) =>{
   }catch (error){
     set({error: "Error fetching customers"})
   }
-} ) 
+}, 500) 
