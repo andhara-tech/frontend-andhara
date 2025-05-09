@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-
 import { useAuthStore } from "@/app/stores/authStore";
+
 import { House, LogOut, Store, Users } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu } from "./ui/sidebar";
-import NavMain from "./navMain";
-import { Button } from "./ui/button";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu } from "@/components/ui/sidebar";
+import NavMain from "@/components/navMain";
+import { Button } from "@/components/ui/button";
 
 const data = [
   {

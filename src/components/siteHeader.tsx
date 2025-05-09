@@ -2,6 +2,7 @@ import { notifications } from "@/shared/dataNotification"
 
 import { SidebarTrigger } from "./ui/sidebar"
 import { Separator } from "@radix-ui/react-separator"
+import { BellDot, Settings } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "./ui/button"
-import { BellDot, Settings } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import RegisterForm from "@/features/auth/components/RegisterForm"
 
 const SiteHeader = () => {
