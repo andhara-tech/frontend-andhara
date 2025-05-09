@@ -4,18 +4,14 @@ import type { Product } from "@/features/products/types/productTypes"
 import { formatCurrency, formatPercent } from "./format"
 
 export const exportToPdf = (products: Product[], title = "Productos Farmacéuticos") => {
-  // Crear un nuevo documento PDF
   const doc = new jsPDF()
 
-  // Añadir título
   doc.setFontSize(18)
   doc.text(title, 14, 22)
 
-  // Añadir fecha
   doc.setFontSize(11)
   doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30)
 
-  // Definir las columnas
   const columns = [
     { header: "ID", dataKey: "product_id" },
     { header: "Producto", dataKey: "product_name" },
@@ -27,7 +23,6 @@ export const exportToPdf = (products: Product[], title = "Productos Farmacéutic
     { header: "IVA", dataKey: "vat" },
   ]
 
-  // Preparar los datos
   const data = products.map((product) => ({
     product_id: product.id_product,
     product_name: product.product_name,
@@ -39,7 +34,6 @@ export const exportToPdf = (products: Product[], title = "Productos Farmacéutic
     vat: formatPercent(product.vat ?? 0),
   }))
 
-  // Generar la tabla
   autoTable(doc, {
     startY: 40,
     head: [columns.map((column) => column.header)],
@@ -59,6 +53,5 @@ export const exportToPdf = (products: Product[], title = "Productos Farmacéutic
     },
   })
 
-  // Guardar el PDF
   doc.save("productos-farmaceuticos.pdf")
 }

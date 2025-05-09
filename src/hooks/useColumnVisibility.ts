@@ -2,10 +2,8 @@ import { useState, useEffect, useCallback } from "react"
 import type { Table } from "@tanstack/react-table"
 import type { Product } from "@/features/products/types/productTypes"
 
-// Define the type for column visibility state
 export type ColumnVisibilityState = Record<string, boolean>
 
-// Define the column metadata for better display
 export interface ColumnMeta {
   id: string
   label: string
@@ -14,7 +12,6 @@ export interface ColumnMeta {
   canHide: boolean
 }
 
-// Define the column metadata for our product table
 export const PRODUCT_COLUMNS: ColumnMeta[] = [
   { id: "id_product", label: "ID", defaultVisible: true, canHide: true },
   { id: "product_name", label: "Producto", defaultVisible: true, canHide: false },
@@ -30,16 +27,10 @@ export const PRODUCT_COLUMNS: ColumnMeta[] = [
   { id: "actions", label: "Acciones", defaultVisible: true, canHide: false },
 ]
 
-// Storage key for persisting column visibility
 const STORAGE_KEY = "product-table-column-visibility"
 
-/**
- * Custom hook to manage column visibility with persistence
- */
 export function useColumnVisibility(table: Table<Product>) {
-  // Initialize state from localStorage or defaults
   const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>(() => {
-    // Try to load from localStorage
     try {
       const savedVisibility = localStorage.getItem(STORAGE_KEY)
       if (savedVisibility) {
@@ -49,19 +40,16 @@ export function useColumnVisibility(table: Table<Product>) {
       console.error("Error loading column visibility from localStorage:", error)
     }
 
-    // Fall back to defaults if localStorage fails or is empty
     return PRODUCT_COLUMNS.reduce((acc, column) => {
       acc[column.id] = column.defaultVisible
       return acc
     }, {} as ColumnVisibilityState)
   })
 
-  // Apply column visibility to the table when it changes
   useEffect(() => {
     table.setColumnVisibility(columnVisibility)
   }, [table, columnVisibility])
 
-  // Save to localStorage when visibility changes
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(columnVisibility))
@@ -70,7 +58,6 @@ export function useColumnVisibility(table: Table<Product>) {
     }
   }, [columnVisibility])
 
-  // Toggle a single column's visibility
   const toggleColumnVisibility = useCallback((columnId: string) => {
     setColumnVisibility((prev) => ({
       ...prev,
@@ -78,7 +65,6 @@ export function useColumnVisibility(table: Table<Product>) {
     }))
   }, [])
 
-  // Reset all columns to their default visibility
   const resetColumnVisibility = useCallback(() => {
     const defaultVisibility = PRODUCT_COLUMNS.reduce((acc, column) => {
       acc[column.id] = column.defaultVisible
@@ -88,7 +74,6 @@ export function useColumnVisibility(table: Table<Product>) {
     setColumnVisibility(defaultVisibility)
   }, [])
 
-  // Show all columns
   const showAllColumns = useCallback(() => {
     const allVisible = PRODUCT_COLUMNS.reduce((acc, column) => {
       if (column.canHide) {
@@ -103,7 +88,6 @@ export function useColumnVisibility(table: Table<Product>) {
     }))
   }, [])
 
-  // Hide all hideable columns
   const hideAllColumns = useCallback(() => {
     const allHidden = PRODUCT_COLUMNS.reduce((acc, column) => {
       if (column.canHide) {

@@ -5,7 +5,6 @@ export interface Department {
   departamnet_name: string;
 }
 
-// archivo de constantes
 export const departmentStatic: Department[] = [
   { id_departament: "0e939e27-4a74-4b2f-8d98-e64151b6f643", departamnet_name: "Cesar" },
   { id_departament: "ef8bb068-b929-422c-876f-07a4ebfc855f", departamnet_name: "Cundinamarca" },
@@ -55,21 +54,11 @@ export const typesDocument = [
 ]
 
 export type LocationName = "Sede Valledupar" | "Sede Bogota" | "Sede Palmira"
-
-/**
- * Represents a branch of the company.
- * 
- * @property {string} id_branch - Unique identifier for the branch.
- * @property {LocationName} name - The name of the branch, based on predefined locations.
- */
 export interface BranchInter {
   id_branch: string
   name: LocationName
 }
 
-/**
- * List of registered branches within the company.
- */
 export const BRANCHES: BranchInter[] = [
   { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", name: "Sede Bogota" },
   { id_branch: "90a2fc99-1ada-4797-b6c0-b132c5430f90", name: "Sede Valledupar" },

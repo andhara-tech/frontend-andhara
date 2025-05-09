@@ -5,7 +5,6 @@ export const formatCurrency = (value: number | null) => {
    }).format(value ?? 0);
 };
 
-// Función para formatear porcentajes
 export const formatPercent = (value: number) => {
    return `${value.toFixed(2)}%`;
 };

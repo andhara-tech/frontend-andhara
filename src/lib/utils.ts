@@ -5,21 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Represents sorting options for a list of products.
- * 
- * @property {string} field - Field name to sort by.
- * @property {"asc" | "desc"} direction - Sorting direction, either ascending or descending.
- */
 export interface SortOption {
   field: string
   direction: "asc" | "desc"
 }
-
-
-/**
- * Represents the possible names of company branches.
- */
 
 export const formaterDate = (date: string): string  =>{
   if(!date) return ""
