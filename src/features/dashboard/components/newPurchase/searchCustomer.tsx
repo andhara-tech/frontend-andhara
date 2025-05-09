@@ -1,10 +1,10 @@
 import * as React from "react"
 import { Loader2, User } from "lucide-react"
+import type { Customer } from "@/features/customer/types/customerTypes"
 
 import { Input } from "@/components/ui/input"
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
 import { FormControl } from "@/components/ui/form"
-import type { Customer } from "@/features/customer/types/customerTypes"
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { Label } from "@/components/ui/label"
 
