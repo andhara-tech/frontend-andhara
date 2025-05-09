@@ -18,7 +18,7 @@ const MainLayout = () => {
         isWaitingRef.current = true
         timeoutRef.current = setTimeout(() => {
           isWaitingRef.current = false
-        }, 1000) // Espera 1 segundo antes de permitir otra llamada
+        }, 1000)
       }
     }
 
