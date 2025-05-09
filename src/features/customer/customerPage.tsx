@@ -1,4 +1,4 @@
-import { CostumerTable } from "./customerTable";
+import { CostumerTable } from "@/features/customer/customerTable";
 
 const CustomerPage = () => {
   return (

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { formSchema } from '../schema/authSchema';
+import { formSchema } from '@/features/auth/schema/authSchema';
 import { useState } from 'react';
 import { useAuthStore } from '@/app/stores/authStore';
 

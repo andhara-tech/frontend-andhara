@@ -1,5 +1,5 @@
 import apiClient from "@/app/apiClient";
-import { RegisterResponse, UserRequest } from "../types/userTypes";
+import { RegisterResponse, UserRequest } from "@/features/auth/types/userTypes";
 
 export const UserService = {
   register: async (email: string, password: string, role: string) => {
