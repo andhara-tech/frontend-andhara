@@ -1,12 +1,12 @@
 import { useCustumerStore } from "@/app/stores/customerStore"
+import React, { useEffect, useRef, useState } from "react"
+import { typesDocument } from "@/shared/static"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { branchesStatic } from "@/shared/static"
-import { Search } from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
-import { typesDocument } from "@/shared/static"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
 
 export const CustomersFilters = () => {
   const { filters, search, setFilters, setSearch, isLoading, clearFilters, fetchCustomers } = useCustumerStore()

@@ -2,8 +2,6 @@ import apiClient from "@/app/apiClient";
 import { Customer, CustomerPurchase, CustomerRequest } from "@/features/customer/types/customerTypes";
 import { AxiosHeaders } from "axios";
 
-
-
 export const CustomerService = {
   getCustomers: async ({ search = "", skip = 0, limit = 100 } = {}): Promise<Customer[]> => {
     try {

@@ -1,4 +1,6 @@
 import { useCustumerStore } from "@/app/stores/customerStore";
+import { formaterDate } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,9 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency } from "@/lib/format";
-import { formaterDate } from "@/lib/utils";
-import { PurchaseSkeleton } from "../skeleton/productSkeleton";
+import { PurchaseSkeleton } from "@/features/customer/skeleton/productSkeleton";
 
 
 export const CustomerSheet = () => {
