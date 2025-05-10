@@ -11,6 +11,7 @@ import { TabsContent } from "@radix-ui/react-tabs"
 import { PurchaseFormDetails } from "@/features/dashboard/components/newPurchase/purchaseFormDetails"
 // import { useCustumerStore } from "@/app/stores/customerStore"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { PurchaseFormProducts } from "./newPurchase/purchaseProductSelector"
 
 export const NewPurchaseModal = () => {
   const { isOpen, setIsOpenModal, activeTab, setActiveTab } = usePurchaseStore()
@@ -71,7 +72,7 @@ export const NewPurchaseModal = () => {
                       <PurchaseFormDetails />
                     </TabsContent>
                     <TabsContent value="products">
-                      {/* <PurchaseFormProducts /> */}
+                      <PurchaseFormProducts />
                     </TabsContent>
                     <TabsContent value="summary">
                       {/* <PurchaseFormSummary /> */}

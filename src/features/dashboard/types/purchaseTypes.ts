@@ -17,3 +17,7 @@ export type FormValues = {
   deliveryComment: string
   deliveryCost: number
 }
+export type ProductSelected = {
+  id_product: string
+  unit_quantity: number
+}

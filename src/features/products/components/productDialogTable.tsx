@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ProductService } from "@/features/products/services/productService";
 import type { StockInfo } from "@/features/products/types/productTypes";
-import { BRANCHES } from "@/shared/static"; 
+import { BRANCHES } from "@/shared/static";
 import { useProductStore } from "@/app/stores/productStore";
 
 import { FormDescription } from "@/components/ui/form";
@@ -243,7 +243,7 @@ export const ProductDialog = () => {
                         )}
                      />
 
-                          <FormField
+                     <FormField
                         control={form.control}
                         name="id_supplier"
                         render={({ field }) => (
