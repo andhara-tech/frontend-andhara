@@ -10,21 +10,29 @@ export interface SortOption {
   direction: "asc" | "desc"
 }
 
-export const formaterDate = (date: string): string  =>{
-  if(!date) return ""
+export const formaterDate = (inputDate?: string | Date): string => {
   const months = [
     "ene", "feb", "mar", "abr", "may", "jun",
     "jul", "ago", "sep", "oct", "nov", "dic"
   ];
 
-  const [age, month, day] = date.split("-");
+  let dateObj: Date;
 
-  const numeroMes = parseInt(month, 10);
-  if (numeroMes < 1 || numeroMes > 12) {
-    throw new Error("Mes inválido en la fecha");
+  if (!inputDate) {
+    dateObj = new Date(); // usar fecha actual si no se da argumento
+  } else if (typeof inputDate === "string") {
+    const [year, month, day] = inputDate.split("-");
+    if (!year || !month || !day) {
+      throw new Error("Formato de fecha inválido. Usa 'YYYY-MM-DD'.");
+    }
+    dateObj = new Date(Number(year), Number(month) - 1, Number(day));
+  } else {
+    dateObj = inputDate;
   }
 
-  const nameMonth = months[numeroMes - 1];
+  const day = dateObj.getDate().toString().padStart(2, "0");
+  const month = months[dateObj.getMonth()];
+  const year = dateObj.getFullYear();
 
-  return `${day} ${nameMonth} ${age}`;
-}
+  return `${day} ${month} ${year}`;
+};
