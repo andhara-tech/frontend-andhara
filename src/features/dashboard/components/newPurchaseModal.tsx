@@ -12,10 +12,11 @@ import { PurchaseFormDetails } from "@/features/dashboard/components/newPurchase
 // import { useCustumerStore } from "@/app/stores/customerStore"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { PurchaseFormProducts } from "./newPurchase/purchaseProductSelector"
+import { useCustumerStore } from "@/app/stores/customerStore"
 
 export const NewPurchaseModal = () => {
   const { isOpen, setIsOpenModal, activeTab, setActiveTab } = usePurchaseStore()
-  // const { selectedCustomer } = useCustumerStore()
+  const { selectedCustomer } = useCustumerStore()
 
   const methods = useForm<PurchaseFormValue>({
     resolver: zodResolver(purchaseSchema),
@@ -33,10 +34,7 @@ export const NewPurchaseModal = () => {
     mode: "onChange", // Validar al cambiar para detectar errores temprano
   })
 
-  // const onSubmit = (data: PurchaseFormValue) => {
-  //   console.log("Form data:", data)
-  //   // Aquí puedes manejar el envío del formulario, como hacer una solicitud a la API
-  // }
+  const isSelectCustomer = selectedCustomer?.branch.id_branch ? false : true
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenModal}>
@@ -61,8 +59,8 @@ export const NewPurchaseModal = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-4">
                 <TabsTrigger value="details">Detalle</TabsTrigger>
-                <TabsTrigger value="products">Productos</TabsTrigger>
-                <TabsTrigger value="summary">Resumen</TabsTrigger>
+                <TabsTrigger disabled={isSelectCustomer} value="products">Productos</TabsTrigger>
+                <TabsTrigger disabled={isSelectCustomer} value="summary">Resumen</TabsTrigger>
               </TabsList>
               <FormProvider {...methods}>
                 <form className="space-y-4">
