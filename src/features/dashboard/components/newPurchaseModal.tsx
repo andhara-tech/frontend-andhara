@@ -9,10 +9,10 @@ import { ShoppingCart } from "lucide-react"
 import { PurchaseFormValue, purchaseSchema } from "@/features/dashboard/schema/purchaseSchema"
 import { TabsContent } from "@radix-ui/react-tabs"
 import { PurchaseFormDetails } from "@/features/dashboard/components/newPurchase/purchaseFormDetails"
-// import { useCustumerStore } from "@/app/stores/customerStore"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { PurchaseFormProducts } from "./newPurchase/purchaseProductSelector"
 import { useCustumerStore } from "@/app/stores/customerStore"
+import { PurchaseSumary } from "./newPurchase/purchaseSumary"
 
 export const NewPurchaseModal = () => {
   const { isOpen, setIsOpenModal, activeTab, setActiveTab } = usePurchaseStore()
@@ -23,15 +23,15 @@ export const NewPurchaseModal = () => {
     defaultValues: {
       customer_document: "",
       id_branch: "",
-      purchase_duration: 0,
+      purchase_duration: "",
       payment_type: "",
       payment_status: "",
-      remaining_balance: 0,
+      remaining_balance: "",
       delivery_type: "",
       delivery_comment: "",
-      delivery_cost: 0,
+      delivery_cost: "0",
     },
-    mode: "onChange", // Validar al cambiar para detectar errores temprano
+    mode: "onChange",
   })
 
   const isSelectCustomer = selectedCustomer?.branch.id_branch ? false : true
@@ -73,7 +73,7 @@ export const NewPurchaseModal = () => {
                       <PurchaseFormProducts />
                     </TabsContent>
                     <TabsContent value="summary">
-                      {/* <PurchaseFormSummary /> */}
+                      <PurchaseSumary />
                     </TabsContent>
                   </ScrollArea>
                 </form>
