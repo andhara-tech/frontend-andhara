@@ -7,6 +7,8 @@ import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@
 import { FormControl } from "@/components/ui/form"
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
 
 interface SearchCustomerProps {
   placeholder?: string
@@ -19,12 +21,7 @@ export function SearchCustomer({
   const [isFocused, setIsFocused] = React.useState(false)
 
   // Usar el store de Zustand
-  const { allCustomers, isLoading, fetchCustomers, setSearchWithDebounce, selectedCustomer, setSelectedCustomer } = useCustumerStore()
-
-  // Cargar clientes al montar el componente
-  React.useEffect(() => {
-    fetchCustomers()
-  }, [fetchCustomers])
+  const { allCustomers, isLoading, setSearchWithDebounce, selectedCustomer, setSelectedCustomer } = useCustumerStore()
 
   // Filtrar clientes según el término de búsqueda
   const filteredCustomers = React.useMemo(() => {
@@ -76,6 +73,7 @@ export function SearchCustomer({
           <Input
             id="customer"
             type="text"
+            autoComplete="off"
             placeholder={placeholder}
             value={getDisplayValue()}
             onChange={handleInputChange}
@@ -85,7 +83,7 @@ export function SearchCustomer({
       </div>
 
       {isFocused && (searchQuery || isLoading) && (
-        <div className="absolute z-10 mt-1 w-full rounded-md border bg-popover shadow-md">
+        <div className="absolute z-10 mt-1 max-w-[750px] w-full rounded-md border bg-popover shadow-md">
           {isLoading ? (
             <div className="flex items-center justify-center py-6">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -100,9 +98,10 @@ export function SearchCustomer({
                       key={customer.customer_document}
                       value={customer.customer_document}
                       onSelect={() => handleSelect(customer)}
+                      disabled={!customer.customer_state}
                       className="cursor-pointer"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-between w-full">
                         <User className="mr-2 h-4 w-4" />
                         <div className="flex flex-col">
                           <span>
@@ -112,7 +111,19 @@ export function SearchCustomer({
                             <span className="mr-2">Doc: {customer.customer_document}</span>
                           </div>
                         </div>
-                        <div className="ml-auto text-xs text-muted-foreground">{customer.branch.branch_name}</div>
+                        <Separator orientation="vertical" className="mx-2"/>
+                        <div className="ml-auto text-xs text-muted-foreground space-x-2">
+                          <span>{customer.branch.branch_name}</span>
+                          {customer.customer_state === false ? (
+                            <Badge variant="destructive">
+                              Inactivo
+                            </Badge>
+                          ): (
+                            <Badge variant="default">
+                              Activo
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </CommandItem>
                   ))}

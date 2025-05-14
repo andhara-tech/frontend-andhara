@@ -98,7 +98,7 @@ export const PurchaseFormDetails = () => {
               control={control}
               name="delivery_comment"
               render={({ field }) => (
-                <FormItem className="col-span-2">
+                <FormItem className="md:col-span-2">
                   <FormLabel>Comentario de Entrega</FormLabel>
                   <FormControl>
                     <Textarea

@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 export const purchaseSchema = z.object({
-  customer_document: z.string().min(1, "El documento del cliente es requerido"),
-  id_branch: z.string().min(1, "Branch is required"),
   purchase_duration: z.string().optional(),
   payment_type: z.string().min(1, "Payment type is required"),
   payment_status: z.string().min(1, "Payment status is required"),

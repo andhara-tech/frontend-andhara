@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ShoppingCart } from "lucide-react"
 import { PurchaseFormValue, purchaseSchema } from "@/features/dashboard/schema/purchaseSchema"
@@ -13,16 +13,16 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { PurchaseFormProducts } from "./newPurchase/purchaseProductSelector"
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { PurchaseSumary } from "./newPurchase/purchaseSumary"
+import { toast } from "sonner"
+import { PurchaseRequest } from "../types/purchaseTypes"
 
 export const NewPurchaseModal = () => {
-  const { isOpen, setIsOpenModal, activeTab, setActiveTab } = usePurchaseStore()
+  const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase } = usePurchaseStore()
   const { selectedCustomer } = useCustumerStore()
 
-  const methods = useForm<PurchaseFormValue>({
+  const form = useForm<PurchaseFormValue>({
     resolver: zodResolver(purchaseSchema),
     defaultValues: {
-      customer_document: "",
-      id_branch: "",
       purchase_duration: "",
       payment_type: "",
       payment_status: "",
@@ -35,6 +35,30 @@ export const NewPurchaseModal = () => {
   })
 
   const isSelectCustomer = selectedCustomer?.branch.id_branch ? false : true
+
+  const onSubmit = async (data: PurchaseFormValue) => {
+    try {
+      const finalData: PurchaseRequest = {
+        customer_document: selectedCustomer?.customer_document || "",
+        id_branch: selectedCustomer?.branch.id_branch || "",
+        purchase_duration: Number(data.purchase_duration),
+        payment_type: data.payment_type,
+        payment_status: data.payment_status,
+        remaining_balance: Number(data.remaining_balance),
+        delivery_type: data.delivery_type,
+        delivery_comment: data.delivery_comment,
+        delivery_cost: Number(data.delivery_cost),
+        products: selectedProducts,
+      }
+      await createPurchase(finalData)
+      toast.success("Venta creada con éxito")
+      setIsOpenModal(false)
+      form.reset()
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Error al crear la venta"
+      toast.error(errorMessage || "Error al crear la venta")
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenModal}>
@@ -62,8 +86,8 @@ export const NewPurchaseModal = () => {
                 <TabsTrigger disabled={isSelectCustomer} value="products">Productos</TabsTrigger>
                 <TabsTrigger disabled={isSelectCustomer} value="summary">Resumen</TabsTrigger>
               </TabsList>
-              <FormProvider {...methods}>
-                <form className="space-y-4">
+              <FormProvider {...form}>
+                <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
                   <ScrollArea className="h-[500px] w-full p-1">
 
                     <TabsContent value="details">
@@ -76,6 +100,14 @@ export const NewPurchaseModal = () => {
                       <PurchaseSumary />
                     </TabsContent>
                   </ScrollArea>
+                  <DialogFooter>
+                    <Button type="submit" disabled={isSelectCustomer}>
+                      Crear Venta
+                    </Button>
+                    <Button type="button" variant="outline" onClick={() => setIsOpenModal(false)}>
+                      Cancelar
+                    </Button>
+                  </DialogFooter>
                 </form>
               </FormProvider>
             </Tabs>

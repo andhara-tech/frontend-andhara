@@ -21,3 +21,16 @@ export type ProductSelected = {
   id_product: string
   unit_quantity: number
 }
+
+export interface PurchaseRequest {
+  customer_document: string
+  id_branch: string
+  purchase_duration: number,
+  payment_type: string
+  payment_status: string
+  remaining_balance: number
+  delivery_type: string
+  delivery_comment?: string
+  delivery_cost: number
+  products: ProductSelected[]
+} 

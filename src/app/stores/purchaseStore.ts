@@ -1,10 +1,13 @@
-import { ProductSelected } from "@/features/dashboard/types/purchaseTypes";
+import { purchaseService } from "@/features/dashboard/service/purchaseService";
+import { ProductSelected, PurchaseRequest } from "@/features/dashboard/types/purchaseTypes";
 import { create } from "zustand";
 
 interface saleSate {
   isOpen: boolean;
   activeTab: string;
   selectedProducts: ProductSelected[];
+
+  createPurchase: (data: PurchaseRequest) => void;
 
   addOrUpdateProduct: (productId: string) => void;
   removeUnitFromProduct: (productId: string) => void;
@@ -21,6 +24,16 @@ export const usePurchaseStore = create<saleSate>((set) => ({
   isOpen: false,
   activeTab: "details",
   selectedProducts: [],
+
+  createPurchase: async (data: PurchaseRequest) => {
+    try {
+      const response = await purchaseService.createPurchase(data);
+      return response;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Error al crear la venta";
+      throw new Error(errorMessage);
+    }
+  },
 
 
   addOrUpdateProduct: (productId: string) =>
