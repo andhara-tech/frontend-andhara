@@ -1,8 +1,9 @@
 import { Row } from "@tanstack/react-table";
-import { Customer } from "../types/customerTypes";
-import { useCustumerStore } from "@/app/stores/customerStore";
 import { formaterDate } from "@/lib/utils";
 import { toast } from "sonner";
+import { usePurchaseStore } from "@/app/stores/purchaseStore";
+import { Customer } from "@/features/customer/types/customerTypes";
+import { useCustumerStore } from "@/app/stores/customerStore";
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
@@ -13,7 +14,8 @@ interface CustomerActionsProps {
 
 export const CustomerActions = ({row}: CustomerActionsProps) => {
   const customer = row.original
-  const {openEditDialog, openDeleteDialog, toggleCustomerState } = useCustumerStore()
+  const {openEditDialog, openDeleteDialog, toggleCustomerState, setSelectedCustomer } = useCustumerStore()
+  const {setIsOpenModal} = usePurchaseStore()
 
   const handleToggleCustomerState = async (document: string) => {
     try {
@@ -22,6 +24,16 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
     }catch (error) {
       console.error("Error toggling customer state:", error)
       toast.error("Error al cambiar el estado del cliente")
+    }
+  }
+
+  const handleNewPurchaseWithCustomer = async () => {
+    try {
+      setSelectedCustomer(customer)
+      setIsOpenModal(true)
+    } catch (error) {
+      console.error("Error opening purchase modal:", error)
+      toast.error("Error al abrir el modal de compra")
     }
   }
 
@@ -39,7 +51,7 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
           <Edit className="mr-2 h-4 w-4" />
           Editar
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => openEditDialog(customer)}>
+        <DropdownMenuItem onClick={() => handleNewPurchaseWithCustomer()}>
           <ShoppingCart className="mr-2 h-4 w-4" />
           Agregar venta
         </DropdownMenuItem>

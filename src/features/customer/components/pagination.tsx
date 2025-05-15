@@ -1,23 +1,22 @@
-import { useCustumerStore } from "@/app/stores/customerStore" 
-import { Button } from "@/components/ui/button"
+import { useCustumerStore } from "@/app/stores/customerStore"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 
 export const Pagination = () => {
-  const { pageIndex, pageSize, total, pageCount, setPageIndex, setPageSize, isLoading } = useCustumerStore()
-  const currentPage = pageIndex + 1
-  const fromItem = pageIndex * pageSize + 1
+  const { pageIndex, pageSize, total, setPageIndex, setPageSize, isLoading, fetchCustomers } = useCustumerStore()
+  const fromItem = total > 0 ? pageIndex * pageSize + 1 : 0
   const toItem = Math.min((pageIndex + 1) * pageSize, total)
 
-  const handlePageChange = (page: number) => {
-    if (page < 1 || page > pageCount || isLoading) return
-    setPageIndex(page - 1)
-  }
 
-  const handlePageSizeChange = (size: number) => {
-    if (isLoading) return
-    setPageSize(size)
-  }
+const handlePageSizeChange = (size: number) => {
+  if (isLoading) return
+
+  setPageSize(size)
+  setPageIndex(0)
+  fetchCustomers({
+    skip: 0,
+    limit: size,
+  })
+}
   return (
     <section className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 py-4">
       <div className="text-sm text-muted-foreground">
@@ -49,51 +48,6 @@ export const Pagination = () => {
               ))}
             </SelectContent>
           </Select>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => handlePageChange(1)}
-            disabled={currentPage === 1 || isLoading}
-          >
-            <ChevronsLeft className="h-4 w-4" />
-            <span className="sr-only">Primera página</span>
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1 || isLoading}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Página anterior</span>
-          </Button>
-          <span className="text-sm">
-            Página {currentPage} de {pageCount || 1}
-          </span>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === pageCount || pageCount === 0 || isLoading}
-          >
-            <ChevronRight className="h-4 w-4" />
-            <span className="sr-only">Página siguiente</span>
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => handlePageChange(pageCount)}
-            disabled={currentPage === pageCount || pageCount === 0 || isLoading}
-          >
-            <ChevronsRight className="h-4 w-4" />
-            <span className="sr-only">Última página</span>
-          </Button>
         </div>
       </div>
     </section>

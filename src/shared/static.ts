@@ -67,7 +67,7 @@ export const BRANCHES: BranchInter[] = [
 
 
 export const DELIVERY_TYPES = [
-  { name: "Recogida en Sede" },
+  { name: "Recoger en Sede" },
   { name: "Domicilio Bogotá" },
   { name: "Servientrega" },
   { name: "Rappi" },

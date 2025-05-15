@@ -1,12 +1,13 @@
-import * as React from "react"
-import { Loader2, User } from "lucide-react"
+import { useEffect, useState } from "react"
 import type { Customer } from "@/features/customer/types/customerTypes"
-
-import { Input } from "@/components/ui/input"
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
-import { FormControl } from "@/components/ui/form"
 import { useCustumerStore } from "@/app/stores/customerStore"
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
+import { Input } from "@/components/ui/input"
+import { FormControl } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { Loader2, User } from "lucide-react"
 
 interface SearchCustomerProps {
   placeholder?: string
@@ -15,76 +16,49 @@ interface SearchCustomerProps {
 export function SearchCustomer({
   placeholder = "Buscar cliente...",
 }: SearchCustomerProps) {
-  const [searchQuery, setSearchQuery] = React.useState("")
-  const [isFocused, setIsFocused] = React.useState(false)
+  const [inputValue, setInputValue] = useState("")
+  const [isFocused, setIsFocused] = useState(false)
 
-  // Usar el store de Zustand
-  const { allCustomers, isLoading, fetchCustomers, setSearchWithDebounce, selectedCustomer, setSelectedCustomer } = useCustumerStore()
+  const {
+    isLoading,
+    setSearchWithDebounce,
+    setSelectedCustomer,
+    filteredCustomers,
+  } = useCustumerStore()
 
-  // Cargar clientes al montar el componente
-  React.useEffect(() => {
-    fetchCustomers()
-  }, [fetchCustomers])
 
-  // Filtrar clientes según el término de búsqueda
-  const filteredCustomers = React.useMemo(() => {
-    if (!searchQuery) return []
-
-    const query = searchQuery.toLowerCase()
-    return allCustomers.filter(
-      (customer) =>
-        customer.customer_first_name.toLowerCase().includes(query) ||
-        customer.customer_last_name.toLowerCase().includes(query) ||
-        customer.customer_document.includes(query),
-    )
-  }, [searchQuery, allCustomers])
-
-  // Manejar cambios en la búsqueda con debounce
-  React.useEffect(() => {
-    if (searchQuery) {
-      setSearchWithDebounce(searchQuery)
+  useEffect(() => {
+    if(inputValue) {
+      setSearchWithDebounce(inputValue)
     }
-  }, [searchQuery, setSearchWithDebounce])
+  }, [inputValue])
 
-  // Manejar selección
   const handleSelect = (customer: Customer) => {
     setSelectedCustomer(customer)
-    setSearchQuery(`${customer.customer_first_name} ${customer.customer_last_name}`)
+    setSearchWithDebounce(`${customer.customer_first_name} ${customer.customer_last_name}`)
     setIsFocused(false)
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value)
-    if (e.target.value === "") {
-      setSelectedCustomer(null)
-    }
-  }
-
-  // Formatear para mostrar en campo de búsqueda al seleccionar
-  const getDisplayValue = () => {
-    if (selectedCustomer) {
-      return `${selectedCustomer.customer_first_name} ${selectedCustomer.customer_last_name}`
-    }
-    return searchQuery
-  }
-
   return (
-    <div>
+    <div className="col-span-2">
       <div >
         <Label htmlFor="customer" className="mb-2">Cliente</Label>
         <FormControl>
           <Input
             id="customer"
             type="text"
+            autoComplete="off"
             placeholder={placeholder}
-            value={getDisplayValue()}
-            onChange={handleInputChange}
+            onChange={(e) => {
+              setInputValue(e.target.value)
+              setIsFocused(!!e.target.value)
+            }}
             onFocus={() => setIsFocused(true)}
           />
         </FormControl>
       </div>
 
-      {isFocused && (searchQuery || isLoading) && (
+      {isFocused && (inputValue || isLoading) && (
         <div className="absolute z-10 mt-1 w-full rounded-md border bg-popover shadow-md">
           {isLoading ? (
             <div className="flex items-center justify-center py-6">
@@ -95,14 +69,15 @@ export function SearchCustomer({
               <CommandList>
                 <CommandEmpty>No se enctraron resultados</CommandEmpty>
                 <CommandGroup>
-                  {filteredCustomers.map((customer) => (
+                  {(filteredCustomers ?? []).map((customer) => (
                     <CommandItem
                       key={customer.customer_document}
                       value={customer.customer_document}
                       onSelect={() => handleSelect(customer)}
+                      disabled={!customer.customer_state}
                       className="cursor-pointer"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center justify-between w-full">
                         <User className="mr-2 h-4 w-4" />
                         <div className="flex flex-col">
                           <span>
@@ -112,7 +87,19 @@ export function SearchCustomer({
                             <span className="mr-2">Doc: {customer.customer_document}</span>
                           </div>
                         </div>
-                        <div className="ml-auto text-xs text-muted-foreground">{customer.branch.branch_name}</div>
+                        <Separator orientation="vertical" className="mx-2" />
+                        <div className="ml-auto text-xs text-muted-foreground space-x-2">
+                          <span>{customer.branch.branch_name}</span>
+                          {customer.customer_state === false ? (
+                            <Badge variant="destructive">
+                              Inactivo
+                            </Badge>
+                          ) : (
+                            <Badge variant="default">
+                              Activo
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </CommandItem>
                   ))}

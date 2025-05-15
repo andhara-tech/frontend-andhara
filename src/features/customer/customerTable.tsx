@@ -58,9 +58,9 @@ export const CostumerTable = () => {
         pageSize,
       },
     },
-    manualPagination: true,
-    manualSorting: true,
-    pageCount: -1,
+    manualPagination: false,
+    manualSorting: false,
+    pageCount: Math.ceil(displayedCustomers.length / pageSize),
   })
 
   return (

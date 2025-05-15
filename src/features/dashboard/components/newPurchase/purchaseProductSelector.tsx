@@ -1,16 +1,22 @@
+import { useEffect } from "react"
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { useProductStore } from "@/app/stores/productStore"
+import { formatCurrency } from "@/lib/format"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { formatCurrency } from "@/lib/format"
-import { Package } from "lucide-react"
-import { useEffect } from "react"
+import { MinusCircle, Package, PlusCircle } from "lucide-react"
+import { SelectedProdcutsCard } from "@/features/dashboard/components/newPurchase/selectedProductsCards"
 
 export const PurchaseFormProducts = () => {
   const { selectedCustomer } = useCustumerStore()
   const { fetchProducts, allProducts, isLoading } = useProductStore()
-  const { setSelectedProducts } = usePurchaseStore()
+  const { addOrUpdateProduct, removeUnitFromProduct, selectedProducts, closeModal, setActiveTab} = usePurchaseStore()
+
+  const handleNext = () => {
+    setActiveTab("summary")
+  }
 
   const selectedBranch = selectedCustomer?.branch.id_branch
 
@@ -19,17 +25,12 @@ export const PurchaseFormProducts = () => {
     return branchStock ? branchStock.quantity : 0;
   };
 
-  const handleProductSelect = (product: { id_product: string; unit_quantity: number }) => {
-    setSelectedProducts([product])
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       await fetchProducts()
     }
     fetchData()
   }, [])
-
 
   return (
     <>
@@ -74,8 +75,34 @@ export const PurchaseFormProducts = () => {
                             getStockByBranch(product) > 5 ? "default" : "destructive"
                           } >{getStockByBranch(product)}</Badge>
                         ) : (
-                          <Badge className="text-sm text-red-500">Sin Stock</Badge>
+                          <Badge className="text-sm">Sin Stock</Badge>
                         )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {
+                          selectedProducts.some((p) => p.id_product === product.id_product) && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={() => removeUnitFromProduct(product?.id_product || "")}
+                            >
+                              <MinusCircle className="h-3 w-3" />
+                              <span className="sr-only">Disminuir</span>
+                            </Button>
+                          )
+                        }
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => addOrUpdateProduct(product?.id_product || "")}
+                        >
+                          <PlusCircle className="h-3 w-3 text-slate-600" />
+                          <span className="sr-only">Aumentar</span>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
@@ -84,6 +111,26 @@ export const PurchaseFormProducts = () => {
             </Table>
           </div>
         </div>
+        <SelectedProdcutsCard />
+        </div>
+        <div className="flex items-center justify-end gap-2 mt-4">
+          <Button
+            variant="outline"
+            type="button"
+            className="mt-4"
+            onClick={closeModal}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="default"
+            className="mt-4"
+            type="button"
+            disabled={selectedProducts.length === 0}
+            onClick={handleNext}
+          >
+            Siguiente
+          </Button>
       </div>
     </>
   )

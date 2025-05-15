@@ -12,7 +12,8 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
-import { Loader2 } from "lucide-react"
+import { Loader2, UserPen, UserPlus } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
 
 export const CustomerDialog = () => {
   const {
@@ -124,12 +125,16 @@ export const CustomerDialog = () => {
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="text-center">
+          <DialogTitle className="flex items-center gap-2">
+            {isEditing 
+            ? <UserPen className="w-6 h-6 text-primary" />
+            : <UserPlus className="w-6 h-6 text-primary"/>}
             {isEditing ? "Editar Cliente" : "Crear Cliente"}
           </DialogTitle>
           <DialogDescription>
             {isEditing ? "Modifique los detalles del cliente." : "Ingrese los detalles del nuevo cliente."}
           </DialogDescription>
+          <Separator className="my-2"/>
         </DialogHeader>
         <Form {...form}>
           <form

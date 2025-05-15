@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { CustomerService } from "@/features/customer/services/customerService";
-import { Customer, CustomerPurchase, CustomerRequest, CustomerTableFilters} from "@/features/customer/types/customerTypes";
-import { SortOption } from "@/lib/utils";
+import { Customer, CustomerPurchase, CustomerRequest, CustomerTableFilters } from "@/features/customer/types/customerTypes";
+import { getValueByPath, SortOption } from "@/lib/utils";
 import debounce from "lodash.debounce";
 
 interface CustomerState {
@@ -29,9 +29,9 @@ interface CustomerState {
   sheetCustomer: Customer | null
   sheetOpen: boolean
   customerPurchase: CustomerPurchase | null
-  
 
-  fetchCustomers: (params?: {search?: string, skip?: number, limit?:number}) => Promise<void>
+
+  fetchCustomers: (params?: { search?: string, skip?: number, limit?: number }) => Promise<void>
   createCustomer: (customer: CustomerRequest) => Promise<void>
   updateCustomer: (customer: CustomerRequest) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
@@ -109,38 +109,40 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   selectedCustomer: null,
   customerIdToDelete: null,
 
-  fetchCustomers: async () => {
+  fetchCustomers: async (params) => {
     set({ isLoading: true, error: null })
     try {
-      const { search } = get()
+      const { search = get().search, skip, limit } = params || {};
+      const pageIndex = get().pageIndex;
+      const pageSize = get().pageSize;
       const customers = await CustomerService.getCustomers({
         search,
-        skip: get().pageIndex * get().pageSize,
-        limit: get().pageSize,
+        skip: skip !== undefined ? skip : pageIndex * pageSize,
+        limit: limit !== undefined ? limit : pageSize,
       })
 
       set({
         allCustomers: customers,
         total: customers.length,
-        pageCount: Math.ceil(customers.length / get().pageSize),
+        pageCount: Math.ceil(customers.length / pageSize),
       })
 
       get().applyFilters()
-      set({isLoading: false})
+      set({ isLoading: false })
     } catch (error) {
-      set({ error: "Error fetching customers" })
+      set({ error: "Error fetching customers", isLoading: false })
     }
   },
-  fetchCustomerPurchase: async(document) => {
+  fetchCustomerPurchase: async (document) => {
     set({ isLoading: true, error: null })
-    try{
+    try {
       const response = await CustomerService.getCustomerPurchase(document)
       set({
         isLoading: false,
         customerPurchase: response,
       })
-    }catch (error){
-      set({error: "Error fetching customers"})
+    } catch (error) {
+      set({ error: "Error fetching customers" })
     }
   },
   createCustomer: async (customer) => {
@@ -173,7 +175,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
 
       get().applyFilters()
       get().closeEditDialog()
-      
+
     } catch (error) {
       set({ error: "Error updating customer" })
     } finally {
@@ -217,7 +219,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       customerPurchase: null
     })
   },
-  
+
   setFilters: (newFilter) => {
     set((state) => ({
       filters: { ...state.filters, ...newFilter },
@@ -227,10 +229,11 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   },
   clearFilters: () => {
     set({
-      filters: {...initialFilters},
+      filters: { ...initialFilters },
       search: "",
       sort: undefined,
       pageIndex: 0,
+      selectedCustomer: null,
     })
     get().applyFilters()
   },
@@ -241,12 +244,12 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   },
 
   setSearchWithDebounce: (search) => {
-    set({search})
+    set({ search })
     debouncedSearch(search, set, get)
   },
 
   setSort: (sort) => {
-    set({ sort, pageIndex: 0 })
+    set({ sort })
     get().applyFilters()
   },
 
@@ -260,24 +263,24 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   },
   openEditDialog: (customer) => {
     console.log(customer)
-    set({ 
-      selectedCustomer: customer, 
-      editDialogOpen: true 
+    set({
+      selectedCustomer: customer,
+      editDialogOpen: true
     })
   },
   openNewCustomerDialog: () => {
     set({ newCustomerDialogOpen: true })
   },
   openDeleteDialog: (customerId) => {
-    set({ 
-      customerIdToDelete: customerId, 
-      deleteDialogOpen: true 
+    set({
+      customerIdToDelete: customerId,
+      deleteDialogOpen: true
     })
   },
   closeEditDialog: () => {
-    set({ 
-      selectedCustomer: null, 
-      editDialogOpen: false 
+    set({
+      selectedCustomer: null,
+      editDialogOpen: false
     })
   },
   closeNewCustomerDialog: () => {
@@ -343,7 +346,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       )
     }
 
-    if(filters.document_type){
+    if (filters.document_type) {
       const docType = filters.document_type.trim()
 
       filtered = filtered.filter((d) =>
@@ -374,13 +377,13 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
         c.branch.id_branch.toLowerCase().includes(branchFilter.toLowerCase())
       )
     }
-     if(filters.branch?.branch_name){
-       const brachFilter = filters.branch.branch_name.toLowerCase()
+    if (filters.branch?.branch_name) {
+      const brachFilter = filters.branch.branch_name.toLowerCase()
 
       filtered = filtered.filter((c) =>
-        c.branch.branch_name.toLowerCase().includes(brachFilter.toLowerCase())  
+        c.branch.branch_name.toLowerCase().includes(brachFilter.toLowerCase())
       )
-     }
+    }
 
     if (search) {
       const searchFilter = search.trim().toLowerCase()
@@ -426,8 +429,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     if (!sort) return customers
 
     return [...customers].sort((a, b) => {
-      const aValue = a[sort.field as keyof Customer]
-      const bValue = b[sort.field as keyof Customer]
+      const aValue = getValueByPath(a, sort.field)
+      const bValue = getValueByPath(b, sort.field)
 
       if (aValue == null || bValue == null) return 0
       if (aValue < bValue) return sort.direction === "asc" ? -1 : 1
@@ -438,13 +441,16 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
 }))
 
 
-const debouncedSearch = debounce(async (search: string, set: any, get : any) =>{
-  set({isLoading: true})
-
-  try{
-    const result = await get().fetchCustomers({search})
-    set({filteredCustomers: result, isLoading: false})
-  }catch (error){
-    set({error: "Error fetching customers"})
+const debouncedSearch = debounce(async (search: string, set: any, get: any) => {
+  set({ isLoading: true })
+  try {
+    const result = await get().fetchCustomers({ search })
+    if (!Array.isArray(result)) {
+      set({ error: "Error fetching customers" })
+      return
+    }
+    set({ filteredCustomers: result, isLoading: false })
+  } catch (error) {
+    set({ error: "Error fetching customers" })
   }
 }, 500) 
