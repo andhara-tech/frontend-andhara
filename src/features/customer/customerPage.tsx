@@ -1,9 +1,11 @@
 import { CostumerTable } from "@/features/customer/customerTable";
+import { NewPurchaseModal } from "../dashboard/components/newPurchaseModal";
 
 const CustomerPage = () => {
   return (
     <section>
       <CostumerTable />
+      <NewPurchaseModal/>
     </section>
   );
 }

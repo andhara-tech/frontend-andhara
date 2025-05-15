@@ -63,12 +63,6 @@ export const NewPurchaseModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenModal}>
-      <DialogTrigger asChild>
-        <Button variant="default" className="gap-2">
-          <ShoppingCart className="h-4 w-4" />
-          Nueva Venta
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[1100px]">
         <DialogTitle> </DialogTitle>
         <DialogDescription> </DialogDescription>

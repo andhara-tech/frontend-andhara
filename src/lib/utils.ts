@@ -36,3 +36,8 @@ export const formaterDate = (inputDate?: string | Date): string => {
 
   return `${day} ${month} ${year}`;
 };
+
+
+export const getValueByPath = (obj: any, path: string) => {
+  return path.split('.').reduce((acc, part) => acc?.[part], obj);
+}
