@@ -1,11 +1,11 @@
 import { formaterDate, SortOption } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown} from "lucide-react"
-import { Customer } from "../types/customerTypes"
-import { Button } from "@/components/ui/button"
+import { Customer } from "@/features/customer/types/customerTypes"
 import { formatCurrency } from "@/lib/format"
+import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { CustomerActions, CustomerDataAction } from "./customerActions"
+import { CustomerActions, CustomerDataAction } from "@/features/customer/components/customerActions"
+import { ArrowUpDown} from "lucide-react"
 
 interface ColumnOptions {
   onSort: (field: string) => void

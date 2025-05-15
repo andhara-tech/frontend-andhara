@@ -5,37 +5,39 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Represents sorting options for a list of products.
- * 
- * @property {string} field - Field name to sort by.
- * @property {"asc" | "desc"} direction - Sorting direction, either ascending or descending.
- */
 export interface SortOption {
   field: string
   direction: "asc" | "desc"
 }
 
-
-/**
- * Represents the possible names of company branches.
- */
-
-export const formaterDate = (date: string): string  =>{
-  if(!date) return ""
+export const formaterDate = (inputDate?: string | Date): string => {
   const months = [
-    "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-    "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
+    "ene", "feb", "mar", "abr", "may", "jun",
+    "jul", "ago", "sep", "oct", "nov", "dic"
   ];
 
-  const [age, month, day] = date.split("-");
+  let dateObj: Date;
 
-  const numeroMes = parseInt(month, 10);
-  if (numeroMes < 1 || numeroMes > 12) {
-    throw new Error("Mes inválido en la fecha");
+  if (!inputDate) {
+    dateObj = new Date(); // usar fecha actual si no se da argumento
+  } else if (typeof inputDate === "string") {
+    const [year, month, day] = inputDate.split("-");
+    if (!year || !month || !day) {
+      throw new Error("Formato de fecha inválido. Usa 'YYYY-MM-DD'.");
+    }
+    dateObj = new Date(Number(year), Number(month) - 1, Number(day));
+  } else {
+    dateObj = inputDate;
   }
 
-  const nameMonth = months[numeroMes - 1];
+  const day = dateObj.getDate().toString().padStart(2, "0");
+  const month = months[dateObj.getMonth()];
+  const year = dateObj.getFullYear();
 
-  return `${day}/${nameMonth}/${age}`;
+  return `${day} ${month} ${year}`;
+};
+
+
+export const getValueByPath = (obj: any, path: string) => {
+  return path.split('.').reduce((acc, part) => acc?.[part], obj);
 }

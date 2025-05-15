@@ -2,6 +2,7 @@ import { notifications } from "@/shared/dataNotification"
 
 import { SidebarTrigger } from "./ui/sidebar"
 import { Separator } from "@radix-ui/react-separator"
+import { BellDot, Settings } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +12,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "./ui/button"
-import { BellDot, Settings } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import RegisterForm from "@/features/auth/components/RegisterForm"
+import { formaterDate } from "@/lib/utils"
+import { Badge } from "./ui/badge"
 
 const SiteHeader = () => {
+
+  const date = formaterDate( new Date())
+
   return (
     <header className="group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear">
       <div className="flex w-full items-center justify-between gap-1 px-4 lg:gap-2 lg:px-6">
@@ -25,6 +30,9 @@ const SiteHeader = () => {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <div className="flex items-center gap-2 lg:gap-4">
+          <Badge>
+            {date}
+          </Badge>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0 data-[state=open]:bg-muted">

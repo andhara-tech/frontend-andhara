@@ -1,4 +1,5 @@
 import { useRegisterStore } from "@/app/stores/registerStore"
+import { useEffect } from "react"
 import {
   Table,
   TableBody,
@@ -8,8 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useEffect } from "react"
-// import { DeleteUser } from "./deleteUser"
 
 const UserTable = () => {
   const { getUsers, users, isLoading} = useRegisterStore()
@@ -37,9 +36,6 @@ const UserTable = () => {
               {user.role}
             </TableCell>
             <TableCell className="text-right">
-              {/* <DeleteUser
-                userId={user.id}
-              /> */}
             </TableCell>
           </TableRow>
         ))}

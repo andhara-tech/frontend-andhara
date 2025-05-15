@@ -1,9 +1,9 @@
+import { useEffect, useRef } from "react"
+import { Outlet } from "react-router-dom"
 import AppSidebar from "@/components/appSidebar"
 import SiteHeader from "@/components/siteHeader"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { Outlet } from "react-router-dom"
 import { useAuthStore } from "@/app/stores/authStore"
-import { useEffect, useRef } from "react"
 
 const MainLayout = () => {
   const { setLastActive } = useAuthStore()
@@ -18,7 +18,7 @@ const MainLayout = () => {
         isWaitingRef.current = true
         timeoutRef.current = setTimeout(() => {
           isWaitingRef.current = false
-        }, 1000) // Espera 1 segundo antes de permitir otra llamada
+        }, 1000)
       }
     }
 

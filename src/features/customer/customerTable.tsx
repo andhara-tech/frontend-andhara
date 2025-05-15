@@ -1,26 +1,26 @@
 import { useCustumerStore } from "@/app/stores/customerStore"
+import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
+import { useEffect, useMemo, useState } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useEffect, useMemo, useState } from "react"
-import { getColumns } from "./components/columns"
-import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { Loader2 } from "lucide-react"
-import { Pagination } from "./components/pagination"
-import { CustomersFilters } from "./components/custumerFilters"
-import { CustomerDialog } from "./components/customerDialog"
-import { ProductTableToolbar } from "./components/customerTableToolbar"
-import { CustomerSheet } from "./components/customerSheet"
+import { getColumns } from "@/features/customer/components/columns"
+import { Pagination } from "@/features/customer/components/pagination"
+import { CustomersFilters } from "@/features/customer/components/custumerFilters"
+import { CustomerDialog } from "@/features/customer/components/customerDialog"
+import { ProductTableToolbar } from "@/features/customer/components/customerTableToolbar"
+import { CustomerSheet } from "@/features/customer/components/customerSheet"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const CostumerTable = () => {
-  const { 
-    fetchCustomers, 
-    displayedCustomers, 
-    isLoading, 
-    error, 
-    pageIndex, 
-    pageSize ,
-    sort, 
+  const {
+    fetchCustomers,
+    displayedCustomers,
+    isLoading,
+    error,
+    pageIndex,
+    pageSize,
+    sort,
     setSort
   } = useCustumerStore()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -58,9 +58,9 @@ export const CostumerTable = () => {
         pageSize,
       },
     },
-    manualPagination: true,
-    manualSorting: true,
-    pageCount: -1,
+    manualPagination: false,
+    manualSorting: false,
+    pageCount: Math.ceil(displayedCustomers.length / pageSize),
   })
 
   return (
@@ -93,13 +93,16 @@ export const CostumerTable = () => {
                           <TableHead
                             key={header.id}
                             className="whitespace-nowrap">
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )
-                            }
+                            {isLoading ? (
+                              <Skeleton className="h-6 w-full max-w-[120px]" />
+                            ) : (
+                              header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )
+                            )}
                           </TableHead>
                         ))}
                       </TableRow>
@@ -114,10 +117,7 @@ export const CostumerTable = () => {
                             table.getVisibleLeafColumns().length
                           }
                           className="h-24 text-center">
-                          <div className="flex justify-center items-center">
-                            <Loader2 className="h-6 w-4 animate-spin mr-2" />
-                            Cargando productos ...
-                          </div>
+                          <Skeleton className="h-10 w-full" />
                         </TableCell>
                       </TableRow>
                     ) : table.getRowModel().rows?.length ? (
@@ -157,7 +157,7 @@ export const CostumerTable = () => {
       </Card>
       <CustomerDialog />
       <CustomerSheet />
-      
+
       {/* <DeleteAlert /> */}
     </section>
   )

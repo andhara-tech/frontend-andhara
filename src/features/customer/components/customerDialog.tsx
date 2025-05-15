@@ -1,17 +1,19 @@
 import { useCustumerStore } from "@/app/stores/customerStore"
-import { useForm } from "react-hook-form"
-import { customerEschema, CustomerFormValue } from "@/features/customer/schema/customerSchema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { branchesStatic, typesDocument } from "@/shared/static"
 import { useEffect } from "react"
+import { branchesStatic, typesDocument } from "@/shared/static"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { DialogDescription } from "@/components/ui/dialog"
+import { customerEschema, CustomerFormValue } from "@/features/customer/schema/customerSchema"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DialogDescription } from "@radix-ui/react-dialog"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
+import { Loader2, UserPen, UserPlus } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
 
 export const CustomerDialog = () => {
   const {
@@ -98,6 +100,7 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
+        toast.success("Cliente actualizado correctamente")
       } else {
         await createCustomer({
           customer_document: data.customer_document,
@@ -110,9 +113,11 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
+        toast.success("Cliente creado correctamente")
       }
     } catch (error) {
       console.error("Error updating customer:", error)
+      toast.error("Error al crear o actualizar el cliente")
     }
   }
 
@@ -120,12 +125,16 @@ export const CustomerDialog = () => {
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="text-center">
+          <DialogTitle className="flex items-center gap-2">
+            {isEditing 
+            ? <UserPen className="w-6 h-6 text-primary" />
+            : <UserPlus className="w-6 h-6 text-primary"/>}
             {isEditing ? "Editar Cliente" : "Crear Cliente"}
           </DialogTitle>
           <DialogDescription>
             {isEditing ? "Modifique los detalles del cliente." : "Ingrese los detalles del nuevo cliente."}
           </DialogDescription>
+          <Separator className="my-2"/>
         </DialogHeader>
         <Form {...form}>
           <form

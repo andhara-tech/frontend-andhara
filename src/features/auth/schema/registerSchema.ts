@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import { roles } from '../types/userTypes';
+import { roles } from '@/features/auth/types/userTypes';
 
 
 
