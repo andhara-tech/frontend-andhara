@@ -49,7 +49,7 @@ export const PurchaseSumary = () => {
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 max-h-[210px] overflow-y-auto">
               <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
                 <User className="h-4 w-4 text-slate-600" />
                 Información del Cliente
@@ -71,7 +71,7 @@ export const PurchaseSumary = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 max-h-[210px] overflow-y-auto">
               <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
                 <Truck className="h-4 w-4 text-slate-600" />
                 Información de Entrega
@@ -97,7 +97,7 @@ export const PurchaseSumary = () => {
         {/* section two  */}
         <div className="space-y-4">
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 max-h-[210px] overflow-y-auto">
               <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
                 <CreditCard className="h-4 w-4 text-slate-600" />
                 Información de Pago
@@ -119,15 +119,13 @@ export const PurchaseSumary = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 max-h-[210px] overflow-y-auto">
               <h4 className="font-medium text-sm mb-2">Resumen de Costos</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-slate-600 dark:text-slate-400">Subtotal:</span>
                   <span>
-                    {
-                      formatCurrency(selectedDetails.reduce((sum, p) => sum + (p?.subtotal || 0), 0))
-                    }
+                    {formatCurrency(selectedDetails.reduce((sum, p) => sum + (p?.subtotal || 0), 0))}
                   </span>
                 </div>
                 {
@@ -141,9 +139,7 @@ export const PurchaseSumary = () => {
                 <Separator className="my-2" />
                 <div className="flex justify-between font-medium text-lg">
                   <span>Total:</span>
-                  {
-                    formatCurrency(selectedDetails.reduce((sum, p) => sum + (p?.subtotal || 0), 0) + deliveryCost)
-                  }
+                  {formatCurrency(selectedDetails.reduce((sum, p) => sum + (p?.subtotal || 0), 0) + deliveryCost)}
                 </div>
               </div>
             </CardContent>

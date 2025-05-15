@@ -17,8 +17,8 @@ import { toast } from "sonner"
 import { PurchaseRequest } from "../types/purchaseTypes"
 
 export const NewPurchaseModal = () => {
-  const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase } = usePurchaseStore()
-  const { selectedCustomer } = useCustumerStore()
+  const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase, isLoading} = usePurchaseStore()
+  const { selectedCustomer, clearFilters, } = useCustumerStore()
 
   const form = useForm<PurchaseFormValue>({
     resolver: zodResolver(purchaseSchema),
@@ -53,6 +53,7 @@ export const NewPurchaseModal = () => {
       await createPurchase(finalData)
       toast.success("Venta creada con éxito")
       setIsOpenModal(false)
+      clearFilters()
       form.reset()
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Error al crear la venta"
@@ -98,6 +99,15 @@ export const NewPurchaseModal = () => {
                     </TabsContent>
                     <TabsContent value="summary">
                       <PurchaseSumary />
+                      <Button 
+                        type="submit" 
+                        className="w-full mt-4" 
+                        disabled={
+                          !form.formState.isValid
+                          || isLoading
+                        }>
+                        {isLoading ? "Cargando..." : "Crear Venta"}
+                      </Button>
                     </TabsContent>
                   </ScrollArea>
                 </form>

@@ -231,6 +231,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       search: "",
       sort: undefined,
       pageIndex: 0,
+      selectedCustomer: null,
     })
     get().applyFilters()
   },

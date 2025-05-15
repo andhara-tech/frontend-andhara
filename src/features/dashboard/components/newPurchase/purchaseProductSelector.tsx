@@ -5,15 +5,18 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatCurrency } from "@/lib/format"
-import { MinusCircle, Package, PlusCircle, X } from "lucide-react"
+import { MinusCircle, Package, PlusCircle } from "lucide-react"
 import { useEffect } from "react"
 import { SelectedProdcutsCard } from "./selectedProductsCards"
 
 export const PurchaseFormProducts = () => {
   const { selectedCustomer } = useCustumerStore()
   const { fetchProducts, allProducts, isLoading } = useProductStore()
-  const { addOrUpdateProduct, removeUnitFromProduct, selectedProducts } = usePurchaseStore()
+  const { addOrUpdateProduct, removeUnitFromProduct, selectedProducts, closeModal, setActiveTab} = usePurchaseStore()
 
+  const handleNext = () => {
+    setActiveTab("summary")
+  }
 
   const selectedBranch = selectedCustomer?.branch.id_branch
 
@@ -109,6 +112,25 @@ export const PurchaseFormProducts = () => {
           </div>
         </div>
         <SelectedProdcutsCard />
+        </div>
+        <div className="flex items-center justify-end gap-2 mt-4">
+          <Button
+            variant="outline"
+            type="button"
+            className="mt-4"
+            onClick={closeModal}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="default"
+            className="mt-4"
+            type="button"
+            disabled={selectedProducts.length === 0}
+            onClick={handleNext}
+          >
+            Siguiente
+          </Button>
       </div>
     </>
   )

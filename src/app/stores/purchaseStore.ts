@@ -6,6 +6,7 @@ interface saleSate {
   isOpen: boolean;
   activeTab: string;
   selectedProducts: ProductSelected[];
+  isLoading: boolean;
 
   createPurchase: (data: PurchaseRequest) => void;
 
@@ -24,14 +25,18 @@ export const usePurchaseStore = create<saleSate>((set) => ({
   isOpen: false,
   activeTab: "details",
   selectedProducts: [],
+  isLoading: false,
 
   createPurchase: async (data: PurchaseRequest) => {
+    set({ isLoading: true });
     try {
       const response = await purchaseService.createPurchase(data);
       return response;
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Error al crear la venta";
       throw new Error(errorMessage);
+    }finally{
+      set({ isLoading: false });
     }
   },
 

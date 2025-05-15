@@ -63,7 +63,7 @@ export function SearchCustomer({
       </div>
 
       {isFocused && (inputValue || isLoading) && (
-        <div className="absolute z-10 mt-1 max-w-[750px] w-full rounded-md border bg-popover shadow-md">
+        <div className="absolute z-10 mt-1 w-full rounded-md border bg-popover shadow-md">
           {isLoading ? (
             <div className="flex items-center justify-center py-6">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />

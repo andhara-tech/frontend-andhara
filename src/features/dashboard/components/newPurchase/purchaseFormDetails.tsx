@@ -216,7 +216,6 @@ export const PurchaseFormDetails = () => {
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 mt-4">
-
           <Button
             variant="outline"
             type="button"
