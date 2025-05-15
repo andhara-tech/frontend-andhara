@@ -1,6 +1,5 @@
 import apiClient from "@/app/apiClient";
-import { PurchaseFormValue } from "../schema/purchaseSchema";
-import { PurchaseRequest } from "../types/purchaseTypes";
+import { PurchaseRequest } from "@/features/dashboard/types/purchaseTypes";
 
 export const purchaseService = {
   createPurchase: async (data: PurchaseRequest) => {

@@ -1,23 +1,23 @@
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { FormProvider, useForm } from "react-hook-form"
+import { TabsContent } from "@radix-ui/react-tabs"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useCustumerStore } from "@/app/stores/customerStore"
+import { toast } from "sonner"
+import { PurchaseFormValue, purchaseSchema } from "@/features/dashboard/schema/purchaseSchema"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ShoppingCart } from "lucide-react"
-import { PurchaseFormValue, purchaseSchema } from "@/features/dashboard/schema/purchaseSchema"
-import { TabsContent } from "@radix-ui/react-tabs"
 import { PurchaseFormDetails } from "@/features/dashboard/components/newPurchase/purchaseFormDetails"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { PurchaseFormProducts } from "./newPurchase/purchaseProductSelector"
-import { useCustumerStore } from "@/app/stores/customerStore"
-import { PurchaseSumary } from "./newPurchase/purchaseSumary"
-import { toast } from "sonner"
-import { PurchaseRequest } from "../types/purchaseTypes"
+import { PurchaseFormProducts } from "@/features/dashboard/components/newPurchase/purchaseProductSelector"
+import { PurchaseSumary } from "@/features/dashboard/components/newPurchase/purchaseSumary"
+import { PurchaseRequest } from "@/features/dashboard/types/purchaseTypes"
+import { ShoppingCart } from "lucide-react"
 
 export const NewPurchaseModal = () => {
-  const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase, isLoading} = usePurchaseStore()
+  const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase, isLoading } = usePurchaseStore()
   const { selectedCustomer, clearFilters, } = useCustumerStore()
 
   const form = useForm<PurchaseFormValue>({
@@ -93,9 +93,9 @@ export const NewPurchaseModal = () => {
                     </TabsContent>
                     <TabsContent value="summary">
                       <PurchaseSumary />
-                      <Button 
-                        type="submit" 
-                        className="w-full mt-4" 
+                      <Button
+                        type="submit"
+                        className="w-full mt-4"
                         disabled={
                           !form.formState.isValid
                           || isLoading

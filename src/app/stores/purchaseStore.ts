@@ -1,6 +1,6 @@
+import { create } from "zustand";
 import { purchaseService } from "@/features/dashboard/service/purchaseService";
 import { ProductSelected, PurchaseRequest } from "@/features/dashboard/types/purchaseTypes";
-import { create } from "zustand";
 
 interface saleSate {
   isOpen: boolean;
@@ -35,7 +35,7 @@ export const usePurchaseStore = create<saleSate>((set) => ({
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Error al crear la venta";
       throw new Error(errorMessage);
-    }finally{
+    } finally {
       set({ isLoading: false });
     }
   },

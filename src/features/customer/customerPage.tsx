@@ -1,5 +1,5 @@
 import { CostumerTable } from "@/features/customer/customerTable";
-import { NewPurchaseModal } from "../dashboard/components/newPurchaseModal";
+import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
 
 const CustomerPage = () => {
   return (

@@ -1,12 +1,12 @@
 import { useFormContext } from "react-hook-form"
-import { PurchaseFormValue } from "../../schema/purchaseSchema"
-import { usePurchaseStore } from "@/app/stores/purchaseStore"
-import { useProductStore } from "@/app/stores/productStore"
-import { Card, CardContent } from "@/components/ui/card"
+import { PurchaseFormValue } from "@/features/dashboard/schema/purchaseSchema"
 import { formatCurrency } from "@/lib/format"
+import { useProductStore } from "@/app/stores/productStore"
+import { usePurchaseStore } from "@/app/stores/purchaseStore"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MinusCircle, PlusCircle, X } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { MinusCircle, PlusCircle, X } from "lucide-react"
 
 export const SelectedProdcutsCard = () => {
 

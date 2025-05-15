@@ -1,12 +1,12 @@
-import { useCustumerStore } from "@/app/stores/customerStore"
-import { Card, CardContent } from "@/components/ui/card"
-import { CheckCircle, CreditCard, Truck, User } from "lucide-react"
 import { useFormContext } from "react-hook-form"
-import { PurchaseFormValue } from "../../schema/purchaseSchema"
-import { formatCurrency } from "@/lib/format"
-import { useProductStore } from "@/app/stores/productStore"
+import { useCustumerStore } from "@/app/stores/customerStore"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
+import { useProductStore } from "@/app/stores/productStore"
+import { formatCurrency } from "@/lib/format"
+import { Card, CardContent } from "@/components/ui/card"
+import { PurchaseFormValue } from "@/features/dashboard/schema/purchaseSchema"
 import { Separator } from "@/components/ui/separator"
+import { CheckCircle, CreditCard, Truck, User } from "lucide-react"
 
 export const PurchaseSumary = () => {
   const { selectedCustomer } = useCustumerStore()

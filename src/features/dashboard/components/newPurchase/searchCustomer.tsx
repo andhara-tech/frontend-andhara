@@ -1,14 +1,13 @@
-import { Loader2, User } from "lucide-react"
+import { useEffect, useState } from "react"
 import type { Customer } from "@/features/customer/types/customerTypes"
-
-import { Input } from "@/components/ui/input"
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
-import { FormControl } from "@/components/ui/form"
 import { useCustumerStore } from "@/app/stores/customerStore"
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
+import { Input } from "@/components/ui/input"
+import { FormControl } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { useEffect, useState } from "react"
+import { Loader2, User } from "lucide-react"
 
 interface SearchCustomerProps {
   placeholder?: string
@@ -20,7 +19,6 @@ export function SearchCustomer({
   const [inputValue, setInputValue] = useState("")
   const [isFocused, setIsFocused] = useState(false)
 
-  // Usar el store de Zustand
   const {
     isLoading,
     setSearchWithDebounce,
@@ -29,14 +27,12 @@ export function SearchCustomer({
   } = useCustumerStore()
 
 
-  // Manejar cambios en la búsqueda con debounce
   useEffect(() => {
     if(inputValue) {
       setSearchWithDebounce(inputValue)
     }
   }, [inputValue])
 
-  // Manejar selección
   const handleSelect = (customer: Customer) => {
     setSelectedCustomer(customer)
     setSearchWithDebounce(`${customer.customer_first_name} ${customer.customer_last_name}`)

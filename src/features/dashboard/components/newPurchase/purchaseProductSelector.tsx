@@ -1,13 +1,13 @@
+import { useEffect } from "react"
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { useProductStore } from "@/app/stores/productStore"
+import { formatCurrency } from "@/lib/format"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { formatCurrency } from "@/lib/format"
 import { MinusCircle, Package, PlusCircle } from "lucide-react"
-import { useEffect } from "react"
-import { SelectedProdcutsCard } from "./selectedProductsCards"
+import { SelectedProdcutsCard } from "@/features/dashboard/components/newPurchase/selectedProductsCards"
 
 export const PurchaseFormProducts = () => {
   const { selectedCustomer } = useCustumerStore()

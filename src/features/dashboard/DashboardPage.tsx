@@ -1,10 +1,10 @@
-import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
-import { CustomerDialog } from "../customer/components/customerDialog";
-import { Button } from "@/components/ui/button";
-import { useCustumerStore } from "@/app/stores/customerStore";
-import { Plus, ShoppingCart } from "lucide-react";
 import { usePurchaseStore } from "@/app/stores/purchaseStore";
+import { useCustumerStore } from "@/app/stores/customerStore";
+import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
+import { CustomerDialog } from "@/features/customer/components/customerDialog";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus, ShoppingCart } from "lucide-react";
 
 
 const DashboardPage = () => {
