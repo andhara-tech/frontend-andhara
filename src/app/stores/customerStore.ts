@@ -440,9 +440,12 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
 
 const debouncedSearch = debounce(async (search: string, set: any, get : any) =>{
   set({isLoading: true})
-
   try{
     const result = await get().fetchCustomers({search})
+    if(!Array.isArray(result)){
+      set({error: "Error fetching customers"})
+      return
+    }
     set({filteredCustomers: result, isLoading: false})
   }catch (error){
     set({error: "Error fetching customers"})

@@ -8,9 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useCustumerStore } from "@/app/stores/customerStore"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { usePurchaseStore } from "@/app/stores/purchaseStore"
 
 export const PurchaseFormDetails = () => {
-  const { control } = useFormContext<PurchaseFormValue>()
+  const { control, formState } = useFormContext<PurchaseFormValue>()
+  const { selectedCustomer } = useCustumerStore()
+  const { setActiveTab, closeModal } = usePurchaseStore()
+
+  const handleNext = () => {
+    setActiveTab("products")
+  }
 
   return (
     <section className="space-y-4">
@@ -22,6 +32,16 @@ export const PurchaseFormDetails = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <SearchCustomer />
+            <div>
+              <Label htmlFor="customer_name" className="mb-2">Nombre del Cliente</Label>
+              <Input
+                id="customer_name"
+                type="text"
+                placeholder="Número de documento"
+                disabled
+                value={selectedCustomer?.customer_first_name}
+              />
+            </div>
             <FormField
               control={control}
               name="purchase_duration"
@@ -31,7 +51,7 @@ export const PurchaseFormDetails = () => {
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Opcional"
+                      placeholder="Tiempo que durará la compra"
                       {...field}
                     />
                   </FormControl>
@@ -73,6 +93,7 @@ export const PurchaseFormDetails = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -143,6 +164,7 @@ export const PurchaseFormDetails = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -170,13 +192,14 @@ export const PurchaseFormDetails = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               control={control}
               name="remaining_balance"
-              render = {({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Saldo Restante</FormLabel>
                   <FormControl>
@@ -188,9 +211,29 @@ export const PurchaseFormDetails = () => {
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )}            
+              )}
             />
           </div>
+        </div>
+        <div className="flex items-center justify-end gap-2 mt-4">
+
+          <Button
+            variant="outline"
+            type="button"
+            className="mt-4"
+            onClick={closeModal}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="default"
+            className="mt-4"
+            type="button"
+            disabled={!formState.isValid || !selectedCustomer?.customer_document}
+            onClick={handleNext}
+          >
+            Siguiente
+          </Button>
         </div>
       </div>
     </section>

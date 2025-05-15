@@ -100,14 +100,6 @@ export const NewPurchaseModal = () => {
                       <PurchaseSumary />
                     </TabsContent>
                   </ScrollArea>
-                  <DialogFooter>
-                    <Button type="submit" disabled={isSelectCustomer}>
-                      Crear Venta
-                    </Button>
-                    <Button type="button" variant="outline" onClick={() => setIsOpenModal(false)}>
-                      Cancelar
-                    </Button>
-                  </DialogFooter>
                 </form>
               </FormProvider>
             </Tabs>
