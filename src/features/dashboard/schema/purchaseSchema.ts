@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const purchaseSchema = z.object({
-  purchase_duration: z.string().optional(),
+  purchase_duration: z.string().min(1, "Purchase duration is required"),
   payment_type: z.string().min(1, "Payment type is required"),
   payment_status: z.string().min(1, "Payment status is required"),
   remaining_balance: z.coerce.string().min(0, "Remaining balance must be 0 or greater"),

@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { Customer } from "@/features/customer/types/customerTypes";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -40,4 +41,23 @@ export const formaterDate = (inputDate?: string | Date): string => {
 
 export const getValueByPath = (obj: any, path: string) => {
   return path.split('.').reduce((acc, part) => acc?.[part], obj);
+}
+
+
+
+export function sortCustomersByLastPurchase(customers: Customer[]) {
+  return [...customers].sort((a, b) => {
+    const dateA = a.last_purchase?.purchase_date
+      ? new Date(a.last_purchase.purchase_date)
+      : null;
+    const dateB = b.last_purchase?.purchase_date
+      ? new Date(b.last_purchase.purchase_date)
+      : null;
+
+    if (!dateA && !dateB) return 0;
+    if (!dateA) return 1;
+    if (!dateB) return -1;
+
+    return dateB.getTime() - dateA.getTime();
+  });
 }
