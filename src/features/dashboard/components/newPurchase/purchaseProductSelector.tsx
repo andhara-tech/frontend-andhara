@@ -60,7 +60,7 @@ export const PurchaseFormProducts = () => {
                 ) : (
                   allProducts.map((product) => (
                     <TableRow key={product.id_product}>
-                      <TableCell className="font-medium text-sm">
+                      <TableCell className="font-medium text-sm max-w-[150px]">
                         <div>
                           <h2>{product.product_name}</h2>
                           <span className="text-sm font-extralight text-muted-foreground">{product.product_description}</span>

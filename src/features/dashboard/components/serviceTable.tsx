@@ -1,13 +1,13 @@
-import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { useEffect, useMemo } from "react";
-import { getColumns } from "./serviceTable/colums";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { flexRender } from "@tanstack/react-table";
 import { getDaysRemainingColor } from "@/lib/utils";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { customerManagementStore } from "@/app/stores/customerManagementStore";
+import { getColumns } from "@/features/dashboard/components/serviceTable/colums";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { AlertCircle, AlertTriangle, XCircle } from "lucide-react";
+import { getTooltipContent } from "@/features/dashboard/components/serviceTable/alertTooltip";
 
 export const ServiceTable = () => {
   const {
@@ -29,38 +29,7 @@ export const ServiceTable = () => {
 
   const columns = useMemo(() => getColumns(), [isLoading]);
 
-  const getTooltipContent = (days: number) => {
-    const isNegative = days < 0;
-    const isUrgent = days >= 0 && days < 10;
 
-    if (isNegative) {
-      return (
-        <div className="flex items-center gap-2">
-          <XCircle className="h-4 w-4" />
-          <span className="font-medium text-destructive">¡CRÍTICO!</span>
-          <p className="text-sm text-destructive">El cliente se ha pasado del plazo en {-days} días</p>
-        </div>
-      );
-    }
-
-    if (isUrgent) {
-      return (
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4" />
-          <span className="font-medium">¡Urgente!</span>
-          <p className="text-sm">El cliente necesita ser contactado en {days} días</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex items-center gap-2">
-        <AlertCircle className="h-4 w-4" />
-        <span className="font-medium">Pendiente</span>
-        <p className="text-sm">El cliente necesita ser contactado en {days} días</p>
-      </div>
-    );
-  };
 
   const table = useReactTable({
     data: customerManagementList,

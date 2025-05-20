@@ -36,7 +36,6 @@ export interface PurchaseRequest {
 } 
 
 
-//Management customer service
 export interface CustomerService {
 	id_customer_service: string;
 	id_purchase: string;
@@ -71,7 +70,7 @@ export interface Customer {
 
 export interface Purchase {
   id_purchase: string;
-  purchase_date: string; // ISO date format (YYYY-MM-DD)
+  purchase_date: string; 
   payment_type: string;
   payment_status: string;
   subtotal_without_vat: number;

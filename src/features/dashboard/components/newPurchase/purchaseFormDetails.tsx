@@ -32,7 +32,7 @@ export const PurchaseFormDetails = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <SearchCustomer />
-            <div>
+            <div className="col-span-2 md:col-span-1">
               <Label htmlFor="customer_name" className="mb-2">Nombre del Cliente</Label>
               <Input
                 id="customer_name"

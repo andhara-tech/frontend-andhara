@@ -11,10 +11,10 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Plus, ShoppingCart } from "lucide-react";
-import { ServiceTable } from "./components/serviceTable";
-import { ServiceDetails } from "./components/serviceTable/serviceDetails";
+import { ServiceTable } from "@/features/dashboard/components/serviceTable";
+import { ServiceDetails } from "@/features/dashboard/components/serviceTable/serviceDetails";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
-import { SkeletonServiceTable } from "./components/serviceTable/skeleton";
+import { SkeletonServiceTable } from "@/features/dashboard/components/serviceTable/skeleton";
 
 const DashboardPage = () => {
   const { selectedService, isLoading } = customerManagementStore();
