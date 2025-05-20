@@ -12,6 +12,9 @@ import { AlertCircle, AlertTriangle, XCircle } from "lucide-react";
 export const ServiceTable = () => {
   const {
     fetchCustomerManagementList,
+    fetchCustomerManagementById,
+    clearSelectedService,
+    selectedService,
     isLoading,
     error,
     customerManagementList
@@ -67,7 +70,16 @@ export const ServiceTable = () => {
     manualSorting: false,
   })
 
-
+  const handleSelectService = (id: string) => {
+    if (selectedService) {
+      clearSelectedService()
+    }
+    try {
+      fetchCustomerManagementById(id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <section className="rounded border overflow-hidden">
@@ -101,7 +113,10 @@ export const ServiceTable = () => {
               table.getRowModel().rows.map((row) => (
                 <TooltipProvider key={row.id}>
                   <Tooltip>
-                    <TooltipTrigger asChild>
+                    <TooltipTrigger 
+                      asChild 
+                      onClick={() => handleSelectService(row.original.id_customer_service)}
+                      disabled={row.original.id_customer_service === selectedService.id_customer_service || isLoading}>
                       <TableRow
                         className="cursor-pointer"
                         data-state={row.getIsSelected() && "selected"}>

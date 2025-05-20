@@ -1,5 +1,5 @@
 import apiClient from "@/app/apiClient";
-import { CustomerService } from "../types/purchaseTypes";
+import { CustomerService, CustomerServiceById } from "../types/purchaseTypes";
 import { AxiosResponse } from "axios";
 
 export const customerManagementService = {
@@ -9,6 +9,16 @@ export const customerManagementService = {
 			return response;
 		} catch (error: any) {
 			const errorMessage = error.response?.data?.message || "Error al obtener la lista de clientes"
+			throw new Error(errorMessage)
+		}
+	},
+
+	customerManagementById: async (id: string): Promise<AxiosResponse<CustomerServiceById>> => {
+		try {
+			const response: AxiosResponse<CustomerServiceById> = await apiClient.get(`/customer-service/get-by-id/${id}`);
+			return response;
+		} catch (error: any) {
+			const errorMessage = error.response?.data?.message || "Error al obtener el cliente"
 			throw new Error(errorMessage)
 		}
 	}

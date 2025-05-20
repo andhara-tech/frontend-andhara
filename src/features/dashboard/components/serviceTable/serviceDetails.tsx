@@ -1,3 +1,4 @@
+import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import {
   Accordion,
   AccordionContent,
@@ -23,169 +24,7 @@ import {
 } from "lucide-react";
 
 export const ServiceDetails = () => {
-  const selectedService = {
-    id_customer_service: "a5f0f17a-4ab0-423f-ab81-b7f62af005b7",
-    customer: {
-      customer_document: "3121232313123",
-      customer_first_name: "Santiago",
-      customer_last_name: "Bulla",
-      phone_number: "3204567890",
-      email: "bulla.santiago@example.com",
-      home_address: "Avenida 68 #5-23 Norte",
-      branch_name: "Sede Bogota",
-      customer_full_name: "Santiago Bulla"
-    },
-    purchase: {
-      id_purchase: "d71f8f8b-86ac-425f-a389-4fe90decb6e1",
-      purchase_date: "2025-05-18",
-      payment_type: "Efectivo",
-      payment_status: "Pago Completado",
-      subtotal_without_vat: 127000,
-      total: 151130,
-      days_remaining: 9
-    },
-    last_purchases: {
-      historical_purchases: 1392300,
-      purchases: [
-        {
-          id_purchase: "315494fb-fca1-49a3-90bd-7bf4c66e5df1",
-          purchase_date: "2025-05-18",
-          purchase_duration: 25,
-          next_purchase_date: "2025-06-12",
-          total_purchase: 297500,
-          products: [
-            {
-              id_product: "1b882971-2b70-40b6-a8ab-3af35819b1d7",
-              product_name: "crema ",
-              unit_quantity: 2,
-              subtotal_without_vat: 86000,
-              total_price_with_vat: 102340
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            }
-          ]
-        },
-        {
-          id_purchase: "d4c7a444-021a-4a7f-8f22-b13c5c96757b",
-          purchase_date: "2025-05-18",
-          purchase_duration: 25,
-          next_purchase_date: "2025-06-12",
-          total_purchase: 297500,
-          products: [
-            {
-              id_product: "1b882971-2b70-40b6-a8ab-3af35819b1d7",
-              product_name: "crema ",
-              unit_quantity: 2,
-              subtotal_without_vat: 86000,
-              total_price_with_vat: 102340
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            }
-          ]
-        },
-        {
-          id_purchase: "4ddcedd9-8ee9-4ec1-80cf-0f98f08ea5ba",
-          purchase_date: "2025-05-18",
-          purchase_duration: 25,
-          next_purchase_date: "2025-06-12",
-          total_purchase: 297500,
-          products: [
-            {
-              id_product: "1b882971-2b70-40b6-a8ab-3af35819b1d7",
-              product_name: "crema ",
-              unit_quantity: 2,
-              subtotal_without_vat: 86000,
-              total_price_with_vat: 102340
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            }
-          ]
-        },
-        {
-          id_purchase: "da9d4fac-13fc-439b-ad21-a2ed66c56aa9",
-          purchase_date: "2025-05-18",
-          purchase_duration: 25,
-          next_purchase_date: "2025-06-12",
-          total_purchase: 348670,
-          products: [
-            {
-              id_product: "1b882971-2b70-40b6-a8ab-3af35819b1d7",
-              product_name: "crema ",
-              unit_quantity: 3,
-              subtotal_without_vat: 129000,
-              total_price_with_vat: 153510
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 4,
-              subtotal_without_vat: 164000,
-              total_price_with_vat: 195160
-            }
-          ]
-        },
-        {
-          id_purchase: "d71f8f8b-86ac-425f-a389-4fe90decb6e1",
-          purchase_date: "2025-05-18",
-          purchase_duration: 15,
-          next_purchase_date: "2025-06-02",
-          total_purchase: 151130,
-          products: [
-            {
-              id_product: "1b882971-2b70-40b6-a8ab-3af35819b1d7",
-              product_name: "crema ",
-              unit_quantity: 2,
-              subtotal_without_vat: 86000,
-              total_price_with_vat: 102340
-            },
-            {
-              id_product: "6fde0a43-439d-47a8-98fa-f0ade5cc7182",
-              product_name: "Pantodex",
-              unit_quantity: 1,
-              subtotal_without_vat: 41000,
-              total_price_with_vat: 48790
-            }
-          ]
-        }
-      ]
-    }
-  };
+  const { selectedService } = customerManagementStore();
 
   const borderColor =
     selectedService.purchase.days_remaining < 10
@@ -289,9 +128,7 @@ export const ServiceDetails = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`col-span-2 sm:col-span-4 border-t-4 ${borderColor} rounded shadow h-full`}
-      >
+      <div className={`col-span-2 sm:col-span-4 border-t-4 ${borderColor} rounded shadow`}>
         <div className="p-2">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-xl font-semibold">Ventas totales</h2>
