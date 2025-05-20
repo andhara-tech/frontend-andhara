@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, ShoppingCart } from "lucide-react";
 import { ServiceTable } from "./components/serviceTable";
+import { ServiceDetails } from "./components/serviceTable/serviceDetails";
 
 
 const DashboardPage = () => {
@@ -21,6 +22,7 @@ const DashboardPage = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
+        <ServiceDetails />
         <div className="flex flex-col md:flex-row md:items-center justify-end gap-2 py-4">
           <Button
             onClick={() => setIsOpenModal(true)}
