@@ -1,7 +1,5 @@
-import {z} from 'zod';
+import { z } from 'zod';
 import { roles } from '@/features/auth/types/userTypes';
-
-
 
 export const registerSchema = z.object({
   email:
@@ -18,9 +16,9 @@ export const registerSchema = z.object({
       ),
   password: z
     .string()
-      .min(1, 'La contraseña es requerida')
-      .min(4, 'La contraseña debe tener al menos 4 caracteres')
-      .max(20, 'La contraseña no puede tener más de 20 caracteres'),
+    .min(1, 'La contraseña es requerida')
+    .min(4, 'La contraseña debe tener al menos 4 caracteres')
+    .max(20, 'La contraseña no puede tener más de 20 caracteres'),
   confirmPassword: z.string().min(1, 'La contraseña es requerida')
     .min(4, 'La contraseña debe tener al menos 4 caracteres')
     .max(20, 'La contraseña no puede tener más de 20 caracteres')

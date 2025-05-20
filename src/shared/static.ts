@@ -77,9 +77,8 @@ export const DELIVERY_TYPES = [
 export const PAYMENT_TYPES = [
   { name: "Efectivo" },
   { name: "Transferencia" },
-  { name: "Tarjeta de Crédito" },
-  { name: "Tarjeta de Débito" },
-  { name: "Cheque" },
+  { name: "Datafono" },
+  { name: "Nequi / Daviplata" },
   { name: "Otro" } 
 ]
 

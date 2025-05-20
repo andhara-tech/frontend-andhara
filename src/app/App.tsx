@@ -11,7 +11,6 @@ const App = () => {
     <>
       <RouterProvider router={router} />
       <Toaster
-        richColors 
         expand={false}
         position="bottom-right"
       />

@@ -5,9 +5,13 @@ import { CustomerDialog } from "@/features/customer/components/customerDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, ShoppingCart } from "lucide-react";
+import { ServiceTable } from "./components/serviceTable";
+import { ServiceDetails } from "./components/serviceTable/serviceDetails";
+import { customerManagementStore } from "@/app/stores/customerManagementStore";
 
 
 const DashboardPage = () => {
+  const { selectedService } = customerManagementStore()
   const { openNewCustomerDialog } = useCustumerStore()
   const { setIsOpenModal } = usePurchaseStore()
 
@@ -20,6 +24,11 @@ const DashboardPage = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
+        {
+          selectedService.id_customer_service && (
+            <ServiceDetails />
+          )
+        }
         <div className="flex flex-col md:flex-row md:items-center justify-end gap-2 py-4">
           <Button
             onClick={() => setIsOpenModal(true)}
@@ -36,6 +45,7 @@ const DashboardPage = () => {
           <NewPurchaseModal />
           <CustomerDialog />
         </div >
+        <ServiceTable />
       </CardContent>
     </Card>
   );
