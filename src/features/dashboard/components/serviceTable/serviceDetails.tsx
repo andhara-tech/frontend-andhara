@@ -34,10 +34,8 @@ export const ServiceDetails = () => {
   const backgroundColor =
     selectedService.purchase.days_remaining < 10 ? "bg-destructive" : "bg-primary";
   return (
-    <section className="grid grid-cols-2 sm:grid-cols-8 gap-5 w-full sm:h-[250px] h-[500px]">
-      <div
-        className={`col-span-2 max-w-[350px] border-t-4 ${borderColor} rounded shadow p-4`}
-      >
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-5 w-full sm:h-[250px] h-[500px] overflow-y-auto">
+      <div className={`col-span-2 sm:col-span-1 md:col-span-2 max-w-[350px] border-t-4 ${borderColor} rounded shadow p-4`}>
         <div className="mb-4">
           <p className="text-xs text-muted-foreground">
             {selectedService.customer.branch_name}
@@ -77,9 +75,7 @@ export const ServiceDetails = () => {
           </div>
         </div>
       </div>
-      <div
-        className={`col-span-2 max-w-[350px] border-t-4 ${borderColor} rounded shadow`}
-      >
+      <div className={`col-span-2 sm:col-span-1 md:col-span-2 max-w-[350px] border-t-4 ${borderColor} rounded shadow`}>
         <div className="mb-4 p-4 flex items-center justify-between">
           <div>
             <h2 className="font-bold text-lg">Seguimiento</h2>
@@ -128,7 +124,7 @@ export const ServiceDetails = () => {
           </div>
         </div>
       </div>
-      <div className={`col-span-2 sm:col-span-4 border-t-4 ${borderColor} rounded shadow`}>
+      <div className={`col-span-2 sm:col-span-2 md:col-span-4 border-t-4 ${borderColor} rounded shadow`}>
         <div className="p-2">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-xl font-semibold">Ventas totales</h2>
@@ -140,7 +136,7 @@ export const ServiceDetails = () => {
               {formatCurrency(selectedService.last_purchases.historical_purchases)}
             </Badge>
           </div>
-          <ScrollArea className="h-[200px] px-2">
+          <ScrollArea className="h-[200px] overflow-y-auto px-2">
             <Accordion type="single" collapsible className="w-full">
               {selectedService.last_purchases.purchases.map(purchase =>
                 <AccordionItem
