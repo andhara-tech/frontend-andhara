@@ -103,10 +103,7 @@ export const ServiceTable = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <TableRow
-                        className={`hover:bg-${getDaysRemainingColor(row.original.days_remaining)} 
-                          transition-all hover:text-white cursor-pointer`
-                        }
-                        key={row.id}
+                        className="cursor-pointer"
                         data-state={row.getIsSelected() && "selected"}>
                         {row.getVisibleCells().map((cell) => (
                           <TableCell
@@ -124,8 +121,7 @@ export const ServiceTable = () => {
                     <TooltipContent className={`
                         bg-background 
                         text-${getDaysRemainingColor(row.original.days_remaining)} 
-                        p-2 border 
-                        border-${getDaysRemainingColor(row.original.days_remaining)}`
+                        p-2 border-2`
                     }>
                       {getTooltipContent(row.original.days_remaining)}
                     </TooltipContent>

@@ -62,9 +62,8 @@ export function sortCustomersByLastPurchase(customers: Customer[]) {
   });
 }
 
+
 // Function to determine color based on days remaining
-export const getDaysRemainingColor = (days: number): "destructive" | "warning" | "primary" => {
-  if (days < 0) return "destructive";
-  if (days < 10) return "warning";
-  return "primary";
-};
+export const getDaysRemainingColor = (days: number): "destructive" | "primary" => {
+  return days < 10 ? "destructive" : "primary";
+};  
