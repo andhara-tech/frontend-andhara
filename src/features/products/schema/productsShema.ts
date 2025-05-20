@@ -36,9 +36,7 @@ export const productsSchema = z.object({
   sale_price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 1000000, {
     message: "El precio de venta debe ser un número válido entre 1 y 1000000",
   }),
-
   profit_margin: z.number().optional(),
-
   vat: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) <= 100, {
     message: "El IVA debe estar entre 1 y 100",
   }),

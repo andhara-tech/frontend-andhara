@@ -5,6 +5,7 @@ import { CustomerDialog } from "@/features/customer/components/customerDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, ShoppingCart } from "lucide-react";
+import { ServiceTable } from "./components/serviceTable";
 
 
 const DashboardPage = () => {
@@ -36,6 +37,7 @@ const DashboardPage = () => {
           <NewPurchaseModal />
           <CustomerDialog />
         </div >
+        <ServiceTable />
       </CardContent>
     </Card>
   );

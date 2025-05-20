@@ -134,12 +134,6 @@ export const ProductDialog = () => {
 
    const onSubmit = async (data: ProductFormValues) => {
       try {
-         const purchasePrice = Number(data.purchase_price);
-         const salePrice = Number(data.sale_price);
-         const profitMargin =
-            data.profit_margin ||
-            ((salePrice - purchasePrice) / salePrice) * 100;
-
          const stock: StockInfo[] = data.stock.map((item) => ({
             id_product: selectedProduct?.id_product || "",
             id_branch: item.id_branch,
@@ -154,7 +148,6 @@ export const ProductDialog = () => {
                purchase_price: Number(data.purchase_price),
                product_discount: Number(data.product_discount),
                sale_price: Number(data.sale_price),
-               profit_margin: Number(profitMargin.toFixed(2)),
                vat: Number(data.vat),
                product_state: data.product_state,
                id_supplier: data.id_supplier,
@@ -167,7 +160,6 @@ export const ProductDialog = () => {
                purchase_price: Number(data.purchase_price),
                product_discount: Number(data.product_discount),
                sale_price: Number(data.sale_price),
-               profit_margin: Number(profitMargin.toFixed(2)),
                vat: Number(data.vat),
                product_state: data.product_state,
                id_supplier: data.id_supplier,
@@ -181,7 +173,7 @@ export const ProductDialog = () => {
 
    return (
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-         <DialogContent className="sm:max-w-[600px]">
+         <DialogContent className="sm:max-w-[600px] max-w-[600px]">
             <DialogHeader>
                <DialogTitle>
                   {isEditing ? "Editar Producto" : "Nuevo Producto"}

@@ -63,7 +63,7 @@ export const NewPurchaseModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpenModal}>
-      <DialogContent className="sm:max-w-[1100px]">
+      <DialogContent className="sm:max-w-[1200px] max-h-[700px]">
         <DialogTitle> </DialogTitle>
         <DialogDescription> </DialogDescription>
         <Card className="border-none shadow-none p-0 w-full">
@@ -83,8 +83,7 @@ export const NewPurchaseModal = () => {
               </TabsList>
               <FormProvider {...form}>
                 <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-                  <ScrollArea className="h-[500px] w-full p-1">
-
+                  <ScrollArea className="max-h-[400px] p-1 overflow-auto">
                     <TabsContent value="details">
                       <PurchaseFormDetails />
                     </TabsContent>

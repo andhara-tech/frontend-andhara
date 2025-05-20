@@ -34,3 +34,19 @@ export interface PurchaseRequest {
   delivery_cost: number
   products: ProductSelected[]
 } 
+
+
+//Management customer service
+export interface CustomerService {
+	id_customer_service: string;
+	id_purchase: string;
+	service_date: string;
+	customer_full_name: string;
+	phone_number: string;
+	branch_name: string;
+	days_remaining: number;
+	isComment: boolean;
+	contact_comment: string;
+	customer_service_status: boolean;
+	id_branch: string;
+}
