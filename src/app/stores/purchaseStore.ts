@@ -20,7 +20,6 @@ interface saleSate {
 }
 
 
-
 export const usePurchaseStore = create<saleSate>((set) => ({
   isOpen: false,
   activeTab: "details",
