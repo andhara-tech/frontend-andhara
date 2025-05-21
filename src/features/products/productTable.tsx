@@ -85,7 +85,7 @@ export const ProductTable = () => {
                   Productos
                </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="grid">
                {error && (
                   <Alert variant="destructive" className="mb-4">
                      <AlertDescription>{error}</AlertDescription>

@@ -35,7 +35,7 @@ export const SelectedProdcutsCard = () => {
   const deliveryCost = Number(watch("delivery_cost"))
   return (
     <div>
-      <h3 className="text-sm font-medium"> Productos seleccionados</h3>
+      <h3 className="text-sm font-medium pb-2"> Productos seleccionados</h3>
       {selectedProducts.length === 0 ? (
         <div className="text-center py-6 border border-dashed rounded-md">
           <p className="text-slate-500 text-sm">

@@ -1,19 +1,19 @@
-import { registerSchema } from "../schema/registerSchema";
+import { useEffect, useState } from "react";
+import { registerSchema } from "@/features/auth/schema/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRegisterStore } from "@/app/stores/registerStore";
 import { toast } from "sonner"
-import { roles } from "../types/userTypes";
+import { roles } from "@/features/auth/types/userTypes";
 
+import UserTable from "@/features/auth/components/UserTable";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UserTable from "@/features/auth/components/UserTable";
 
 const RegisterForm = () => {
   const { register, getUsers, error, isLoading } = useRegisterStore()

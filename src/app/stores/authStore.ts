@@ -21,7 +21,7 @@ interface AuthState {
   setLastActive: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   token: null,
   isAuthenticated: false,
   isLoading: false,
@@ -61,6 +61,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     if(response === 204){
       set({ token: null, isAuthenticated: false, expiryTime: null, lastActive: Date.now() }); //Resetea el lastActive
     }
+
+    await get().initalize()
   },
   initalize: () => {
     const token = localStorage.getItem('authToken');

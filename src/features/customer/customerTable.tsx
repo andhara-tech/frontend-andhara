@@ -1,34 +1,32 @@
 import { useCustumerStore } from "@/app/stores/customerStore"
 import { type ColumnFiltersState, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { getColumns } from "@/features/customer/components/columns"
-import { Pagination } from "@/features/customer/components/pagination"
-import { CustomersFilters } from "@/features/customer/components/custumerFilters"
-import { CustomerDialog } from "@/features/customer/components/customerDialog"
-import { ProductTableToolbar } from "@/features/customer/components/customerTableToolbar"
-import { CustomerSheet } from "@/features/customer/components/customerSheet"
 import { Skeleton } from "@/components/ui/skeleton"
+import { sortCustomersByLastPurchase } from "@/lib/utils"
+import { usePurchaseStore } from "@/app/stores/purchaseStore"
 
 export const CostumerTable = () => {
   const {
     fetchCustomers,
     displayedCustomers,
     isLoading,
-    error,
-    pageIndex,
     pageSize,
     sort,
     setSort
   } = useCustumerStore()
+
+  const {
+    createPurchase
+  } = usePurchaseStore()
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection] = useState({})
 
   useEffect(() => {
     fetchCustomers()
-  }, [fetchCustomers])
+  }, [fetchCustomers, createPurchase])
 
   const handleSort = (field: string) => {
     if (!sort || sort.field !== field) {
@@ -45,120 +43,89 @@ export const CostumerTable = () => {
     [sort, isLoading, handleSort]
   )
 
+  const sortedCustomers = useMemo(() => {
+    return sortCustomersByLastPurchase(displayedCustomers);
+  }, [displayedCustomers]);
+
   const table = useReactTable({
-    data: displayedCustomers,
+    data: sortedCustomers,
     columns,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     state: {
       columnFilters,
       rowSelection,
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
     },
     manualPagination: false,
     manualSorting: false,
-    pageCount: Math.ceil(displayedCustomers.length / pageSize),
+    pageCount: Math.ceil(sortedCustomers.length / pageSize),
   })
 
   return (
-    <section>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold uppercase">
-            Clientes
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {
-            error && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )
-          }
-          <CustomersFilters />
-          <ProductTableToolbar />
-
-          <div className="rounded border overflow-hidden">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  {
-                    table.getHeaderGroups().map((headerGroup) => (
-                      <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                          <TableHead
-                            key={header.id}
-                            className="whitespace-nowrap">
-                            {isLoading ? (
-                              <Skeleton className="h-6 w-full max-w-[120px]" />
-                            ) : (
-                              header.isPlaceholder
-                                ? null
-                                : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )
-                            )}
-                          </TableHead>
-                        ))}
-                      </TableRow>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                  {
-                    isLoading ? (
-                      <TableRow>
-                        <TableCell
-                          colSpan={
-                            table.getVisibleLeafColumns().length
-                          }
-                          className="h-24 text-center">
-                          <Skeleton className="h-10 w-full" />
-                        </TableCell>
-                      </TableRow>
-                    ) : table.getRowModel().rows?.length ? (
-                      table.getRowModel().rows.map((row) => (
-                        <TableRow
-                          key={row.id}
-                          data-state={
-                            row.getIsSelected() && "selected"
-                          }>
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      ))
+    <section className="rounded border overflow-hidden">
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="whitespace-nowrap">
+                    {isLoading ? (
+                      <Skeleton className="h-6 w-full max-w-[120px]" />
                     ) : (
-                      <TableRow>
-                        <TableCell
-                          colSpan={
-                            table.getVisibleLeafColumns().length
-                          }
-                          className="h-24 text-center">
-                          No se encontrarón resultados.
-                        </TableCell>
-                      </TableRow>
+                      header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )
                     )}
-                </TableBody>
-              </Table>
-            </div>
-          </div>
-          <Pagination />
-        </CardContent>
-      </Card>
-      <CustomerDialog />
-      <CustomerSheet />
-
-      {/* <DeleteAlert /> */}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="gap-2">
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={table.getVisibleLeafColumns().length}
+                  className="h-24 text-center">
+                  <Skeleton className="h-10 w-full" />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`sticky ${cell.column.id === 'actions' ? 'right-0' : ''
+                        } bg-background`}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={table.getVisibleLeafColumns().length}
+                  className="h-24 text-center">
+                  No se encontrarón resultados.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </section>
   )
 }

@@ -13,7 +13,7 @@ interface RegisterState {
   deleteUser: (userId: string) => void;
 }
 
-export const useRegisterStore = create<RegisterState>((set) => ({
+export const useRegisterStore = create<RegisterState>((set, get) => ({
   isLoading: false,
   error: null,
   users: null,
@@ -27,6 +27,7 @@ export const useRegisterStore = create<RegisterState>((set) => ({
         success: "User registered successfully",
         error: null,
       });
+      await get().getUsers()
     } catch (error) {
       set({
         error: "Register failed. Please check your credentials and try again.",

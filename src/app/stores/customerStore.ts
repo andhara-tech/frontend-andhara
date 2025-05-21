@@ -155,6 +155,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
         isLoading: false,
       }))
 
+      await get().fetchCustomers()
+
       get().applyFilters()
       get().closeNewCustomerDialog()
     } catch (error) {
@@ -172,6 +174,8 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
         allCustomers: state.allCustomers.map((c) => (c.customer_document === customer.customer_document ? updatedCustomer : c)),
         isLoading: false,
       }))
+
+      await get().fetchCustomers()
 
       get().applyFilters()
       get().closeEditDialog()
@@ -192,6 +196,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
         ),
         isLoading: false
       }))
+      await get().fetchCustomers()
       get().applyFilters()
     } catch (error) {
       set({ error: "Error toggling customer state", isLoading: false })

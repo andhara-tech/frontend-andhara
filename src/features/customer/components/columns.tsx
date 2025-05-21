@@ -238,9 +238,15 @@ export const getColumns = ({ onSort, sort, isLoading }: ColumnOptions): ColumnDe
     },
     {
       id: "actions",
+      header: "Acciones",
       cell: ({ row }) => (
-        <CustomerActions row={row} />
+        <div className="sticky right-0 bg-background">
+          <CustomerActions row={row} />
+        </div>
       ),
+      size: 100,
+      enableSorting: false,
+      enableColumnFilter: false
     }
   ]
 }

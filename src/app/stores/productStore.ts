@@ -112,8 +112,9 @@ export const useProductStore = create<ProductState>((set, get) => ({
         isLoading: false,
       }))
 
-      get().applyFilters()
+      await get().fetchProducts()
 
+      get().applyFilters()
       get().closeNewProductDialog()
     } catch (error) {
       set({
@@ -133,8 +134,9 @@ export const useProductStore = create<ProductState>((set, get) => ({
         isLoading: false,
       }))
 
-      get().applyFilters()
+      await get().fetchProducts()
 
+      get().applyFilters()
       get().closeEditDialog()
     } catch (error) {
       set({
@@ -175,6 +177,8 @@ export const useProductStore = create<ProductState>((set, get) => ({
         allProducts: state.allProducts.map((p) => (p.id_product === updatedProduct.id_product ? updatedProduct : p)),
         isLoading: false,
       }))
+
+      await get().fetchProducts()
 
       get().applyFilters()
     } catch (error) {
