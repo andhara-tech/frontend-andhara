@@ -1,5 +1,5 @@
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { manageDefaultValues, ManageFormValue, manageSchema } from "@/features/dashboard/schema/manageSchema";
@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "@/components/ui/button";
-import { CustomerManagement } from "../../types/purchaseTypes";
+import { CustomerManagement } from "@/features/dashboard/types/purchaseTypes";
 
 export const ManagementDialog = () => {
   const { isOpenManagement, selectedService, setIsCloseManagement, customerManagement } = customerManagementStore();
