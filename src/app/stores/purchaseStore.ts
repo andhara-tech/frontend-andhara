@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { purchaseService } from "@/features/dashboard/service/purchaseService";
 import { ProductSelected, PurchaseRequest } from "@/features/dashboard/types/purchaseTypes";
+import { customerManagementStore } from "./customerManagementStore";
 
 interface saleSate {
   isOpen: boolean;
@@ -19,7 +20,6 @@ interface saleSate {
   closeModal: () => void;
 }
 
-
 export const usePurchaseStore = create<saleSate>((set) => ({
   isOpen: false,
   activeTab: "details",
@@ -30,6 +30,8 @@ export const usePurchaseStore = create<saleSate>((set) => ({
     set({ isLoading: true });
     try {
       const response = await purchaseService.createPurchase(data);
+      // Después de crear la venta exitosamente, actualizar la lista de customer management
+      await customerManagementStore.getState().fetchCustomerManagementList();
       return response;
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Error al crear la venta";
@@ -38,7 +40,6 @@ export const usePurchaseStore = create<saleSate>((set) => ({
       set({ isLoading: false });
     }
   },
-
 
   addOrUpdateProduct: (productId: string) =>
     set((state) => {
