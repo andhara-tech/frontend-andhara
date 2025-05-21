@@ -1,5 +1,6 @@
 import { usePurchaseStore } from "@/app/stores/purchaseStore";
 import { useCustumerStore } from "@/app/stores/customerStore";
+import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
 import { CustomerDialog } from "@/features/customer/components/customerDialog";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,8 @@ import {
 import { Plus, ShoppingCart } from "lucide-react";
 import { ServiceTable } from "@/features/dashboard/components/serviceTable";
 import { ServiceDetails } from "@/features/dashboard/components/serviceTable/serviceDetails";
-import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { SkeletonServiceTable } from "@/features/dashboard/components/serviceTable/skeleton";
-import { ManagementDialog } from "./components/managmeService/managmeDialog";
+import { ManagementDialog } from "@/features/dashboard/components/managmeService/managmeDialog";
 
 const DashboardPage = () => {
   const { selectedService, isLoading } = customerManagementStore();

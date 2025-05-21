@@ -1,8 +1,8 @@
-import { notifications } from "@/shared/dataNotification";
-
-import { SidebarTrigger } from "./ui/sidebar";
-import { Separator } from "@radix-ui/react-separator";
-import { BellDot, LogOut, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { formaterDate } from "@/lib/utils";
+import { useAuthStore } from "@/app/stores/authStore";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +14,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import RegisterForm from "@/features/auth/components/RegisterForm";
-import { formaterDate } from "@/lib/utils";
-import { Badge } from "./ui/badge";
-import { useAuthStore } from "@/app/stores/authStore";
-import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { BellDot, LogOut, Settings } from "lucide-react";
 
 const SiteHeader = () => {
   const date = formaterDate(new Date());
@@ -43,41 +42,23 @@ const SiteHeader = () => {
           <Badge>
             {date}
           </Badge>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0 data-[state=open]:bg-muted"
-              >
-                <BellDot className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Notificaciones</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {notifications.data.map(notification =>
-                <DropdownMenuItem
-                  key={notification.id}
-                  className="data-[state=open]:bg-muted"
-                  asChild
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="cursor-not-allowed "
+                  disabled
                 >
-                  <div className="flex flex-col items-start">
-                    <div className="flex text-center gap-x-2">
-                      <h2 className="font-medium">
-                        {notification.title}
-                      </h2>
-                      <span className="">
-                        {notification.timestamp}
-                      </span>
-                    </div>
-                    <p>
-                      {notification.message}
-                    </p>
-                  </div>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <BellDot className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Se podra utilizar para mostrar las notificaciones</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="h-8 p-2">

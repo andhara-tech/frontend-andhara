@@ -1,16 +1,16 @@
+import { ServiceActions } from "@/features/dashboard/components/serviceTable/serviceActions";
+import { TooltipComment } from "@/features/dashboard/components/serviceTable/serviceTooltipcomment";
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
-import { Button } from "@/components/ui/button";
 import { formaterDate, getDaysRemainingColor } from "@/lib/utils";
-import { ServiceActions } from "./serviceActions";
-import { TooltipComment } from "./serviceTooltipcomment";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { getTooltipContent } from "./alertTooltip";
+import { getTooltipContent } from "@/features/dashboard/components/serviceTable/alertTooltip";
 
 export const getColumns = (): ColumnDef<CustomerService>[] => {
   return [
@@ -21,12 +21,10 @@ export const getColumns = (): ColumnDef<CustomerService>[] => {
           <Tooltip>
             <TooltipTrigger>
               <div
-                className={`w-4 h-4 rounded-full border border-white bg-${getDaysRemainingColor(
-                  row.original.days_remaining
-                )}`}
+                className={`w-4 h-4 rounded-full border border-white bg-${getDaysRemainingColor(row.original.days_remaining)}`}
               />
             </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5} align="end" alignOffset={-5} className={`bg-${getDaysRemainingColor(row.original.days_remaining)} text-white`}>
+            <TooltipContent side="right" sideOffset={5} align="end" alignOffset={-5} className="text-white">
               {getTooltipContent(row.original.days_remaining)}
             </TooltipContent>
           </Tooltip>

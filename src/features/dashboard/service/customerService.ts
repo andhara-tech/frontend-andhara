@@ -1,6 +1,6 @@
 import apiClient from "@/app/apiClient";
 import { AxiosResponse } from "axios";
-import { CustomerManagement, CustomerService, CustomerServiceById } from "../types/purchaseTypes";
+import { CustomerManagement, CustomerService, CustomerServiceById } from "@/features/dashboard/types/purchaseTypes";
 
 export const customerManagementService = {
 	customerManagementList: async (): Promise<AxiosResponse<CustomerService[]>> => {

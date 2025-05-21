@@ -45,7 +45,7 @@ const MainLayout = () => {
   
   return (
     <SidebarProvider>
-      <AppSidebar variant="sidebar" />
+      <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
         <section

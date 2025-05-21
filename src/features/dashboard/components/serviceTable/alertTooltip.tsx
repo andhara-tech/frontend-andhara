@@ -6,7 +6,7 @@ export const getTooltipContent = (days: number) => {
 
   if (isNegative) {
     return (
-      <div className="flex items-center gap-2 bg-destructive">
+      <div className="flex items-center gap-2">
         <XCircle className="h-4 w-4" />
         <span className="font-medium text-white">¡CRÍTICO!</span>
         <p className="text-sm text-white">El cliente se ha pasado del plazo en {-days} días</p>

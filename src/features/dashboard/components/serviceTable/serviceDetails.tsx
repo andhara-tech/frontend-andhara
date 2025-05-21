@@ -1,4 +1,6 @@
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
+import { formaterDate } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { formatCurrency } from "@/lib/format";
-import { formaterDate } from "@/lib/utils";
 
 import {
   BanknoteArrowUp,

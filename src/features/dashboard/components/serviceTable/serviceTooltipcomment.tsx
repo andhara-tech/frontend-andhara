@@ -1,5 +1,5 @@
 import { Row } from "@tanstack/react-table"
-import { CustomerService } from "../../types/purchaseTypes"
+import { CustomerService } from "@/features/dashboard/types/purchaseTypes"
 import {
   Tooltip,
   TooltipContent,

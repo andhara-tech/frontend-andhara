@@ -1,10 +1,10 @@
 import { Row } from "@tanstack/react-table";
-import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Copy, Eye } from "lucide-react";
-import { toast } from "sonner";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
+import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { MoreHorizontal, Copy, Eye } from "lucide-react";
 
 interface ServiceActionsProps {
   row: Row<CustomerService>
@@ -20,7 +20,6 @@ const copyToClipboard = (text: string) => {
 
 export const ServiceActions = ({row}: ServiceActionsProps) => {
   const { 
-    setIsOpenManagement, 
     fetchCustomerManagementById, 
     clearSelectedService, 
     selectedService  
