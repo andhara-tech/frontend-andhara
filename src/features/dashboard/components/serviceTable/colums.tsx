@@ -2,19 +2,35 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
 import { Button } from "@/components/ui/button";
 import { formaterDate, getDaysRemainingColor } from "@/lib/utils";
-import { AlertCircle } from "lucide-react";
 import { ServiceActions } from "./serviceActions";
+import { TooltipComment } from "./serviceTooltipcomment";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { getTooltipContent } from "./alertTooltip";
 
 export const getColumns = (): ColumnDef<CustomerService>[] => {
   return [
     {
       id: "status_color",
       cell: ({ row }) =>
-        <div
-          className={`w-4 h-4 rounded-full border border-white bg-${getDaysRemainingColor(
-            row.original.days_remaining
-          )}`}
-        />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <div
+                className={`w-4 h-4 rounded-full border border-white bg-${getDaysRemainingColor(
+                  row.original.days_remaining
+                )}`}
+              />
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5} align="end" alignOffset={-5} className={`bg-${getDaysRemainingColor(row.original.days_remaining)} text-white`}>
+              {getTooltipContent(row.original.days_remaining)}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
     },
     {
       id: "branch_name",
@@ -70,7 +86,7 @@ export const getColumns = (): ColumnDef<CustomerService>[] => {
       cell: ({ row }) =>
         <div className="text-center max-w-[50px]">
           {row.original.isComment && (
-            <AlertCircle className="h-4 w-4" />
+            <TooltipComment row={row} />
           )}
         </div>
     },

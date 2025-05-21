@@ -2,8 +2,9 @@ import { Row } from "@tanstack/react-table";
 import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Copy } from "lucide-react";
+import { MoreHorizontal, Copy, Eye } from "lucide-react";
 import { toast } from "sonner";
+import { customerManagementStore } from "@/app/stores/customerManagementStore";
 
 interface ServiceActionsProps {
   row: Row<CustomerService>
@@ -18,6 +19,23 @@ const copyToClipboard = (text: string) => {
 };
 
 export const ServiceActions = ({row}: ServiceActionsProps) => {
+  const { 
+    setIsOpenManagement, 
+    fetchCustomerManagementById, 
+    clearSelectedService, 
+    selectedService  
+  } = customerManagementStore();
+
+  const handleSelectService = (id: string) => {
+    if (selectedService) {
+      clearSelectedService()
+    }
+    try {
+      fetchCustomerManagementById(id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,6 +48,10 @@ export const ServiceActions = ({row}: ServiceActionsProps) => {
         <DropdownMenuItem onClick={() => copyToClipboard(row.original.id_customer_service)}>
           <Copy className="mr-2 h-4 w-4" />
           Copiar ID
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSelectService(row.original.id_customer_service)}>
+          <Eye className="mr-2 h-4 w-4" />
+          Ver
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

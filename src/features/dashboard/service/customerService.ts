@@ -1,6 +1,6 @@
 import apiClient from "@/app/apiClient";
-import { CustomerService, CustomerServiceById } from "../types/purchaseTypes";
 import { AxiosResponse } from "axios";
+import { CustomerManagement, CustomerService, CustomerServiceById } from "../types/purchaseTypes";
 
 export const customerManagementService = {
 	customerManagementList: async (): Promise<AxiosResponse<CustomerService[]>> => {
@@ -19,6 +19,19 @@ export const customerManagementService = {
 			return response;
 		} catch (error: any) {
 			const errorMessage = error.response?.data?.message || "Error al obtener el cliente"
+			throw new Error(errorMessage)
+		}
+	},
+
+	CustomerManagement: async (data: CustomerManagement): Promise<AxiosResponse> => {
+		try {
+			const response: AxiosResponse = await apiClient.patch(`/customer-service/manage/${data.id_customer_service}`, {
+				contact_comment: data.contact_comment,
+				customer_service_status: data.customer_service_status,
+			});
+			return response;
+		} catch (error: any) {
+			const errorMessage = error.response?.data?.message || "Error al actualizar el customer service"
 			throw new Error(errorMessage)
 		}
 	}

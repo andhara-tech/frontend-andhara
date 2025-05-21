@@ -99,3 +99,9 @@ export interface Product {
   subtotal_without_vat: number;
   total_price_with_vat: number;
 }
+
+export interface CustomerManagement {
+  id_customer_service: string;
+  contact_comment: string;
+  customer_service_status?: boolean;
+}

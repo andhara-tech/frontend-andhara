@@ -1,15 +1,15 @@
 import { AlertCircle, AlertTriangle, XCircle } from "lucide-react";
 
-export   const getTooltipContent = (days: number) => {
+export const getTooltipContent = (days: number) => {
   const isNegative = days < 0;
   const isUrgent = days >= 0 && days < 10;
 
   if (isNegative) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 bg-destructive">
         <XCircle className="h-4 w-4" />
-        <span className="font-medium text-destructive">¡CRÍTICO!</span>
-        <p className="text-sm text-destructive">El cliente se ha pasado del plazo en {-days} días</p>
+        <span className="font-medium text-white">¡CRÍTICO!</span>
+        <p className="text-sm text-white">El cliente se ha pasado del plazo en {-days} días</p>
       </div>
     );
   }

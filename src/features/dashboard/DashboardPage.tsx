@@ -15,6 +15,7 @@ import { ServiceTable } from "@/features/dashboard/components/serviceTable";
 import { ServiceDetails } from "@/features/dashboard/components/serviceTable/serviceDetails";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { SkeletonServiceTable } from "@/features/dashboard/components/serviceTable/skeleton";
+import { ManagementDialog } from "./components/managmeService/managmeDialog";
 
 const DashboardPage = () => {
   const { selectedService, isLoading } = customerManagementStore();
@@ -51,6 +52,9 @@ const DashboardPage = () => {
           <CustomerDialog />
         </div>
         <ServiceTable />
+        {
+          selectedService.id_customer_service && <ManagementDialog />
+        }
       </CardContent>
     </Card>
   );
