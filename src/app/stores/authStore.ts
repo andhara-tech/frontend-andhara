@@ -1,23 +1,22 @@
-import { authService } from '@/features/auth/services/authService';
+import { authService, LoginResponse } from '@/features/auth/services/authService';
 import { create } from 'zustand';
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from 'react';
 
 interface AuthState {
+  user: LoginResponse["user"] | null;
   token: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  initalize: () => void;
+
   isLoading: boolean;
   error: string | null;
-  user: {
-    email: string;
-    role: string;
-  } | null;
 
   expiryTime: number | null;
   lastActive: number;
+
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  initalize: () => void;
   setLastActive: () => void;
 }
 
@@ -29,32 +28,38 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   expiryTime: null,
   lastActive: Date.now(),
+
   setLastActive: () => set({ lastActive: Date.now() }),
+
   login: async (email: string, password: string) => {
     set({ isLoading: true, error: null });
     try {
       const response = await authService.loginRequest(email, password);
-      const token = response.data.token
+      const { token, user } = response.data
       const decodedToken: { exp: number, [key: string]: any } = jwtDecode(token)
       const expiryTime = decodedToken.exp * 1000
       set({
-        user: response.data.user,
+        user: user,
         token: token,
         isAuthenticated: true,
         isLoading: false,
         expiryTime: expiryTime,
         lastActive: Date.now()
       });
-    } catch (error: any) {
+      return true
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Login failed. Please check your credentials and try again.';
       set({
-        error: 'Login failed. Please check your credentials and try again.',
+        error: message,
         isLoading: false,
         isAuthenticated: false,
         token: null,
         expiryTime: null
       });
+      return false
     }
   },
+  
   logout: async () => {
     const response = await authService.logout()
     localStorage.removeItem('authToken');

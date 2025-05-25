@@ -1,6 +1,7 @@
 import apiClient from "@/app/apiClient";
+import { AxiosError, AxiosResponse } from "axios";
 
-type LoginResponse = {
+export interface LoginResponse{
    token: string;
    user: {
       email: string;
@@ -9,20 +10,19 @@ type LoginResponse = {
 };
 
 export const authService = {
-
-   loginRequest: async (email: string, password: string) => {
+   loginRequest: async (email: string, password: string): Promise<AxiosResponse<LoginResponse>> => {
       try {
-         const response = await apiClient.post<LoginResponse>("/auth/login", {
+         const response: AxiosResponse<LoginResponse> = await apiClient.post<LoginResponse>("/auth/login", {
             email,
             password
          });
          localStorage.setItem("authToken", response.data.token);
          return response;
       } catch (error) {
-         console.error("Login failed:", error);
-         throw new Error(
-            "Login failed. Please check your credentials and try again."
-         );
+         const axiosError = error as AxiosError<{ detail?: string }>;
+         const errorMessage =
+           axiosError.response?.data?.detail || "Error al iniciar sesión";
+         throw new Error(errorMessage);
       }
    },
 
