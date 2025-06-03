@@ -1,22 +1,14 @@
 import { Row } from "@tanstack/react-table";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Copy, Eye } from "lucide-react";
+import { MoreHorizontal, Eye } from "lucide-react";
 
 interface ServiceActionsProps {
   row: Row<CustomerService>
 }
 
-const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text).then(() => {
-    toast.success('ID copiado al portapapeles');
-  }).catch(() => {
-    toast.error('Error al copiar el ID');
-  });
-};
 
 export const ServiceActions = ({row}: ServiceActionsProps) => {
   const { 
@@ -44,10 +36,6 @@ export const ServiceActions = ({row}: ServiceActionsProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => copyToClipboard(row.original.id_customer_service)}>
-          <Copy className="mr-2 h-4 w-4" />
-          Copiar ID
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleSelectService(row.original.id_customer_service)}>
           <Eye className="mr-2 h-4 w-4" />
           Ver

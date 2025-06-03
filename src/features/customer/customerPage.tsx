@@ -1,5 +1,4 @@
 import { CostumerTable } from "@/features/customer/customerTable";
-import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
 import { CustomersFilters } from "@/features/customer/components/custumerFilters";
 import { ProductTableToolbar } from "@/features/customer/components/customerTableToolbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,6 @@ const CustomerPage = () => {
         <ProductTableToolbar />
         <CostumerTable />
         <Pagination />
-        <NewPurchaseModal />
         <CustomerSheet />
       </CardContent>
     </Card>

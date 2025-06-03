@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { MinusCircle, Package, PlusCircle } from "lucide-react"
-import { SelectedProdcutsCard } from "@/features/dashboard/components/newPurchase/selectedProductsCards"
+import { SelectedProdcutsCard } from "@/features/newPurchase/components/selectedProductsCards"
 
 export const PurchaseFormProducts = () => {
   const { selectedCustomer } = useCustumerStore()

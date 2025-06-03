@@ -48,4 +48,10 @@ export type UserRequest = {
   }>;
 };
 
-export const roles = ['admin', 'usuario-bogota', 'usuario-cali', ] as const;
+export const roles = [
+  { role: "admin", label: "Administrador" },
+  { role: "usuario-bogota", label: "Operador Bogotá" },
+  { role: "usuario-cali", label: "Operador Cali" },
+  { role: "usuario-valledupar", label: "Operador Valledupar" },
+  
+] as const;
