@@ -1,6 +1,7 @@
 import AuthForm from "@/features/auth/components/AuthForm"
 
 const AuthPage = () => {
+  
   return (
     <section className="h-screen lg:flex">
       <figure className="lg:w-[70vw] hidden lg:block relative">

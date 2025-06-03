@@ -28,7 +28,8 @@ export function SearchCustomer({
 
 
   useEffect(() => {
-    if(inputValue) {
+    const trimmed = inputValue.trim()
+    if (trimmed !== "") {
       setSearchWithDebounce(inputValue)
     }
   }, [inputValue])

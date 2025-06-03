@@ -36,6 +36,7 @@ interface CustomerState {
   updateCustomer: (customer: CustomerRequest) => Promise<void>
   toggleCustomerState: (document: string) => Promise<void>
   fetchCustomerPurchase: (document: string) => Promise<void>
+  fetchAndSetSelectedCustomerByDocument: (document: string) => Promise<void>
 
   setFilters: (filters: Partial<CustomerTableFilters>) => void
   clearFilters: () => void
@@ -101,7 +102,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   search: "",
   sort: undefined,
   pageIndex: 0,
-  pageSize: 5,
+  pageSize: 200,
 
   editDialogOpen: false,
   newCustomerDialogOpen: false,
@@ -131,6 +132,33 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
       set({ isLoading: false })
     } catch (error) {
       set({ error: "Error fetching customers", isLoading: false })
+    }
+  },
+  fetchAndSetSelectedCustomerByDocument: async (document: string) => {
+    set({ isLoading: true, error: null, selectedCustomer: null });
+    try {
+      // Asumimos que el backend puede buscar un cliente por su documento
+      // usando el parámetro 'search' y que el documento es único.
+      // Limitamos a 1 para obtener solo ese cliente si se encuentra.
+      const customers = await CustomerService.getCustomers({ search: document, limit: 1, skip: 0 });
+
+      if (customers && customers.length > 0) {
+        // Verificamos si el primer cliente encontrado realmente coincide con el documento,
+        // ya que la búsqueda podría ser amplia.
+        const foundCustomer = customers.find(c => c.customer_document === document);
+        if (foundCustomer) {
+          set({ selectedCustomer: foundCustomer, isLoading: false });
+        } else {
+          // La búsqueda devolvió resultados, pero ninguno coincidió exactamente con el documento.
+          set({ selectedCustomer: null, isLoading: false, error: "Cliente no encontrado con ese documento exacto." });
+        }
+      } else {
+        // No se encontraron clientes que coincidan con el criterio de búsqueda.
+        set({ selectedCustomer: null, isLoading: false, error: "Cliente no encontrado." });
+      }
+    } catch (error) {
+      console.error("Error fetching and setting customer by document:", error);
+      set({ error: "Error al buscar el cliente por documento.", isLoading: false, selectedCustomer: null });
     }
   },
   fetchCustomerPurchase: async (document) => {

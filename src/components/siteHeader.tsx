@@ -13,10 +13,9 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import RegisterForm from "@/features/auth/components/RegisterForm";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { BellDot, LogOut, Settings } from "lucide-react";
+import { BellDot, LogOut, Settings, Users2 } from "lucide-react";
 
 const SiteHeader = () => {
   const date = formaterDate(new Date());
@@ -70,11 +69,11 @@ const SiteHeader = () => {
               <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <RegisterForm />
+                <DropdownMenuItem onClick={() => navigate("/usuarios")}>
+                  <Users2 />
+                  <span className="flex-1">Usuarios</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut />
                 Salir

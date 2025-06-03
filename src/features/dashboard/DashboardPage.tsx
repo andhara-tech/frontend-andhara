@@ -1,7 +1,5 @@
-import { usePurchaseStore } from "@/app/stores/purchaseStore";
 import { useCustumerStore } from "@/app/stores/customerStore";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
-import { NewPurchaseModal } from "@/features/dashboard/components/newPurchaseModal";
 import { CustomerDialog } from "@/features/customer/components/customerDialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +14,12 @@ import { ServiceTable } from "@/features/dashboard/components/serviceTable";
 import { ServiceDetails } from "@/features/dashboard/components/serviceTable/serviceDetails";
 import { SkeletonServiceTable } from "@/features/dashboard/components/serviceTable/skeleton";
 import { ManagementDialog } from "@/features/dashboard/components/managmeService/managmeDialog";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const { selectedService, isLoading } = customerManagementStore();
   const { openNewCustomerDialog } = useCustumerStore();
-  const { setIsOpenModal } = usePurchaseStore();
+  const navigate = useNavigate();
 
   return (
     <Card>
@@ -36,7 +35,7 @@ const DashboardPage = () => {
           : selectedService.id_customer_service && <ServiceDetails />}
         <div className="flex flex-col md:flex-row md:items-center justify-end gap-2 py-4">
           <Button
-            onClick={() => setIsOpenModal(true)}
+            onClick={() => navigate("/nueva-compra")}
             variant="default"
             className="gap-2"
           >
@@ -48,7 +47,6 @@ const DashboardPage = () => {
             <Plus className="mr-2 h-4 w-4" />
             Nuevo cliente
           </Button>
-          <NewPurchaseModal />
           <CustomerDialog />
         </div>
         <ServiceTable />

@@ -10,10 +10,11 @@ import { useAuthStore } from '@/app/stores/authStore';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 
 const AuthForm = () => {
-  const { login, isLoading, isAuthenticated } = useAuthStore();
+  const { login, isLoading, error } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -28,18 +29,16 @@ const AuthForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await login(values.email, values.password);
-      redirectTo();
+      const success = await login(values.email, values.password);
+      if(!success){
+        toast.error(error || "Error al iniciar sesión")
+      }
+      if(success && !isLoading && !error){
+        navigate('/');
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
-  }
-
-  const redirectTo = () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-    }
-    navigate('/');
   }
 
   const handleShowPasswor = () => {

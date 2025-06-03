@@ -1,12 +1,12 @@
 import { Row } from "@tanstack/react-table";
 import { formaterDate } from "@/lib/utils";
 import { toast } from "sonner";
-import { usePurchaseStore } from "@/app/stores/purchaseStore";
 import { Customer } from "@/features/customer/types/customerTypes";
 import { useCustumerStore } from "@/app/stores/customerStore";
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
+import { useNavigate } from "react-router-dom";
 
 interface CustomerActionsProps {
   row: Row<Customer>
@@ -15,8 +15,7 @@ interface CustomerActionsProps {
 export const CustomerActions = ({row}: CustomerActionsProps) => {
   const customer = row.original
   const {openEditDialog, openDeleteDialog, toggleCustomerState, setSelectedCustomer } = useCustumerStore()
-  const {setIsOpenModal} = usePurchaseStore()
-
+  const navigate = useNavigate()
   const handleToggleCustomerState = async (document: string) => {
     try {
       await toggleCustomerState(document)
@@ -30,7 +29,7 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
   const handleNewPurchaseWithCustomer = async () => {
     try {
       setSelectedCustomer(customer)
-      setIsOpenModal(true)
+      navigate(`/nueva-compra/${customer.customer_document}`)
     } catch (error) {
       console.error("Error opening purchase modal:", error)
       toast.error("Error al abrir el modal de compra")
