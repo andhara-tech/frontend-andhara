@@ -25,8 +25,9 @@ export const registerSchema = z.object({
     .refine((value) => value !== '', {
       message: 'La contraseña es requerida',
     }),
-  role: z.enum(roles, {
-    errorMap: () => ({ message: 'El rol es requerido' }),
+  role: z.enum(roles.map(r => r.role) as [string, ...string[]], {
+    required_error: 'El rol es requerido',
+    invalid_type_error: 'El rol debe ser uno de los roles predefinidos',
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Las contraseñas no coinciden',
