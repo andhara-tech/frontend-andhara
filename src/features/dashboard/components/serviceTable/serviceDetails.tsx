@@ -21,16 +21,31 @@ import {
   MapPinHouse,
   MessageCircle,
   Phone,
+  ShoppingCart,
   SquareUser,
   Wallet,
 } from "lucide-react";
+import { useCustumerStore } from "@/app/stores/customerStore";
+import { useNavigate } from "react-router-dom";
 
 export const ServiceDetails = () => {
   const { selectedService, setIsOpenManagement } = customerManagementStore();
+  const {fetchAndSetSelectedCustomerByDocument} = useCustumerStore()
+  const navigate = useNavigate()
 
   const isExpiring = selectedService.purchase.days_remaining < 10;
   const borderColor = isExpiring ? "border-destructive" : "border-primary";
   const backgroundColor = isExpiring ? "bg-destructive" : "bg-primary";
+
+  const handleNewPurchaseWithCustomer = async () => {
+    try{
+      await fetchAndSetSelectedCustomerByDocument(selectedService.customer.customer_document);
+      navigate(`/nueva-compra/${selectedService.customer.customer_document}`);
+    }catch (error) {
+      console.error("Error al crear una nueva compra con el cliente:", error);
+      // Aquí podrías mostrar un mensaje de error al usuario si es necesario
+    }
+  }
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-8 gap-5 w-full overflow-y-auto p-2">
@@ -65,8 +80,12 @@ export const ServiceDetails = () => {
           <Button onClick={() => setIsOpenManagement()} className="rounded-full" variant="outline" size="icon">
             <MessageCircle />
           </Button>
-          <Button disabled className="rounded-full" variant="outline" size="icon">
-            <Phone />
+          <Button 
+            onClick={handleNewPurchaseWithCustomer}
+            className="rounded-full" 
+            variant="default" 
+            size="icon">
+            <ShoppingCart />
           </Button>
         </div>
       </article>

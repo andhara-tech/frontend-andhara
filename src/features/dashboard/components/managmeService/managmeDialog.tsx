@@ -63,6 +63,26 @@ export const ManagementDialog = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
+              name="customer_service_status"
+              render={({ field }) => (
+                <FormItem className="flex items-center justify-between border rounded p-4">
+                  <FormControl>
+                    <div className="flex items-center justify-start gap-x-2">
+                      <Label htmlFor="customer_service_status">Cerrar seguimiento</Label>
+                      <Switch
+                        id="customer_service_status"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <Label htmlFor="customer_service_status">Mantener activo</Label>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="contact_comment"
               render={({ field }) => (
                 <FormItem>
@@ -77,26 +97,6 @@ export const ManagementDialog = () => {
                   <FormDescription>
                     Ingrese comentario adicional
                   </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="customer_service_status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="flex items-center justify-start gap-x-2">
-                      <Label htmlFor="customer_service_status">Cerrar seguimiento</Label>
-                      <Switch
-                        id="customer_service_status"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label htmlFor="customer_service_status">Mantener activo</Label>
-                    </div>
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

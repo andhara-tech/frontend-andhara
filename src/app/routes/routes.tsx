@@ -8,6 +8,7 @@ import { ProtectedRoute } from "@/shared/protectedRoute";
 import MainLayout from "@/app/layout/MainLayout.tsx";
 import CustomerPage from '@/features/customer/customerPage.tsx'; 
 import ProductsPage from '@/features/products/ProductsPage.tsx';
+import { PurchasePage } from '@/features/newPurchase/PurchasePage';
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,8 @@ const router = createBrowserRouter([
           { path: "/dashboard", element: <DashboardPage /> },
           { path: "/clientes", element: <CustomerPage /> },
           { path: "/productos", element: <ProductsPage /> },
+          { path: "/nueva-compra/:customer_document", element: <PurchasePage />},
+          { path: "/nueva-compra/", element: <PurchasePage />},
         ]
       }
     ]
