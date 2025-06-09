@@ -173,7 +173,7 @@ export const ProductDialog = () => {
 
    return (
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-         <DialogContent className="sm:max-w-[600px] max-w-[600px]">
+         <DialogContent className="sm:max-w-[900px] max-w-[900px]">
             <DialogHeader>
                <DialogTitle>
                   {isEditing ? "Editar Producto" : "Nuevo Producto"}

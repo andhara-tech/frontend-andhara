@@ -419,15 +419,16 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
     }
 
     if (search) {
-      const searchFilter = search.trim().toLowerCase()
-
+      const words = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
       filtered = filtered.filter((c) =>
-        c.customer_first_name.toLowerCase().includes(searchFilter) ||
-        c.customer_last_name.toLowerCase().includes(searchFilter) ||
-        c.customer_document.toLowerCase().includes(searchFilter) ||
-        c.email.toLowerCase().includes(searchFilter) ||
-        c.phone_number.toLowerCase().includes(searchFilter)
-      )
+        words.every((word) =>
+          c.customer_first_name.toLowerCase().includes(word) ||
+          c.customer_last_name.toLowerCase().includes(word) ||
+          c.customer_document.toLowerCase().includes(word) ||
+          c.email.toLowerCase().includes(word) ||
+          c.phone_number.toLowerCase().includes(word)
+        )
+      );
     }
 
     if (sort) {

@@ -78,11 +78,14 @@ const RegisterForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-      <Tabs defaultValue="register"orientation="vertical">
+      <Tabs defaultValue="users"orientation="vertical">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="register" className="w-full">Registrar</TabsTrigger>
           <TabsTrigger value="users" className="w-full">Usuarios</TabsTrigger>
+          <TabsTrigger value="register" className="w-full">Registrar</TabsTrigger>
         </TabsList>
+        <TabsContent value="users" className="pt-4">
+          <UserTable />
+        </TabsContent>
         <TabsContent value="register" className="pt-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -157,9 +160,6 @@ const RegisterForm = () => {
               </Button>
             </form>
           </Form>
-        </TabsContent>
-        <TabsContent value="users" className="pt-4">
-          <UserTable />
         </TabsContent>
       </Tabs>
       </CardContent>
