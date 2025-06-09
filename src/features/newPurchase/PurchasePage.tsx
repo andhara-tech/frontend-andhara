@@ -174,8 +174,9 @@ export const PurchasePage = () => {
               </ScrollArea>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-20 m-4 border-dashed border-primary border rounded">
-              <p className="text-muted-foreground">Seleccione un cliente para ver sus compras</p>
+            <div className="flex flex-col items-center justify-center h-40 bg-neutral-200/40 m-4 border-dashed border-primary border rounded">
+              <h2 className="text-muted-foreground text-xl font-semibold text-center">Busca un cliente por documento o nombre para comenzar una venta</h2>
+              {/* <Search className="text-xl text-primary mb-2" /> */}
             </div>
           )}
         </CardContent>

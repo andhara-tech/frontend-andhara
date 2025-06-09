@@ -3,7 +3,7 @@ import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { CustomerService } from "@/features/dashboard/types/purchaseTypes";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye } from "lucide-react";
+import { MoreHorizontal, Eye, ShoppingCart, MessageCircle } from "lucide-react";
 
 interface ServiceActionsProps {
   row: Row<CustomerService>
@@ -39,6 +39,14 @@ export const ServiceActions = ({row}: ServiceActionsProps) => {
         <DropdownMenuItem onClick={() => handleSelectService(row.original.id_customer_service)}>
           <Eye className="mr-2 h-4 w-4" />
           Ver
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled>
+          <ShoppingCart className="mr-2 h-4 w-4" />
+          Agregar venta
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled>
+          <MessageCircle className="mr-2 h-4 w-4" />
+          Añadir mensaje
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
