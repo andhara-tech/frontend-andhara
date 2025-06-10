@@ -1,4 +1,4 @@
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customerStore"
 import { useEffect } from "react"
 import { branchesStatic, typesDocument } from "@/shared/static"
 import { useForm } from "react-hook-form"
@@ -26,7 +26,7 @@ export const CustomerDialog = () => {
     closeEditDialog,
     closeNewCustomerDialog,
 
-  } = useCustumerStore()
+  } = useCustomerStore()
 
   const isEditing = !!selectedCustomer
   const isOpen = editDialogOpen || newCustomerDialogOpen

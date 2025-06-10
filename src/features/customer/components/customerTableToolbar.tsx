@@ -1,10 +1,10 @@
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customerStore"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 
 
 export const ProductTableToolbar = () => {
-  const { isLoading, openNewCustomerDialog } = useCustumerStore()
+  const { isLoading, openNewCustomerDialog } = useCustomerStore()
 
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-4">

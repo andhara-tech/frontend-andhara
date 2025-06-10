@@ -84,7 +84,7 @@ const initialFilters: CustomerTableFilters = {
   maxDuration: null,
 }
 
-export const useCustumerStore = create<CustomerState>((set, get) => ({
+export const useCustomerStore = create<CustomerState>((set, get) => ({
   allCustomers: [],
   filteredCustomers: [],
   displayedCustomers: [],
@@ -102,7 +102,7 @@ export const useCustumerStore = create<CustomerState>((set, get) => ({
   search: "",
   sort: undefined,
   pageIndex: 0,
-  pageSize: 200,
+  pageSize: 5,
 
   editDialogOpen: false,
   newCustomerDialogOpen: false,

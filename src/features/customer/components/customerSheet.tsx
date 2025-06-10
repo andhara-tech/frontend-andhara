@@ -1,4 +1,4 @@
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customerStore";
 import { formaterDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ import { PurchaseSkeleton } from "@/features/customer/skeleton/productSkeleton";
 
 
 export const CustomerSheet = () => {
-  const { sheetOpen, customerPurchase, closeSheet, isLoading } = useCustumerStore()
+  const { sheetOpen, customerPurchase, closeSheet, isLoading } = useCustomerStore()
 
   const isOpen = sheetOpen
 

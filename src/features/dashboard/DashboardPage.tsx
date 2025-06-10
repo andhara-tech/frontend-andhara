@@ -1,4 +1,4 @@
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customerStore";
 import { customerManagementStore } from "@/app/stores/customerManagementStore";
 import { CustomerDialog } from "@/features/customer/components/customerDialog";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const { selectedService, isLoading } = customerManagementStore();
-  const { openNewCustomerDialog } = useCustumerStore();
+  const { openNewCustomerDialog } = useCustomerStore();
   const navigate = useNavigate();
 
   return (

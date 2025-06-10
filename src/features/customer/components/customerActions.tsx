@@ -2,7 +2,7 @@ import { Row } from "@tanstack/react-table";
 import { formaterDate } from "@/lib/utils";
 import { toast } from "sonner";
 import { Customer } from "@/features/customer/types/customerTypes";
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customerStore";
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
@@ -14,7 +14,7 @@ interface CustomerActionsProps {
 
 export const CustomerActions = ({row}: CustomerActionsProps) => {
   const customer = row.original
-  const {openEditDialog, openDeleteDialog, toggleCustomerState, setSelectedCustomer } = useCustumerStore()
+  const {openEditDialog, openDeleteDialog, toggleCustomerState, setSelectedCustomer } = useCustomerStore()
   const navigate = useNavigate()
   const handleToggleCustomerState = async (document: string) => {
     try {
@@ -70,7 +70,7 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
 
 export const CustomerDataAction = ({row}: CustomerActionsProps) => {
   const customer = row.original
-  const { openSheet} = useCustumerStore()
+  const { openSheet} = useCustomerStore()
 
 
   return (

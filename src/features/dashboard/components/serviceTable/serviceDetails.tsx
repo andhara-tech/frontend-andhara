@@ -25,12 +25,12 @@ import {
   SquareUser,
   Wallet,
 } from "lucide-react";
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customerStore";
 import { useNavigate } from "react-router-dom";
 
 export const ServiceDetails = () => {
   const { selectedService, setIsOpenManagement } = customerManagementStore();
-  const {fetchAndSetSelectedCustomerByDocument} = useCustumerStore()
+  const {fetchAndSetSelectedCustomerByDocument} = useCustomerStore()
   const navigate = useNavigate()
 
   const isExpiring = selectedService.purchase.days_remaining < 10;

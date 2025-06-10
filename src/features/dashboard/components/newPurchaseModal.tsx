@@ -2,7 +2,7 @@ import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { FormProvider, useForm } from "react-hook-form"
 import { TabsContent } from "@radix-ui/react-tabs"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customerStore"
 import { toast } from "sonner"
 import { PurchaseFormValue, purchaseSchema } from "@/features/dashboard/schema/purchaseSchema"
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,7 @@ import { ShoppingCart } from "lucide-react"
 
 export const NewPurchaseModal = () => {
   const { isOpen, setIsOpenModal, activeTab, setActiveTab, selectedProducts, createPurchase, isLoading } = usePurchaseStore()
-  const { selectedCustomer, clearFilters, } = useCustumerStore()
+  const { selectedCustomer, clearFilters, } = useCustomerStore()
 
   const form = useForm<PurchaseFormValue>({
     resolver: zodResolver(purchaseSchema),

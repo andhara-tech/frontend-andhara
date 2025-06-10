@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customerStore"
 import { useProductStore } from "@/app/stores/productStore"
 import { formatCurrency } from "@/lib/format"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
@@ -10,7 +10,7 @@ import { MinusCircle, Package, PlusCircle } from "lucide-react"
 import { SelectedProdcutsCard } from "@/features/newPurchase/components/selectedProductsCards"
 
 export const PurchaseFormProducts = () => {
-  const { selectedCustomer } = useCustumerStore()
+  const { selectedCustomer } = useCustomerStore()
   const { fetchProducts, allProducts, isLoading } = useProductStore()
   const { addOrUpdateProduct, removeUnitFromProduct, selectedProducts, closeModal, setActiveTab} = usePurchaseStore()
 

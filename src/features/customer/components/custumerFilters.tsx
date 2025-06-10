@@ -1,4 +1,4 @@
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customerStore"
 import React, { useEffect, useRef, useState } from "react"
 import { typesDocument } from "@/shared/static"
 import { Input } from "@/components/ui/input"
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 
 export const CustomersFilters = () => {
-  const { filters, search, setFilters, setSearch, isLoading, clearFilters, fetchCustomers } = useCustumerStore()
+  const { filters, search, setFilters, setSearch, isLoading, clearFilters, fetchCustomers } = useCustomerStore()
   const [localSearch, setLocalSearch] = useState(search)
 
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
