@@ -8,7 +8,7 @@ import { PurchaseFormProducts } from "./components/purchaseProductSelector"
 import { PurchaseSumary } from "./components/purchaseSumary"
 import { Button } from "@/components/ui/button"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
-import { useCustomerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { useForm } from "react-hook-form"
 import { PurchaseFormValue, purchaseSchema } from "../dashboard/schema/purchaseSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom"
 
 export const PurchasePage = () => {
   const { activeTab, setActiveTab, selectedProducts, createPurchase, isLoading } = usePurchaseStore()
-  const { selectedCustomer, clearFilters, fetchCustomerPurchase, customerPurchase } = useCustomerStore()
+  const { selectedCustomer, clearFilters, fetchCustomerPurchases, customerPurchase } = useCustomerStore()
   const navigate = useNavigate()
 
   const form = useForm<PurchaseFormValue>({
@@ -45,7 +45,7 @@ export const PurchasePage = () => {
 
   useEffect(() => {
     if (selectedCustomer?.customer_document) {
-      fetchCustomerPurchase(selectedCustomer.customer_document)
+      fetchCustomerPurchases(selectedCustomer.customer_document)
     }
   }, [selectedCustomer])
 

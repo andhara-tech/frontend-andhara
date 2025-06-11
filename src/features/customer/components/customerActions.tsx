@@ -2,10 +2,10 @@ import { Row } from "@tanstack/react-table";
 import { formaterDate } from "@/lib/utils";
 import { toast } from "sonner";
 import { Customer } from "@/features/customer/types/customerTypes";
-import { useCustomerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customers/customerStore";
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart, Trash } from "lucide-react"
+import { Edit, ExternalLink, MoreHorizontal, Power, ShoppingCart } from "lucide-react"
 import { useNavigate } from "react-router-dom";
 
 interface CustomerActionsProps {
@@ -14,11 +14,15 @@ interface CustomerActionsProps {
 
 export const CustomerActions = ({row}: CustomerActionsProps) => {
   const customer = row.original
-  const {openEditDialog, openDeleteDialog, toggleCustomerState, setSelectedCustomer } = useCustomerStore()
+  const {
+    openEditDialog, 
+    toggleCustomerStatus, 
+    setSelectedCustomer 
+  } = useCustomerStore()
   const navigate = useNavigate()
   const handleToggleCustomerState = async (document: string) => {
     try {
-      await toggleCustomerState(document)
+      await toggleCustomerStatus(document)
       toast.success(`Cliente ${customer.customer_state ? "desactivado" : "activado"} correctamente`)
     }catch (error) {
       console.error("Error toggling customer state:", error)
@@ -59,10 +63,6 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
           <Power className="mr-2 h-4 w-4" />
           {customer.customer_state ? "Desactivar" : "Activar"}
         </DropdownMenuItem>
-        <DropdownMenuItem disabled onClick={() => openDeleteDialog(customer.customer_document!)} className="text-red-600">
-          <Trash className="mr-2 h-4 w-4" />
-          Eliminar
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -70,14 +70,14 @@ export const CustomerActions = ({row}: CustomerActionsProps) => {
 
 export const CustomerDataAction = ({row}: CustomerActionsProps) => {
   const customer = row.original
-  const { openSheet} = useCustomerStore()
+  const { openPurchaseSheet } = useCustomerStore()
 
 
   return (
     <Button
     variant="link"
     className="cursor-pointer"
-    onClick={() => openSheet(customer)}
+    onClick={() => openPurchaseSheet(customer)}
   >
     {customer.last_purchase?.purchase_date
       ? formaterDate(customer.last_purchase?.purchase_date)

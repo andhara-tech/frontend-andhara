@@ -1,4 +1,4 @@
-import { useCustomerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import React, { useEffect, useRef, useState } from "react"
 import { typesDocument } from "@/shared/static"
 import { Input } from "@/components/ui/input"
@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { branchesStatic } from "@/shared/static"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Search } from "lucide-react"
+import { FileStack, Search, Store } from "lucide-react"
 
 export const CustomersFilters = () => {
   const { filters, search, setFilters, setSearch, isLoading, clearFilters, fetchCustomers } = useCustomerStore()
@@ -72,7 +72,10 @@ export const CustomersFilters = () => {
               <SelectValue placeholder="Selecciona una sede" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todas las sedes</SelectItem>
+              <SelectItem value="all">
+                <Store className="mr-2 h-4 w-4" />
+                Todas las sedes
+                </SelectItem>
               {branchesStatic.map(branch => (
                 <SelectItem key={branch.id_branch} value={branch.branch_name}>
                   {branch.branch_name}
@@ -88,7 +91,10 @@ export const CustomersFilters = () => {
               <SelectValue placeholder="Selecciona un documento" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todos los documentos</SelectItem>
+              <SelectItem value="all">
+                <FileStack className="-4 w-4" />
+                Todos los documentos
+                </SelectItem>
               {
                 typesDocument.map((d) => (
                   <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>

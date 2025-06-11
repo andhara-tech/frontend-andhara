@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useCustomerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { useProductStore } from "@/app/stores/productStore"
 import { formatCurrency } from "@/lib/format"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"

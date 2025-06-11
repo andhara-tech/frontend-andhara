@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { useCustomerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { useProductStore } from "@/app/stores/productStore"
 import { formatCurrency } from "@/lib/format"
