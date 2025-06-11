@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { usePurchaseStore } from "@/app/stores/purchaseStore"
 import { useProductStore } from "@/app/stores/productStore"
 import { formatCurrency } from "@/lib/format"
@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import { CheckCircle, CreditCard, Truck, User } from "lucide-react"
 
 export const PurchaseSumary = () => {
-  const { selectedCustomer } = useCustumerStore()
+  const { selectedCustomer } = useCustomerStore()
   const { watch } = useFormContext<PurchaseFormValue>()
   const { allProducts } = useProductStore()
   const { selectedProducts } = usePurchaseStore()

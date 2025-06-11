@@ -1,8 +1,16 @@
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export const Pagination = () => {
-  const { pageIndex, pageSize, total, setPageIndex, setPageSize, isLoading, fetchCustomers } = useCustumerStore()
+  const { 
+    pageIndex, 
+    pageSize, 
+    total, 
+    setPageIndex, 
+    setPageSize, 
+    isLoading, 
+    fetchCustomers 
+  } = useCustomerStore()
   const fromItem = total > 0 ? pageIndex * pageSize + 1 : 0
   const toItem = Math.min((pageIndex + 1) * pageSize, total)
 

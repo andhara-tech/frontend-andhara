@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import type { Customer } from "@/features/customer/types/customerTypes"
-import { useCustumerStore } from "@/app/stores/customerStore"
+import { useCustomerStore } from "@/app/stores/customers/customerStore"
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
 import { FormControl } from "@/components/ui/form"
@@ -24,7 +24,7 @@ export function SearchCustomer({
     setSearchWithDebounce,
     setSelectedCustomer,
     filteredCustomers,
-  } = useCustumerStore()
+  } = useCustomerStore()
 
 
   useEffect(() => {

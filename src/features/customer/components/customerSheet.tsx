@@ -1,4 +1,4 @@
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customers/customerStore";
 import { formaterDate } from "@/lib/utils";
 import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -12,12 +12,12 @@ import { PurchaseSkeleton } from "@/features/customer/skeleton/productSkeleton";
 
 
 export const CustomerSheet = () => {
-  const { sheetOpen, customerPurchase, closeSheet, isLoading } = useCustumerStore()
+  const { isPurchaseSheetOpen, customerPurchase, closePurchaseSheet, isLoading } = useCustomerStore()
 
-  const isOpen = sheetOpen
+  const isOpen = isPurchaseSheetOpen
 
   const handleOpenChange = (open: boolean) => {
-    if (!open) closeSheet()
+    if (!open) closePurchaseSheet()
   }
 
   return (

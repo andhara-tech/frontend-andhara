@@ -24,7 +24,7 @@ export const cityStatic: City[] = [
 ];
 
 
-export type DocumentType = 'CC' | 'TI' | 'CE' | 'PP' | 'OTRO';
+export type DocumentType = 'CC' | 'TI' | 'CE' | 'PASS' | 'NIT' | 'all';
   
 export const branchesStatic: Branch[] = [
   { id_branch: "885d040f-272c-43f4-b5e3-33cbc7692fd0", branch_name: "Sede Valledupar", manager_name: "Carlos Méndez", branch_address: "calle 73 a #17a - 20", city_name: "Valledupar", department_name: "Cesar" },

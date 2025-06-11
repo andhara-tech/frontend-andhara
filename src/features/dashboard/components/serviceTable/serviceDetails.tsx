@@ -25,12 +25,12 @@ import {
   SquareUser,
   Wallet,
 } from "lucide-react";
-import { useCustumerStore } from "@/app/stores/customerStore";
+import { useCustomerStore } from "@/app/stores/customers/customerStore";
 import { useNavigate } from "react-router-dom";
 
 export const ServiceDetails = () => {
   const { selectedService, setIsOpenManagement } = customerManagementStore();
-  const {fetchAndSetSelectedCustomerByDocument} = useCustumerStore()
+  const {fetchCustomerByDocument} = useCustomerStore()
   const navigate = useNavigate()
 
   const isExpiring = selectedService.purchase.days_remaining < 10;
@@ -39,7 +39,7 @@ export const ServiceDetails = () => {
 
   const handleNewPurchaseWithCustomer = async () => {
     try{
-      await fetchAndSetSelectedCustomerByDocument(selectedService.customer.customer_document);
+      await fetchCustomerByDocument(selectedService.customer.customer_document);
       navigate(`/nueva-compra/${selectedService.customer.customer_document}`);
     }catch (error) {
       console.error("Error al crear una nueva compra con el cliente:", error);
