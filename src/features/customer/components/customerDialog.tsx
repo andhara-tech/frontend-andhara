@@ -11,15 +11,16 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "sonner"
 import { Loader2, UserPen, UserPlus } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export const CustomerDialog = () => {
   const {
     createCustomer,
     updateCustomer,
     isLoading,
+    error,
     selectedCustomer,
     isNewDialogOpen,
     isEditDialogOpen,
@@ -99,7 +100,6 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
-        toast.success("Cliente actualizado correctamente")
       } else {
         await createCustomer({
           customer_document: data.customer_document,
@@ -112,11 +112,9 @@ export const CustomerDialog = () => {
           customer_state: data.customer_state ?? true,
           id_branch: data.id_branch,
         })
-        toast.success("Cliente creado correctamente")
       }
     } catch (error) {
       console.error("Error updating customer:", error)
-      toast.error("Error al crear o actualizar el cliente")
     }
   }
 
@@ -125,16 +123,23 @@ export const CustomerDialog = () => {
       <DialogContent className="sm:max-w-[900px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {isEditing 
-            ? <UserPen className="w-6 h-6 text-primary" />
-            : <UserPlus className="w-6 h-6 text-primary"/>}
+            {isEditing
+              ? <UserPen className="w-6 h-6 text-primary" />
+              : <UserPlus className="w-6 h-6 text-primary" />}
             {isEditing ? "Editar Cliente" : "Crear Cliente"}
           </DialogTitle>
           <DialogDescription>
             {isEditing ? "Modifique los detalles del cliente." : "Ingrese los detalles del nuevo cliente."}
           </DialogDescription>
-          <Separator className="my-2"/>
+          <Separator className="my-2" />
         </DialogHeader>
+        {
+          error && (
+            <Alert variant={"destructive"}>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )
+        }
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

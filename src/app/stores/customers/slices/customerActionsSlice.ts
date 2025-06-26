@@ -54,10 +54,10 @@ export const createActionsSlice: StateCreator<
           limit: params?.pageSize || pageSize,
         }
       );
-      setAllCustomers(data);
+      setAllCustomers(data.data || []);
       applyFilters();
       applyPagination();
-      setTotal(data.length);
+      setTotal(data.data.length);
     } catch (error: any) {
       setError(error.message || "Failed to fetch customers");
     } finally {
@@ -75,8 +75,8 @@ export const createActionsSlice: StateCreator<
         skip: 0,
         limit: 1,
       });
-      if (customers && customers.length > 0) {
-        const foundCustomer = customers.find(c => c.customer_document === document);
+      if (customers.data && customers.data.length > 0) {
+        const foundCustomer = customers.data.find(c => c.customer_document === document);
         if (foundCustomer) {
           setSelectedCustomer(foundCustomer);
         }
@@ -95,7 +95,7 @@ export const createActionsSlice: StateCreator<
 
     try {
       const response = await CustomerService.getCustomerPurchase(document);  
-      setCustomerPurchase(response);
+      setCustomerPurchase(response.data);
     } catch (error: any) {
       setError(error.message || "Failed to fetch customer purchases");
     } finally {
