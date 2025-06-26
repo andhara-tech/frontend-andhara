@@ -40,6 +40,7 @@ export interface CustomerService {
 	id_customer_service: string;
 	id_purchase: string;
 	service_date: string;
+  customer_document: string,
 	customer_full_name: string;
 	phone_number: string;
 	branch_name: string;
